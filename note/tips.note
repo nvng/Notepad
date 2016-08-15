@@ -1,0 +1,517 @@
+﻿1.安装bash vim
+pkg install bash vim
+pkg2ng
+chsh -s /usr/local/bin/bash root
+
+2.安装Windows字体。自动设置好中文环境。
+拷贝Windows字体 simhei.ttf，simsun.ttc和tahoma.ttf 到/usr/ports/distfiles/msttf文件夹下。
+cd /usr/ports/chinese/msttf && make install clean
+# printf "export LANG=zh_CN.GBK\nexport LC_ALL=zh_CN.GBK" >> ~/.xprofile
+
+3.安装xorg-minimal
+pkg install xorg-minimal
+pkg install dwm dmenu xterm
+printf "hald_enable=\"YES\"\ndbus_enable=\"YES\"" >> /etc/rc.conf
+printf "exec /usr/local/bin/dwm" >> ~/.xinitrc
+reboot
+
+4.安装scim。
+pkg install scim scim-bridge scim-table-imengine zh-scim-tables
+scim-make-table Wubi.bin -o Wubi.txt
+scim-make-table Wubi.txt -b -o Wubi.bin
+
+在 .xinitrc 中插入以下 shell 代码：
+setenv	LC_CTYPE zh_CN.UTF-8
+setenv	XMODIFIERS @im=SCIM
+setenv	XIM SCIM
+setenv	XIM_PROGRAM scim
+setenv	GTK_IM_MODULE scim
+setenv	QT_IM_MODULE scim
+
+scim -d &
+
+5.安装TrueType字体。(其实将sim*.ttc拷贝到/usr/local/lib/X11/fonts/TrueType)
+将Windows字体sim*.ttc拷贝到目录/usr/X11R/lib/fonts/TrueType下。
+刷新字体库：fc-cache -f -v
+在文件：/etc/X11xorg.conf中的Section "Files"段添加： FontPath "/usr/X11R/lib/X11/fonts/TrueType
+Module 部分：Load "freetype"
+
+可以将其它的字体路径注释掉，以加快启动速度。
+cd /usr/local/lib/X11/fonts/TrueType
+ttmkfdir -o fonts.dir
+如果立即启用请输入：(以下命令需要在X桌面的Terminal中执行才可以)
+set fp+ /usr/local/lib/X11/fonts/TrueType
+set fp rehash
+
+==============================================================
+Note : Something for earlier, for slackware and FreeBSD note.
+
+1. /tmp 使用内存空间
+如果内存很充足，使用内存文件系统作为/tmp储存临时文件能小幅改善系统性能（同样，
+能减少磁盘读写）。办法是在/etc/fstab中添加：
+tmpfs /tmp tmpfs defaults,noatime,nodev,nosuid,mode=1777 0 0
+
+================================================================================
+2. 来打开你硬盘的DMA传输模式
+这样可以有效的减少CPU的使用率和增加硬盘传输的吞吐量:
+相关命令：hdparm /dev/hde
+Note: 可以将其写入到文件/etc/rc.d/rc.local里。
+
+================================================================================
+3. 建立起查询数据库
+相关命令：
+touch /var/lib/slocate/slocate.db
+更新数据库：
+updatedb &
+使用数据库进行查询：
+slocate xxx
+Note: 应该常常更新数据库，以保证查询能够正确有效地进行。
+
+因为windows分区和另外一些分区挂载在 /mnt 目录下，因此要在这些分区上使用 locate
+命令，需要修改文件： /etc/updatedb.conf
+
+================================================================================
+4. 挂载NTFS分区
+1)在/etc/fstab中写入下列两行:
+只读式挂载：/dev/sda1 /mnt/windows/c ntfs-3g ro,umask=0222,defaults 0 0
+读写式挂载：/dev/sda1 /mnt/windows/c ntfs-3g rw,umask=0000,defaults 0 0
+
+2)slackware 14.0中关于windows的挂载项。
+/dev/sda1        /mnt/xp_c        ntfs-3g     fmask=133,dmask=022 1   0
+/dev/sda5        /mnt/xp_d        ntfs-3g     fmask=133,dmask=022 1   0
+
+================================================================================
+5. 减少物理终端数量
+在文件/etc/inittab中注释掉3至6号tty。
+
+================================================================================
+6. 重启网卡服务
+/etc/rc.d/rc.inet1 restart
+
+================================================================================
+7. 禁止IPv6
+7.1 slackware如果不关掉ipv6，查找DNS会用很多时间，非常影响网速，这里有两种方法：
+1)建立文件/etc/modprobe.d/ipv6.conf，内容如下：
+alias net-pf-10 off
+alias ipv6 off
+2)在/etc/modprobe.d/blacklist.conf中添加
+blacklist ipv6
+
+================================================================================
+8. 透明
+窗口全透明，包括文字：
+xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
+xcompmgr -c &
+transset n
+
+================================================================================
+9. 设置壁纸
+xv -root -quit /usr/mywallpaper/wp.jpg &
+
+================================================================================
+10. 开机加速
+若开始时进入的是3 level 即 multi user mode,那么运行 /etc/rc.d/rc.M脚本，可通过修改这个文件来改变系统启动时运行的程序。可把关于ldconfig 和 fc-cache 的这两段代码注释掉，以后在更新共享库或是更新字体时再手动运行这两个程序。
+大部分的 Linux 发行版都会把 DHCP IP 在开机启动时自动运行，这会影响开机速度，Slackware 下可把 /etc/rc.d/rc.inet1 中的
+
+   echo "/etc/rc.d/rc.inet1:  /sbin/dhcpcd -d -t 60 ${DHCP_OPTIONS} ${1}" | $LOGGER
+
+   /sbin/dhcpcd -d -t 60 ${DHCP_OPTIONS} ${1}
+
+后添加 & ,即
+
+   echo "/etc/rc.d/rc.inet1:  /sbin/dhcpcd -d -t 60 ${DHCP_OPTIONS} ${1}" | $LOGGER
+
+   /sbin/dhcpcd -d -t 60 ${DHCP_OPTIONS} ${1} &
+
+即通过后台来运行，而不是等待运行完这个程序后再启动别的程序，并行执行。
+
+================================================================================
+1000. scim
+1000.1 制作scim词库
+相关命令：scim-make-table wubi98-scim.txt -b -o wubi98-scim.bin
+Note: wubi98-scim.txt文件作为文本文件来编辑。
+
+1000.2 scim与vim
+在vim中使用scim时，按Esc键回来normal状态后，scim无法自动退出或切换到英文状态。
+解决方法：
+直接编辑：~/.scim/config文件，加入：/Hotkeys/FrontEnd/Off = Escape+KeyRelease
+Note 用此方法编辑配置文件config后，不能使用正常退出的方法重启scim，应该选强制关闭后再重启scim。
+
+1000.3 使用shift键进行中英文切换
+在码表中加入以下三行：
+MODE_SWITCH_KEYS = Shift+KeyRelease+Shift_L,Shift+KeyRelease+Shift_R
+FULL_WIDTH_PUNCT_KEYS = Control+period
+FULL_WIDTH_LETTER_KEYS = Shift+space
+Note 在与vim兼容的时候，不能使用Esc键作为切换中英的热键。因为按两次Esc键在normal状态，但输入法会在中文状态下。
+
+1000.4 scim和urxvt
+使rxvt-unicode能够使用scim进行中文输入，需要在~/.xinitrc文件中加入以下六行：
+export LANG=zh_CN.utf-8
+export LC_CTYPE=zh_CN.utf-8
+export ALL=zh_CN.utf-8
+export XMODIFIERS=@im=SCIM
+export GTK_IM_MODULE=scim
+export QT_IM_MODULE=scim
+
+1000.5 scim用户词表
+scim添加用户词组：清空缓存区，输入要创建的词组，按下Ctrl+a，输入五笔代码。
+scim用户词表放在 ~/.scim/sys-tables/wubi98-scim.bin.user 中。
+目录使用ctrl+d和ctrl+-无法删除用户词组，只有编辑用户词表。
+设置scim时，去掉“以二进制格式保存用户码表”前的钩，这样用户词表就会以文本格式保存，便于修改。
+
+1000.6 在英文界面使用中文输入法（scim）
+1)修改etc/gtk-2.0/i386-redhat-linux-gnu/gtk.immodules文件
+在 "xim" "X Input Method" "gtk20" "/usr/share/locale" "ko:ja:th:zh" 中添加 en；
+修改后 "xim" "X Input Method" "gtk20" "/usr/share/locale" "en:ko:ja:th:zh"
+2)修改 /etc/X11/xinit/xinitrc.d/xinput.sh文件
+在 _language_list="as bn gu hi ja kn ko ml mr ne or pa si ta te th ur vi zh" 中添加 en；
+修改后 _language_list="en as bn gu hi ja kn ko ml mr ne or pa si ta te th ur vi zh"
+
+1000.7
+    五笔缺省是关闭自动调频的。大多数五笔用户都不喜欢这个功能。如果你需要这个功
+能，可以用 scim-setup 来修改五笔码表的参数。用root登录，运行 scim-setup 然后点
+通用码表设置，码表管理，找到五笔字型，点击属性，把动态调整变成真然后确定就行了。
+    关于增加新词，五笔字型支持手工加词，首先输入一遍新词，然后按 ctrl+a 键，会
+出来一个提示要求输入新词对应的键，输入相应的五笔编码就可以了。如果发现提示的新
+词不是你要加的词，用 Esc 键复位然后重新输入就可以了。
+
+================================================================================
+1001. urxvt
+1001.1 在urxvt中实现复制粘贴
+在vi模式下，鼠标左键选择，中键粘贴。如果没有中键，则使用shift+insert进行粘贴。
+
+1001.2 在urxvt中按下键Alt+v
+调用vi进行命令编辑，保存退出后直接执行该命令。
+并将文件保存在/tmp下，命名为：bash-fc-*
+Note: 
+1)该方法不能将vi链接或alias为gvim，意思是要用vim才行。
+2)该方法只有在bash的vi模式下使用，emacs没有作用。
+
+================================================================================
+1002. Gfont-Viewer
+X下的字体查看工具
+
+================================================================================
+1003. screen
+1003.1 screen在256色的urxvt上使用时出错
+出错信息为：$TERM too long - sorry
+解决方法：
+在bash中加入： export TERM="screen-256color"
+1003.2 screen状态栏动态显示当前文件夹
+在~/.bashrc中加入以下内容：
++++#screen and xterm's dynamic title
++++case $TERM in
++++#    rxvt*)
++++#        # Set xterm's title
++++#        TITLEBAR='\[\e]0;\u@\h:\w\a\]'
++++#        PS1="${PS1}"
++++#        ;;
++++    screen*)
++++        # Use path as title
++++        PATHTITLE='\[\ek\W\e\\\]'
++++        # Use program name as title
++++        PROGRAMTITLE='\[\ek\e\\\]'
++++        PS1="${PROGRAMTITLE}${PATHTITLE}${PS1}"
++++        ;;
++++    *)
++++        ;;
++++esac
+
+================================================================================
+1004. vim
+1004.1 vim之C语言操作符和函数高亮
+在c.vim方法文件中加入以下内容：
++++" highlight Functions
++++syn match cFuntions display "[a-zA-Z0-9_]\{-1,}\s\{-0,}(\{1}"ms=s,me=e-1
++++hi def link cFuntions Title
++++
++++" Highlight All Math Operator
++++" C math operators
++++" syn match cMathOperator display "[-+*%=]"
++++syn match cMathOperator display "[-+*%=]"
++++" C pointer operators
++++syn match cPointerOperator display "->\|\.\|,\|?\|:"
++++" C logical operators - boolean results
++++syn match cLogicalOperator display "[!<>]=\="
++++syn match cLogicalOperator display "=="
++++" C bit operators
++++syn match cBinaryOperator display "\(&\||\|\^\|<<\|>>\|/=\)=\="
++++syn match cBinaryOperator display "\~"
++++syn match cBinaryOperatorError display "\~="
++++" More C logical operators - highlight in preference to binary
++++syn match cLogicalOperator display "&&\|||"
++++syn match cLogicalOperatorError display "\(&&\|||\)="
++++
++++" Math Operator
++++hi cMathOperator guifg=#3EFFE2
++++hi cPointerOperator guifg=#3EFFE2
++++hi cLogicalOperator guifg=#3EFFE2
++++hi cBinaryOperator guifg=#3EFFE2
++++hi cBinaryOperatorError guifg=#3EFFE2
++++hi cLogicalOperator guifg=#3EFFE2
++++hi cLogicalOperatorError guifg=#3EFFE2
++++" hi def link cMathOperator Comment
++++" hi def link cPointerOperator Comment
++++" hi def link cLogicalOperator Comment
++++" hi def link cBinaryOperator Comment
++++" hi def link cBinaryOperatorError Comment
++++" hi def link cLogicalOperator Comment
++++" hi def link cLogicalOperatorError Comment
+
+1004.2 启动gvim时使用参数 -p 和 -d
+当两个参数一起使用时，将使用标签显示两个本来要比较异同的两个文件。
+
+1004.3 奇怪
+    在文件 liu.c 中执行将 // 改变成 /* */ 的宏定义时，速度明显比在文件 liu.txt
+中执行相同操作要慢很多。难道是因为扩展名的问题。它要加载些syntax脚本？
+
+可能原因：
+1)自动加载的语法文件。这种情况请使用 largefile.vim 插件。
+2)主要原因是在.vimrc中设置了c语言相关文件在退出插入模式时，自动保存，这样也是要代价的。(注释掉相关语句后，两者速度一样了。)
+
+================================================================================
+1005. dwm
+1005.1 dwm-xft
+下载地址：https://bitbucket.org/nkoizu/dwm-xft/downloads
+1005.2 config.h
+1)该行是在主窗口区显示的窗口数，如果为2，则在左边会有两个窗口。
+static const int nmaster      = 2;    /* number of clients in master area */
+1)该行是新窗口占整个屏幕的比例。
+static const float mfact      = 0.95; /* factor of master area size [0.05..0.95] */
+1005.3 字体设置
+dwm不支持truetype字体,所以fc-list列出的字体不能用，用 xlsfonts。
+1005.4 在不登出和退出程序程序的情况下重启dwm
+如果你要在在线重启dwm（不关闭它以及其他应用程序），修改启动脚本，并让dwm在一个while循环中运行，像这样：
+
+while true; do
+    # Log stderror to a file 
+    dwm 2> ~/.dwm.log
+    # No error logging
+    #dwm >/dev/null 2>&1
+done
+
+这样就可以用Mod-Shift-Q快捷键来实现重启。
+把上边的内容写到一个其他的文件（例如~/bin/startdwm）是一个好主意。然后在
+~/.xinitrc 文件里添加（exec startdwm）。这样我们可以使用 killall startdwm 来真
+正地退出X会话，或者绑定到一个方便的快捷键上。
+
+================================================================================
+1006. slapt-get
+1006.1 以下镜像可以使用：
+http://mirrors.163.com/slackware/slackware-14.0/
+Note: 在slapt-getrc中不能使用本地文件，否则无法使用slapt-get
+
+================================================================================
+1007. google-chrome
+1)设置google-chrome为默认浏览器
+修改/usr/bin/xdg-open文件，加入：
+BROWSER=google-chrome:$BROWSER
+
+================================================================================
+1008. pppoe
+1008.1 四川省电信DNS服务器:
+1)61.139.2.69
+2)218.6.200.139
+1008.2 pppoe设置
+eth0="dhcp"
+INTERFACES=(eth0)
+pppoe-setup
+pppoe-start
+1008.3 rp-pppoe软件升级
+rp-pppoe软件升级后，需要重新设置，才能连通网络，既再次pppoe-setup
+
+================================================================================
+1009. bash-completion
+在slackware 14.0安装盘的extra目录中，有该包。
+使用方法为，在~/.bashrc中加入以下内容：
+# Try to enable the auto-completion.
+[ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
+
+================================================================================
+1010. rpm2t*z
+slackware中提供了将rpm转化成slackware包的程序，可以将rpm包转化成t*z包。
+
+================================================================================
+1000000. xlsfonts
+xlsfonts - server font list displayer for X
+使用xlsfonts可以查看安装的字体。
+
+================================================================================
+1000001. sensors查看cpu温度
+
+================================================================================
+1000002  
+slackware中，默认开启console-kit-daemon服务，网上查得，该服务是用于”用户快速切换“的，因此，将其停止：
+$ sudo chmod -x /etc/rc.d/rc.consolekit
+
+================================================================================
+1000003  chrome专用应用密匙
+qndfhgdxqzbcakqi
+
+================================================================================
+1000004  slackware 安装Windows字体。
+将Windows字体sim*.*字体拷贝到目录 /usr/share/fonts/TrueType，
+然后在该目录下依次执行命令：
+mkfontscale
+mkfontdir
+fc-cache -f
+修改文件/etc/fonts/fonts.conf，加入下面一行：
+<dir>/usr/share/fonts/TrueType</dir>
+重启dwm即可。
+
+
+================================================================================
+9999999999. linux命令备忘
+
+9999999999.1 从 windows 分区复制过来的文件为可执行文件 需要将其改为普通文件
+find ./ -type f -exec chmod 0644 {} \;
+
+9999999999.2
+使crontab的默认编辑器为vi
+EDITOR=vi
+export EDITOR
+
+================================================================================
+改变slackware屏幕分辨率：
+cp /etc/X11/xorg.conf-vesa /etc/X11/xorg.conf
+找到分辨率所在行，改为实际屏幕分辨率。
+
+
+================================================================================
+rarily solve with version 28 just edit the file
+/opt/google/chrome/google-chrome
+and change the line before the command
+exec-a "$ 0" "$ HERE / chrome" "$ @"
+
+================================================================================
+解压tar.xz
+xz -d *.tar.xz
+tar xvf *.tar
+
+================================================================================
+compat-wireless-3.6.8-1-snpc.tar.bz2
+tar jxvf compat-wireless-3.6.8-1-snpc.tar.bz2
+cd compat-wireless-3.6.8-1-snpc
+./scripts/driver-select alx
+make install
+modprobe alx
+
+error:implicit declaration of function ‘__netdev_printk’
+
+//__netdev_printk(level, hw->adpt->netdev, &vaf);
+printk("%salx_hw: %pV", level, &vaf);
+
+================================================================================
+
+slackware 14.0安装vmware出错并自动卸载。
+./VMware-Workstation-9.0.2-1031769.i386.bundle --console --ignore-errors
+详情请见：http://www.linuxsir.org/bbs/thread385167.html
+
+================================================================================
+
+vim:ts=8:ft=txt:noma:
+
+
+1. 使用ports安装软件
+
+如果/etc目录下没有文件make.conf，则复制过来：
+cp /usr/share/examples/etc/make.conf /etc/make.conf
+
+在make.conf文件追加两行：（必须写成两行）
+MASTER_SITE_BACKUP?=http://ports.hshh.org/${DIST_SUBDIR}/
+MASTER_SITE_OVERRIDE?=${MASTER_SITE_BACKUP}
+
+freebsd配置过程:
+配置/etc/make.conf
+安装axel
+
+安装xorg-minimal
+安装dwm dmenu
+
+鼠标不动的情况：在/etc/rc.conf中加入下面两行：
+hald_enable="YES"
+dbus_enable="YES"
+需要重启OS
+
+安装rxvt-unicode
+
+安装bash
+配置bash
+chsh -s /usr/local/bin/bash root
+
+安装vim
+安装mplayer
+安装firefox
+安装feh
+
+freebsd 10 beta 3
+pkg install vim
+/var/cache/pkg/All/* txz包所存放地方。
+
+
+vim
+bash
+git
+dwm
+dmenu
+bash
+xorg
+firefox
+scim
+
+note : ping www.baidu.com出现Host name lookup failure.
+在/etc/resolv.conf中加入:nameserver 8.8.8.8
+
+1. Changing Console Video Modes (HandBook 4.2.3)
+kldload vesa
+vidcontrol -i mode
+vidcontrol MODE_332
+
+Note : or add into /etc/rc.conf under line.
+	allscreens_flags="MODE_279"
+
+2. Default editor for many applications to automatically open a text editor.
+	$ export EDITOR=/usr/local/bin/vim
+or add it into $HOME/.bashrc
+
+3. Boot messages are saved to /var/run/dmesg.boot
+
+4. xxx
+
+
+
+wget -c -r -np ftp://name:pw@server/dir/
+http://mirror.switch.ch/ftp/mirror/
+
+
+生成xorg.conf文件：Xorg -configure
+测试xorg.conf文件：Xorg -config xorg.conf
+
+FreeBSD10.3 安装 Inconsolata.otf 字体：
+将字体复制到目录： /usr/local/share/fonts/OTF/
+
+FreeBSD10.3 汉化：
+安装 xorg-fonts，在.xinitrc中设置 export LC_CTYPE=zh_CN.UTF-8
+
+FreeBSD10.3 开机加速：
+/boot/defaults/loader.conf 中 
+autoboot_delay="1" 设置启动等待时间
+beastie_disable="YES" 关闭小恶魔图像启动菜单
+Note : autoboot_delay 不能设置为 0
+       设置为0时，则需要手动按空格键才能继续加载系统。
+
+
+virtualbox与主机通信：
+主机上的virtualbox 对应网卡为host-only
+virtualbox上开一个网卡，设置为host-only
+后将两个系统的IP设置为同一网段就可以了
+
+
+
+ssh相关：
+1，通过xshell ssh登录无法输入密码，需要在 /etc/ssh/sshd_config中启用 PasswordAuthentication yes
+2，通过 xshell ssh登录无法加载 ~/.bashrc，需要添加 ~/.bash_profile 文件，在其中显示执行 ~/.bashrc文件。
+
+
+unknown terminal type:
+export TERM=linux

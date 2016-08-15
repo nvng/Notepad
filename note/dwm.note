@@ -1,0 +1,9 @@
+1.主题颜色
+static const char normbordercolor[] = "#363636";
+static const char normbgcolor[]     = "#363636";
+static const char normfgcolor[]     = "#bbbbbb";
+static const char selbordercolor[]  = "#363636";
+static const char selbgcolor[]      = "#363636";
+static const char selfgcolor[]      = "#eeeeee"
+
+2.鼠标移动时，自动获得焦点问题，将enternotify相关函数注释掉。

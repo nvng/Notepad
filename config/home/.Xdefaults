@@ -1,0 +1,18 @@
+! Inconsolata
+! URxvt.font:xft:Inconsolata:style=Medium:size=13
+! URxvt.font:-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1
+URxvt.font:xft:DejaVu Sans mono:size=12
+
+! urxvt.depth: 32
+URxvt.background: [100]black
+! URxvt.foreground: green
+URxvt.foreground: white
+URxvt.scrollBar: false
+
+
+! for transparency
+URxvt.transparent: true
+URxvt.shading: 10
+
+! 加快urxvtc启动速度。
+URxvt.preeditType: Root
