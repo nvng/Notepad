@@ -212,4 +212,6 @@ endfunction
 " :'a,'bg/^/m'b         Reverse a section a to b
 " :g/^/t.               duplicate every line
 
+" Ctrl-s 卡死           ctrl-s 在 LINUX 里是锁定屏幕的快捷键，解锁 ctrl-q
+
 " vim: set enc=utf8
