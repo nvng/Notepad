@@ -1,4 +1,24 @@
 1、使用vimdiff来查看更改。
-git config --global diff.tool vimdiff
-git config --global difftool.prompt false
-git config --global alias.d difftool
+        git config --global diff.tool vimdiff
+        git config --global difftool.prompt false
+        git config --global alias.d difftool
+
+2、回滚
+git checkout
+        1) git checkout file
+        2) git checkout file1 file2 ... fileN
+        3) git checkout . （直接回滚当前目录一下的所有working tree内的修改，会递归扫描当前目录下的所有子目录）
+
+git reset (还没懂什么意思)
+
+commit 之后的回滚
+        1)
+
+3、git show 显示信息乱（如 : ESC[32m+ESC[mESC）
+        export LESS="-erX"
+
+4、git show-branch
+        git log --pretty=oneline # 以一行显示提交日志
+        git log -4               # 显示最后的几次提交日志
+        git log --graph          # 以界面的形式显示提交日志
+        git show-branch          # 还没弄懂
