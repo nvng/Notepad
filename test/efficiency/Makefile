@@ -1,6 +1,6 @@
 CC	= ccache g++
 
-CC_FLAG	= -g -std=c++11 -Wall -Werror
+CC_FLAG	= -g -std=c++11 -Wall -Werror -O2
 
 INC	= -I../../share \
 	  -I../

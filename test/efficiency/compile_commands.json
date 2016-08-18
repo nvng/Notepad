@@ -1,17 +1,37 @@
 [
     {
-        "command": "c++ -c -g -std=c++11 -Wall -Werror -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o map_vs_unordered_map /home/lsw/git/Notepad/test/efficiency/map_vs_unordered_map.cc", 
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o new_vs_pool /home/lsw/git/Notepad/test/efficiency/new_vs_pool.cc", 
+        "directory": "/home/lsw/git/Notepad/test/efficiency", 
+        "file": "/home/lsw/git/Notepad/test/efficiency/new_vs_pool.cc"
+    }, 
+    {
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o time_vs_just_get /home/lsw/git/Notepad/test/efficiency/time_vs_just_get.cc", 
+        "directory": "/home/lsw/git/Notepad/test/efficiency", 
+        "file": "/home/lsw/git/Notepad/test/efficiency/time_vs_just_get.cc"
+    }, 
+    {
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o map_vs_unordered_map /home/lsw/git/Notepad/test/efficiency/map_vs_unordered_map.cc", 
         "directory": "/home/lsw/git/Notepad/test/efficiency", 
         "file": "/home/lsw/git/Notepad/test/efficiency/map_vs_unordered_map.cc"
     }, 
     {
-        "command": "c++ -c -g -std=c++11 -Wall -Werror -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o array_vs_unordered_map /home/lsw/git/Notepad/test/efficiency/array_vs_unordered_map.cc", 
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o array_vs_unordered_map /home/lsw/git/Notepad/test/efficiency/array_vs_unordered_map.cc", 
         "directory": "/home/lsw/git/Notepad/test/efficiency", 
         "file": "/home/lsw/git/Notepad/test/efficiency/array_vs_unordered_map.cc"
     }, 
     {
-        "command": "c++ -c -g -std=c++11 -Wall -Werror -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o set_vs_unordered_set /home/lsw/git/Notepad/test/efficiency/set_vs_unordered_set.cc", 
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o set_vs_unordered_set /home/lsw/git/Notepad/test/efficiency/set_vs_unordered_set.cc", 
         "directory": "/home/lsw/git/Notepad/test/efficiency", 
         "file": "/home/lsw/git/Notepad/test/efficiency/set_vs_unordered_set.cc"
+    }, 
+    {
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o time_vs_cclock /home/lsw/git/Notepad/test/efficiency/time_vs_cclock.cc", 
+        "directory": "/home/lsw/git/Notepad/test/efficiency", 
+        "file": "/home/lsw/git/Notepad/test/efficiency/time_vs_cclock.cc"
+    }, 
+    {
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o array_vs_vector /home/lsw/git/Notepad/test/efficiency/array_vs_vector.cc", 
+        "directory": "/home/lsw/git/Notepad/test/efficiency", 
+        "file": "/home/lsw/git/Notepad/test/efficiency/array_vs_vector.cc"
     }
 ]
