@@ -1,4 +1,7 @@
-/* file : set_vs_unordered_set.cc --> set 和 unordered_set 效率对比 */
+/* file : set_vs_unordered_set.cc --> set 和 unordered_set 效率对比
+ * result : insert 2.5倍 find 9倍 traversal 1.5倍 erase 5倍 
+ * desc : unordered_set 无序的，使用的是 hash table. set 为树
+ */
 
 #include "pre_compiled.h"
 
@@ -15,9 +18,9 @@ void testSet(T obj, std::vector<int32_t>& randList)
                 obj.find(val);
         PRINT_TIME_COST(search);
 
-        begin = CClock::GetMicroTimeStampNow();
         uint64_t tmp = 0;
         (void)tmp;
+        begin = CClock::GetMicroTimeStampNow();
         for (typename T::value_type val : obj)
                 tmp = val;
         PRINT_TIME_COST(traversal);

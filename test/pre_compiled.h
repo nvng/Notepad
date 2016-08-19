@@ -10,9 +10,14 @@
 #include <cstdio>
 #include <cstring>
 
+#include <unistd.h>
+
 #include "Clock.hpp"
 
 #define PRINT_TIME_COST(op) \
-        printf(#op " cost\t= %lf seconds\n", (CClock::GetMicroTimeStampNow() - begin)/(1000.0*1000.0))
+        do { \
+        double diff = (CClock::GetMicroTimeStampNow() - begin) / (1000.0 * 1000.0); \
+        printf(#op " cost\t= %lf seconds\n", diff); \
+        } while (0)
 
 #endif // __PRE_COMPILED_H__

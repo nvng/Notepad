@@ -1,4 +1,7 @@
-/* file : map_vs_unordered_map.cc --> map 和 unordered_map 效率对比 */
+/* file : map_vs_unordered_map.cc --> map 和 unordered_map 效率对比
+ * result : insert 2倍 search 9倍 traversal 1.5倍 erase 2.5倍
+ * desc : unordered_map 虽然查找效率高，但它是无序的。需要有序的，如超时容器，那还得 map。
+ */
 
 #include "pre_compiled.h"
 
@@ -15,9 +18,9 @@ void testMap(T obj, std::vector<int32_t>& randList)
                 obj.find(val);
         PRINT_TIME_COST(search);
 
-        begin = CClock::GetMicroTimeStampNow();
         uint64_t tmp = 0;
         (void)tmp;
+        begin = CClock::GetMicroTimeStampNow();
         for (typename T::value_type& val : obj)
                 tmp = val.second;
         PRINT_TIME_COST(traversal);

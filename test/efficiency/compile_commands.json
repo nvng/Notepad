@@ -5,6 +5,11 @@
         "file": "/home/lsw/git/Notepad/test/efficiency/new_vs_pool.cc"
     }, 
     {
+        "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o time_vs_clock /home/lsw/git/Notepad/test/efficiency/time_vs_clock.cc", 
+        "directory": "/home/lsw/git/Notepad/test/efficiency", 
+        "file": "/home/lsw/git/Notepad/test/efficiency/time_vs_clock.cc"
+    }, 
+    {
         "command": "c++ -c -g -std=c++11 -Wall -Werror -O2 -I/home/lsw/git/Notepad/share -I/home/lsw/git/Notepad/test -o time_vs_just_get /home/lsw/git/Notepad/test/efficiency/time_vs_just_get.cc", 
         "directory": "/home/lsw/git/Notepad/test/efficiency", 
         "file": "/home/lsw/git/Notepad/test/efficiency/time_vs_just_get.cc"
