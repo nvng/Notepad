@@ -7,46 +7,53 @@
 int main(void)
 {
         printf("========== time =========\n");
-        uint64_t begin = CClock::GetMicroTimeStampNow();
         uint64_t now = 0;
+        {
+                CTimeCost t("time");
         for (int32_t i=0; i<MAX_SIZE; ++i)
                 now = time(NULL);
-        PRINT_TIME_COST(time);
+        }
         (void)now;
 
         printf("========== CClock second =========\n");
-        begin = CClock::GetMicroTimeStampNow();
         CClock::UpdateTime();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                now = CClock::GetTimeStamp();
-        PRINT_TIME_COST(CClock_second);
+        {
+                CTimeCost t("cclock_second");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        now = CClock::GetTimeStamp();
+        }
         (void)now;
 
         printf("========== CClock nanosecond =========\n");
-        begin = CClock::GetMicroTimeStampNow();
         CClock::UpdateTime();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                now = CClock::GetNanoseconds();
-        PRINT_TIME_COST(CClock_nanosecond);
+        {
+                CTimeCost t("CClock_nanosecond");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        now = CClock::GetNanoseconds();
+        }
         (void)now;
 
         // so slow
+        /*
         printf("========== CClock now =========\n");
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                now = CClock::GetTimeStampNow();
-        PRINT_TIME_COST(CClock_now);
+        {
+                CTimeCost t("cclock_now");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        now = CClock::GetTimeStampNow();
+        }
         (void)now;
+        */
 
         printf("========== CClock string =========\n");
-        begin = CClock::GetMicroTimeStampNow();
         CClock::UpdateTime();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
         {
-                const char* nowStr = CClock::GetTimeToString();
-                (void)nowStr;
+                CTimeCost t("CClock_string");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                {
+                        std::string nowStr = CClock::GetTimeToString();
+                        (void)nowStr;
+                }
         }
-        PRINT_TIME_COST(CClock_string);
         (void)now;
 
         /*

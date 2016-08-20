@@ -8,27 +8,31 @@
 template <typename T>
 void testMap(T obj, std::vector<int32_t>& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.insert(std::make_pair(val, val));
-        PRINT_TIME_COST(insert);
+        {
+                CTimeCost t("insert");
+                for (int32_t val : randList)
+                        obj.insert(std::make_pair(val, val));
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.find(val);
-        PRINT_TIME_COST(search);
+        {
+                CTimeCost t("search");
+                for (int32_t val : randList)
+                        obj.find(val);
+        }
 
         uint64_t tmp = 0;
         (void)tmp;
-        begin = CClock::GetMicroTimeStampNow();
-        for (typename T::value_type& val : obj)
-                tmp = val.second;
-        PRINT_TIME_COST(traversal);
+        {
+                CTimeCost t("traversal");
+                for (typename T::value_type& val : obj)
+                        tmp = val.second;
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.erase(val);
-        PRINT_TIME_COST(erase);
+        {
+                CTimeCost t("erase");
+                for (int32_t val : randList)
+                        obj.erase(val);
+        }
 }
 
 int main(void)

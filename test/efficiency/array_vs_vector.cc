@@ -12,42 +12,46 @@ typedef std::vector<int64_t> IntListType;
 
 void arrayOperation(IntListType& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        int32_t* array = new int32_t[MAX_SIZE];
-        for (int32_t i=0; i<MAX_SIZE; ++i)
+        int32_t* array = nullptr;
+        {
+                CTimeCost t("array_create");
+                array = new int32_t[MAX_SIZE];
+                for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
-                array[randList[i]] = 0;
+                        array[randList[i]] = 0;
 #else
-                array[i] = 0;
+                        array[i] = 0;
 #endif
-        PRINT_TIME_COST(array_create);
+        }
 
         int32_t tmp = 0;
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
+        {
+                CTimeCost t("array_find");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
-                tmp = array[randList[i]];
+                        tmp = array[randList[i]];
 #else
-                tmp = array[i];
+                        tmp = array[i];
 #endif
-        PRINT_TIME_COST(array_find);
+        }
         (void)tmp;
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
+        {
+                CTimeCost t("array_erase");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
-                array[randList[i]] = 0;
+                        array[randList[i]] = 0;
 #else
-                array[i] = 0;
+                        array[i] = 0;
 #endif
-        PRINT_TIME_COST(array_erase);
+        }
 
         delete[] array;
 }
 
 void vectorOperation(IntListType& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
+        CTimeCost* tmpT = new CTimeCost("vector_create");
         std::vector<void*> pointerList(MAX_SIZE, NULL);
         for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
@@ -55,27 +59,29 @@ void vectorOperation(IntListType& randList)
 #else
                 pointerList[i] = NULL;
 #endif
-        PRINT_TIME_COST(vector_create);
+        delete tmpT;
 
         void* tmp = nullptr;
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
+        {
+                CTimeCost t("vector_find");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
-                tmp = pointerList[randList[i]];
+                        tmp = pointerList[randList[i]];
 #else
-                tmp = pointerList[i];
+                        tmp = pointerList[i];
 #endif
-        PRINT_TIME_COST(vector_find);
+        }
         (void)tmp;
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
+        {
+                CTimeCost t("vector_erase");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
 #ifdef USE_RAND_LIST
-                pointerList[randList[i]] = NULL;
+                        pointerList[randList[i]] = NULL;
 #else
-                pointerList[i] = NULL;
+                        pointerList[i] = NULL;
 #endif
-        PRINT_TIME_COST(vector_erase);
+        }
 }
 
 int main(void)

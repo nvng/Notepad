@@ -8,27 +8,31 @@
 template <typename T>
 void testSet(T obj, std::vector<int32_t>& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.insert(val);
-        PRINT_TIME_COST(insert);
+        {
+                CTimeCost t("insert");
+                for (int32_t val : randList)
+                        obj.insert(val);
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.find(val);
-        PRINT_TIME_COST(search);
+        {
+                CTimeCost t("find");
+                for (int32_t val : randList)
+                        obj.find(val);
+        }
 
         uint64_t tmp = 0;
         (void)tmp;
-        begin = CClock::GetMicroTimeStampNow();
-        for (typename T::value_type val : obj)
-                tmp = val;
-        PRINT_TIME_COST(traversal);
+        {
+                CTimeCost t("traversal");
+                for (typename T::value_type val : obj)
+                        tmp = val;
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t val : randList)
-                obj.erase(val);
-        PRINT_TIME_COST(erase);
+        {
+                CTimeCost t("erase");
+                for (int32_t val : randList)
+                        obj.erase(val);
+        }
 }
 
 int main(void)
@@ -37,12 +41,13 @@ int main(void)
 
         std::vector<int32_t> gRandList;
         const int32_t times = 1000 * 1000 * 10;
+        // const int32_t times = 1000 * 100;
         for (int32_t i=0; i<times; ++i)
                 gRandList.push_back(rand());
 
-        printf("========== unordered_set ==========\n");
+        printf("=============== unordered_set ===============\n");
         testSet(std::unordered_set<uint64_t>(), gRandList);
-        printf("========== set ==========\n");
+        printf("==================== set ====================\n");
         testSet(std::set<uint64_t>(), gRandList);
 
         return 0;

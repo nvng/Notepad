@@ -57,26 +57,26 @@ int32_t CPool::pos = 0;
 int main(void)
 {
         char* buff = nullptr;
-        printf("========== new ==========\n");
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
         {
-                buff = new char[BUFF_SIZE];
-                // memset(buff, 0x00, BUFF_SIZE);
-                delete buff;
+                CTimeCost t("new");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                {
+                        buff = new char[BUFF_SIZE];
+                        // memset(buff, 0x00, BUFF_SIZE);
+                        delete buff;
+                }
         }
-        PRINT_TIME_COST(new);
 
         CPool::Init();
-        printf("========== pool ==========\n");
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
         {
-                char* buff = CPool::Get();
-                CPool::push(buff);
-                // memset(buff, 0x00, BUFF_SIZE);
+                CTimeCost t("pool");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                {
+                        char* buff = CPool::Get();
+                        CPool::push(buff);
+                        // memset(buff, 0x00, BUFF_SIZE);
+                }
         }
-        PRINT_TIME_COST(pool);
         (void)buff;
 
         return 0;

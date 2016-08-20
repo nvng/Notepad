@@ -9,43 +9,49 @@
 
 void arrayOperation(std::vector<int32_t>& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        int32_t* array = new int32_t[MAX_SIZE];
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                array[randList[i]] = i;
-        PRINT_TIME_COST(array_create);
+        int32_t* array = nullptr;
+        {
+                CTimeCost t("create");
+                array = new int32_t[MAX_SIZE];
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        array[randList[i]] = i;
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
         int32_t tmp = 0;
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                tmp = array[randList[i]];
+        {
+                CTimeCost t("array_find");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        tmp = array[randList[i]];
+        }
         (void)tmp;
-        PRINT_TIME_COST(array_find);
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                array[randList[i]] = 0;
-        PRINT_TIME_COST(array_erase);
+        {
+                CTimeCost t("array erase");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        array[randList[i]] = 0;
+        }
 }
 
 void unorderedMapOperation(std::vector<int32_t>& randList)
 {
-        uint64_t begin = CClock::GetMicroTimeStampNow();
+        CTimeCost* tmpT = new CTimeCost("unordered_map_create");
         std::unordered_map<int32_t, int32_t*> dataList;
         for (int32_t i=0; i<MAX_SIZE; ++i)
                 dataList.insert(std::make_pair(randList[i], (int32_t*)NULL));
-        PRINT_TIME_COST(unordered_map_create);
+        delete tmpT;
 
         std::unordered_map<int32_t, int32_t*>::iterator it;
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                it = dataList.find(randList[i]);
-        PRINT_TIME_COST(unordered_map_find);
+        {
+                CTimeCost t("unordered_map_find");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        it = dataList.find(randList[i]);
+        }
 
-        begin = CClock::GetMicroTimeStampNow();
-        for (int32_t i=0; i<MAX_SIZE; ++i)
-                dataList.erase(randList[i]);
-        PRINT_TIME_COST(unordered_map_erase);
+        {
+                CTimeCost t("unordered_map_erase");
+                for (int32_t i=0; i<MAX_SIZE; ++i)
+                        dataList.erase(randList[i]);
+        }
 }
 
 int main(void)

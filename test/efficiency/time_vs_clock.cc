@@ -11,11 +11,11 @@
 
 int main(void)
 {
-        printf("========== time ==========\n");
-        uint64_t begin = CClock::GetMicroTimeStampNow();
-        for (int i=0; i<MAX_COUNT; ++i)
-                time(NULL);
-        PRINT_TIME_COST(time);
+        {
+                CTimeCost t("time");
+                for (int i=0; i<MAX_COUNT; ++i)
+                        time(NULL);
+        }
 
         // time 获取的是真实时间
         time_t now = time(NULL);
@@ -23,11 +23,11 @@ int main(void)
         time_t diff1 = time(NULL) - now;
         printf("time_sleep cost = %ld\n", diff1);
 
-        printf("========== clock ==========\n");
-        begin = CClock::GetMicroTimeStampNow();
-        for (int i=0; i<MAX_COUNT; ++i)
-                clock();
-        PRINT_TIME_COST(clock);
+        {
+                CTimeCost t("clock");
+                for (int i=0; i<MAX_COUNT; ++i)
+                        clock();
+        }
 
         // clock 获取的是占用 CPU 时间
         clock_t b = clock();
