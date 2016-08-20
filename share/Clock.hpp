@@ -7,11 +7,21 @@
 
 using namespace std::chrono;
 
+class CTimeCost;
 class CClock
 {
+private :
+        CClock();
+        CClock(const CClock&);
+        const CClock& operator=(const CClock&);
+        ~CClock();
 public :
         static inline void UpdateTime()
-        { sNanosecondsNow = duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count(); }
+        {
+                sNanosecondsNow = duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count();
+                time_t now = GetTimeStamp();
+                sTimeStampString = ctime(&now);
+        }
 
         static inline uint64_t GetTimeStamp()
         { return sNanosecondsNow / (1000 * 1000); }
@@ -19,14 +29,17 @@ public :
         static inline uint64_t GetMicroTimeStamp()
         { return sNanosecondsNow / 1000; }
 
-        static inline const char* GetTimeToString()
-        {
-                time_t now = GetTimeStamp();
-                return std::ctime(&now);
-        }
+        static inline const std::string& GetTimeToString()
+        { return sTimeStampString; }
+
+        static inline const std::string GetTimeToString(uint64_t t)
+        { return std::ctime((time_t*)&t); }
 
         static inline uint64_t GetNanoseconds()
         { return sNanosecondsNow; }
+
+private :
+        friend class CTimeCost;
 
         static inline uint64_t GetTimeStampNow()
         { return duration_cast<seconds>(system_clock::now().time_since_epoch()).count(); }
@@ -37,7 +50,7 @@ public :
         static inline uint64_t GetNanosecondsNow()
         { return duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count(); }
 
-        static inline const char* GetTimeToStringNow()
+        static inline const std::string GetTimeToStringNow()
         {
                 time_t now = GetTimeStampNow();
                 return std::ctime(&now);
@@ -45,7 +58,28 @@ public :
 
 private :
         static uint64_t sNanosecondsNow;
+        static std::string sTimeStampString;
 };
 uint64_t CClock::sNanosecondsNow = 0llu;
+std::string CClock::sTimeStampString;
+
+class CTimeCost
+{
+public :
+        CTimeCost(std::string prefix="", double sec=.0)
+                : mPrefix(prefix), mInterval(sec)
+        { mBeginTime = CClock::GetMicroTimeStampNow(); }
+
+        ~CTimeCost()
+        {
+                double diff = (CClock::GetMicroTimeStampNow() - mBeginTime) / (1000.0 * 1000.0);
+                if (diff >= mInterval)
+                        printf("%20s cost %lf seconds\n", mPrefix.c_str(), diff);
+        }
+private :
+        uint64_t mBeginTime;
+        std::string mPrefix;
+        double   mInterval;
+};
 
 #endif // __CLOCK_HPP__
