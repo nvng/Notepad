@@ -27,6 +27,7 @@ Plugin 'xaizek/vim-inccomplete'
 " Plugin 'dschwen/switch-header-source'
 " Plugin 'po1/vim-pycmake'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'vim-scripts/VisIncr'
 call vundle#end()
 
 syntax enable
@@ -213,5 +214,9 @@ endfunction
 " :g/^/t.               duplicate every line
 
 " Ctrl-s 卡死           ctrl-s 在 LINUX 里是锁定屏幕的快捷键，解锁 ctrl-q
+
+" 生成连续数字
+"       ctrl-a          自己录宏，使用该命令递增
+"       :let i=0 | g/zcc/s//\=i/ | let i=i+1  插入这样递增数列的地方插入一个全文不会重复出现的字母序列zcc，然后输入该命令
 
 " vim: set enc=utf8
