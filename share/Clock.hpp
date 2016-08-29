@@ -4,6 +4,7 @@
 #include <chrono>
 #include <string>
 #include <ctime>
+#include "NonCopyable.hpp"
 
 using namespace std::chrono;
 
@@ -11,10 +12,8 @@ class CTimeCost;
 class CClock
 {
 private :
-        CClock();
-        CClock(const CClock&);
-        const CClock& operator=(const CClock&);
-        ~CClock();
+        CClock() = delete;
+        ~CClock() = delete;
 public :
         static inline void UpdateTime()
         {
@@ -63,7 +62,7 @@ private :
 uint64_t CClock::sNanosecondsNow = 0llu;
 std::string CClock::sTimeStampString;
 
-class CTimeCost
+class CTimeCost : public CNonCopyable
 {
 public :
         CTimeCost(std::string prefix="", double sec=.0)
