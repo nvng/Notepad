@@ -23,11 +23,12 @@ Plugin 'mbbill/undotree'
 " Plugin 'ardagnir/athame'
 " Plugin 'vim-scripts/gdbmgr'
 " Plugin 'gilligan/vim-lldb'
-Plugin 'xaizek/vim-inccomplete'
+" Plugin 'xaizek/vim-inccomplete'
 " Plugin 'dschwen/switch-header-source'
 " Plugin 'po1/vim-pycmake'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'vim-scripts/VisIncr'
+Plugin 'vimwiki/vimwiki'
+Plugin 'plasticboy/vim-markdown'
 call vundle#end()
 
 syntax enable
@@ -120,8 +121,8 @@ autocmd FileType [ch],cpp,vim setlocal autowriteall
 if filereadable("Makefile") || filereadable("makefile")
 	set makeprg=make
 else
-	autocmd FileType [ch],cpp set makeprg=clang\ -g\ -Wall\ -o\ %<.out\ %
-	" autocmd FileType [ch],cpp set makeprg=g++\ -std=c++11\ -g\ -o\ %<.out\ %
+	" autocmd FileType [ch],cpp set makeprg=clang\ -g\ -Wall\ -o\ %<.out\ %
+	autocmd FileType [ch],cpp set makeprg=g++\ -std=c++11\ -g\ -Wall\ -Werror\ -o\ %<.out\ %
 endif
 
 " When editing a file, always jump to the last known cursor position.
