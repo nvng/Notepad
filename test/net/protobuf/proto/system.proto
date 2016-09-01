@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+// option optimize_for = LITE_RUNTIME;
+// option optimize_for = CODE_SIZE; // SerializeToArray 比 LITE_RUNTIME 慢
+option optimize_for = SPEED;
+
+/*
+  optimize for CODE_SIZE does not generate fast accessor
+methods for everything, but relies on slow reflection,
+
+  optimize for SPEED will give you the fast accessors
+
+  and optimize for LITE_RUNTIME will also give you fast accessors,
+but does not support the full functionality of protobuf, but only 
+the lighter subset protobuf-lite. Basically, this means descriptors
+or reflection are not available.
+*/
+
+message MsgHeartItem
+{
+        string val = 1;
+}
+
+message MsgHeart
+{
+        string name = 2;
+        MsgHeartItem item = 1;
+        int32 guid = 3;
+}
+
+message MsgTestBool
+{
+        bool test_1 = 1;
+        bool test_2 = 2;
+        bool test_3 = 3;
+        bool test_4 = 4;
+        bool test_5 = 5;
+        bool test_6 = 6;
+        bool test_7 = 7;
+        bool test_8 = 8;
+        bool test_9 = 9;
+        bool test_10 = 10;
+        bool test_11 = 11;
+        bool test_12 = 12;
+        bool test_13 = 13;
+        bool test_14 = 14;
+        bool test_15 = 15;
+        bool test_16 = 16;
+        bool test_17 = 17;
+        bool test_18 = 18;
+        bool test_19 = 19;
+        bool test_20 = 20;
+        bool test_21 = 21;
+        bool test_22 = 22;
+        bool test_23 = 23;
+        bool test_24 = 24;
+        bool test_25 = 25;
+        bool test_26 = 26;
+        bool test_27 = 27;
+        bool test_28 = 28;
+        bool test_29 = 29;
+        bool test_30 = 30;
+        bool test_31 = 31;
+        bool test_32 = 32;
+}
