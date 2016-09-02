@@ -63,3 +63,595 @@ message MsgTestBool
         bool test_31 = 31;
         bool test_32 = 32;
 }
+
+message TestCombine
+{
+        TestCombine_0  obj_0 = 1;
+        TestCombine_1  obj_1 = 2;
+        TestCombine_2  obj_2 = 3;
+        TestCombine_3  obj_3 = 4;
+        TestCombine_4  obj_4 = 5;
+        TestCombine_5  obj_5 = 6;
+        TestCombine_6  obj_6 = 7;
+        TestCombine_7  obj_7 = 8;
+        TestCombine_8  obj_8 = 9;
+        TestCombine_9  obj_9 = 10;
+        TestCombine_10 obj_10 = 11;
+        TestCombine_11 obj_11 = 12;
+        TestCombine_12 obj_12 = 13;
+        TestCombine_13 obj_13 = 14;
+        TestCombine_14 obj_14 = 15;
+        TestCombine_15 obj_15 = 16;
+        TestCombine_16 obj_16 = 17;
+        TestCombine_17 obj_17 = 18;
+        TestCombine_18 obj_18 = 19;
+        TestCombine_19 obj_19 = 20;
+        TestCombine_20 obj_20 = 21;
+}
+
+message TestCombine_0
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_1
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_2
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_3
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_4
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_5
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_6
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_7
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_8
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_9
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_10
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_11
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_12
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_13
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_14
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_15
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_16
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_17
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_18
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_19
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
+
+message TestCombine_20
+{
+        string email_1    = 1;
+        string email_2    = 2;
+        string email_3    = 3;
+        string email_4    = 4;
+        string email_5    = 5;
+        string email_6    = 6;
+        string email_7    = 7;
+        string email_8    = 8;
+        string email_9    = 9;
+        string email_10    = 10;
+        string email_11    = 11;
+        string email_12    = 12;
+        string email_13    = 13;
+        string email_14    = 14;
+        string email_15    = 15;
+        string email_16    = 16;
+        string email_17    = 17;
+        string email_18    = 18;
+        string email_19    = 19;
+        string email_20    = 20;
+        string email_21    = 21;
+        uint64 id       = 22;
+        string name     = 23;
+}
