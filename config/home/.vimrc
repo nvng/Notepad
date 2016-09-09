@@ -172,7 +172,14 @@ if has("persistent_undo")
 endif
 
 " ctrlp.vim
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*        " Linux/MacOSX
+" :CtrlPDir dir         本次搜索指定目录 dir 下的内容 
+let g:ctrlp_custom_ignore = {
+                        \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+                        \ 'file': '\v\.(exe|so|dll|out|o|d|gch)$',
+                        \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+                        \ }
+" vim-easygrep
+let g:EasyGrepFilesToExclude=".svn,.git,.hg,*.exe,*.so,*.dll,*.out,.*~,*.o,*.d,*.gch,*.pb.*"
 
 " 设置支持的文件编码类项，目前设置为 utf-8 和 gbk 两种类型。
 set fileencodings=utf-8,chinese
