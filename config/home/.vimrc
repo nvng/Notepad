@@ -181,6 +181,9 @@ let g:ctrlp_custom_ignore = {
 " vim-easygrep
 let g:EasyGrepFilesToExclude=".svn,.git,.hg,*.exe,*.so,*.dll,*.out,.*~,*.o,*.d,*.gch,*.pb.*"
 
+" tagbar
+let g:tagbar_left = 1   " 放在左边，如 ctrlp 的窗口就可以很好地显示在右边了
+
 " 设置支持的文件编码类项，目前设置为 utf-8 和 gbk 两种类型。
 set fileencodings=utf-8,chinese
 
