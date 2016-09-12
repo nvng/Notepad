@@ -1,15 +1,15 @@
 #ifndef __NON_COPYABLE_HPP__
 #define __NON_COPYABLE_HPP__
 
-class CNonCopyable
+class NonCopyable
 {
 protected :
-        CNonCopyable() {}
-        ~CNonCopyable() {}
+        NonCopyable() {}
+        ~NonCopyable() {}
 
 private :
-        CNonCopyable(const CNonCopyable&) = delete;
-        const CNonCopyable& operator=(const CNonCopyable&) = delete;
+        NonCopyable(const NonCopyable&) = delete;
+        const NonCopyable& operator=(const NonCopyable&) = delete;
 };
 
 #endif // __NON_COPYABLE_HPP__

@@ -7,7 +7,7 @@
 #include "NonCopyable.hpp"
 
 template <typename T>
-class CDoubleQueue : public CNonCopyable
+class DoubleQueue : public NonCopyable
 {
 public :
         inline void PushItem(T item)

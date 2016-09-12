@@ -62,7 +62,7 @@ private :
 uint64_t CClock::sNanosecondsNow = 0llu;
 std::string CClock::sTimeStampString;
 
-class CTimeCost : public CNonCopyable
+class CTimeCost : public NonCopyable
 {
 public :
         CTimeCost(std::string prefix="", double sec=.0)
