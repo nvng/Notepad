@@ -422,10 +422,10 @@ void testCombine()
 int main(void)
 {
         // reflection();
-        // effectioncy();
+        effectioncy();
         // effectioncy_mutable();
         // TestSize();
-        testCombine();
+        // testCombine();
 
         return 0;
 }
