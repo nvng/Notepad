@@ -1,7 +1,7 @@
 #include "pre_compiled.h"
 
 #define MAX_SIZE        (1000)
-#define BUFF_SIZE       (1024*10)
+#define BUFF_SIZE       (10006)
 
 int main(void)
 {

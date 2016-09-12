@@ -8,7 +8,7 @@
 #define MAX_SIZE        (1000 * 1000 * 10)
 
 template <typename T>
-void callFunction(T obj)
+inline void callFunction(T obj)
 {
 }
 
