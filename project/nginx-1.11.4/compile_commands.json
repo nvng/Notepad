@@ -1,0 +1,577 @@
+[
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/nginx.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/nginx.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/nginx.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_log.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_log.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_log.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_palloc.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_palloc.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_palloc.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_array.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_array.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_array.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_list.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_list.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_list.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_hash.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_hash.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_hash.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_buf.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_buf.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_buf.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_queue.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_queue.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_queue.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_output_chain.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_output_chain.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_output_chain.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_string.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_string.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_string.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_parse.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_parse.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_parse.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_parse_time.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_parse_time.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_parse_time.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_inet.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_inet.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_inet.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_file.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_file.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_file.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_crc32.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_crc32.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_crc32.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_murmurhash.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_murmurhash.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_murmurhash.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_md5.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_md5.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_md5.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_sha1.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_sha1.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_sha1.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_rbtree.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_rbtree.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_rbtree.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_radix_tree.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_radix_tree.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_radix_tree.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_slab.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_slab.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_slab.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_times.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_times.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_times.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_shmtx.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_shmtx.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_shmtx.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_connection.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_connection.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_connection.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_cycle.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_cycle.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_cycle.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_spinlock.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_spinlock.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_spinlock.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_rwlock.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_rwlock.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_rwlock.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_cpuinfo.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_cpuinfo.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_cpuinfo.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_conf_file.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_conf_file.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_conf_file.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_resolver.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_resolver.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_resolver.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_open_file_cache.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_open_file_cache.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_open_file_cache.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_crypt.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_crypt.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_crypt.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_proxy_protocol.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_proxy_protocol.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_proxy_protocol.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_syslog.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_syslog.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_syslog.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event_timer.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_timer.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_timer.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event_posted.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_posted.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_posted.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event_accept.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_accept.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_accept.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event_connect.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_connect.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_connect.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/ngx_event_pipe.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_pipe.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/ngx_event_pipe.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_time.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_time.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_time.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_errno.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_errno.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_errno.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_alloc.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_alloc.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_alloc.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_files.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_files.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_files.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_socket.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_socket.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_socket.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_recv.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_recv.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_recv.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_readv_chain.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_readv_chain.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_readv_chain.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_udp_recv.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_udp_recv.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_udp_recv.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_send.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_send.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_send.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_writev_chain.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_writev_chain.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_writev_chain.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_udp_send.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_udp_send.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_udp_send.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_channel.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_channel.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_channel.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_shmem.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_shmem.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_shmem.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_process.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_process.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_process.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_daemon.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_daemon.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_daemon.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_setaffinity.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_setaffinity.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_setaffinity.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_setproctitle.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_setproctitle.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_setproctitle.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_posix_init.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_posix_init.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_posix_init.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_user.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_user.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_user.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_dlopen.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_dlopen.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_dlopen.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_process_cycle.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_process_cycle.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_process_cycle.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_linux_init.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_linux_init.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_linux_init.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/event/modules/ngx_epoll_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/event/modules/ngx_epoll_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/event/modules/ngx_epoll_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/os/unix/ngx_linux_sendfile_chain.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_linux_sendfile_chain.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/os/unix/ngx_linux_sendfile_chain.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/src/core/ngx_regex.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_regex.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/core/ngx_regex.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_core_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_core_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_core_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_special_response.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_special_response.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_special_response.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_request.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_request.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_request.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_parse.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_parse.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_parse.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_log_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_log_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_log_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_request_body.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_request_body.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_request_body.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_variables.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_variables.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_variables.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_script.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_script.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_script.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_upstream.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_upstream.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_upstream.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_upstream_round_robin.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_upstream_round_robin.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_upstream_round_robin.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_file_cache.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_file_cache.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_file_cache.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_write_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_write_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_write_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_header_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_header_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_header_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_chunked_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_chunked_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_chunked_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_range_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_range_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_range_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_gzip_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_gzip_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_gzip_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_postpone_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_postpone_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_postpone_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_ssi_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_ssi_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_ssi_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_charset_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_charset_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_charset_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_userid_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_userid_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_userid_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_headers_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_headers_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_headers_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/ngx_http_copy_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_copy_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/ngx_http_copy_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_not_modified_filter_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_not_modified_filter_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_not_modified_filter_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_static_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_static_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_static_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_autoindex_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_autoindex_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_autoindex_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_index_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_index_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_index_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_auth_basic_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_auth_basic_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_auth_basic_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_access_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_access_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_access_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_limit_conn_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_limit_conn_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_limit_conn_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_limit_req_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_limit_req_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_limit_req_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_geo_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_geo_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_geo_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_map_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_map_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_map_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_split_clients_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_split_clients_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_split_clients_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_referer_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_referer_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_referer_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_rewrite_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_rewrite_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_rewrite_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_proxy_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_proxy_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_proxy_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_fastcgi_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_fastcgi_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_fastcgi_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_uwsgi_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_uwsgi_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_uwsgi_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_scgi_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_scgi_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_scgi_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_memcached_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_memcached_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_memcached_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_empty_gif_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_empty_gif_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_empty_gif_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_browser_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_browser_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_browser_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_upstream_hash_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_hash_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_hash_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_upstream_ip_hash_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_ip_hash_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_ip_hash_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_upstream_least_conn_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_least_conn_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_least_conn_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_upstream_keepalive_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_keepalive_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_keepalive_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -I src/http -I src/http/modules -o objs/src/http/modules/ngx_http_upstream_zone_module.o /home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_zone_module.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/src/http/modules/ngx_http_upstream_zone_module.c"
+    }, 
+    {
+        "command": "cc -c -pipe -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -I src/core -I src/event -I src/event/modules -I src/os/unix -I objs -o objs/ngx_modules.o /home/lsw/git/Notepad/project/nginx-1.11.4/objs/ngx_modules.c", 
+        "directory": "/home/lsw/git/Notepad/project/nginx-1.11.4", 
+        "file": "/home/lsw/git/Notepad/project/nginx-1.11.4/objs/ngx_modules.c"
+    }
+]
