@@ -248,6 +248,9 @@ struct ngx_module_s {
 
     void                 *ctx;
     ngx_command_t        *commands;
+
+    // type 指明了允许在设计模块时定义模块类型，
+    // 允许专注于不同领域的模块按照类型来区别。
     ngx_uint_t            type;
 
     ngx_int_t           (*init_master)(ngx_log_t *log);
@@ -273,8 +276,11 @@ struct ngx_module_s {
 
 
 typedef struct {
+    // 核心模块名称
     ngx_str_t             name;
+    // 解析配置项前，nginx 框架会调用 create_conf 方法。
     void               *(*create_conf)(ngx_cycle_t *cycle);
+    // 解析配置项完成后，nginx 框架会调用 init_conf 方法。
     char               *(*init_conf)(ngx_cycle_t *cycle, void *conf);
 } ngx_core_module_t;
 
