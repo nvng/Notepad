@@ -10,6 +10,9 @@ template <typename T>
 class DoubleQueue : public NonCopyable
 {
 public :
+        typedef T value_type;
+        typedef std::vector<value_type> QueueType;
+
         inline void PushItem(T item)
         {
                 std::lock_guard<std::mutex> lock(mMutex);
@@ -27,7 +30,7 @@ public :
 
 private :
         std::mutex mMutex;
-        std::vector<T> mQueue[2];
+        QueueType mQueue[2];
 };
 
 #endif // __DOUBLE_QUEUE_HPP__
