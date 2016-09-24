@@ -29,6 +29,7 @@ Plugin 'mbbill/undotree'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'vimwiki/vimwiki'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'gerw/vim-latex-suite'
 call vundle#end()
 
 syntax enable
@@ -153,6 +154,14 @@ let Tlist_Show_One_File = 1     " 只显示当前文件的 tag
 " let Tlist_Use_Right_Window = 1  " 窗口显示在右则
 " let Tlist_GainFocus_On_ToggleOpen = 1
 
+" 补全比较
+" rtags 自带补全 必须加 -include PCH 才能补全在 PCH 中包含，但在补全文件中没有包含的头文件内容。且该文件必须被包含在一个 cc 文件中。
+" clang_complete 使用 compile_commands.json 作为补全命令文件
+"       即使加入 -include 也无法补全相应文件。
+" clang_complete 使用 .clang_complete 作为补全命令文件
+"       只要文件被创建，就可以补全，头文件要么包含在 PCH 中（此时需要加 -include），要么包含在该文件中。
+" clang_complete 补全显示也更加清析
+
 " clang_complete
 " 无法区分哪些函数能够直接调用，如析构函数。
 " 无法区分哪些成员不能调用，如私有成员变量。
@@ -160,7 +169,7 @@ let g:clang_close_preview   = 1 " the preview window will be close automatically
 let g:clang_complete_copen  = 1 " open quickfix window on error
 let g:clang_user_options    = "-std=c++11"
 let g:clang_complete_macros = 1 " 宏和常量补全
-let g:clang_auto_user_options = "compile_commands.json"
+" let g:clang_auto_user_options = "compile_commands.json"
 
 " enables only <C-X><C-U> clang_complete_auto设置就没有意义
 let g:clang_omnicppcomplete_compliance = 1
