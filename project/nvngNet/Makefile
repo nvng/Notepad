@@ -4,7 +4,11 @@ else
 	CC = ccache g++
 endif
 
-CC_FLAG = -g -std=c++11 -O2 -Wall -Werror
+ifeq ($(release), y)
+	CC_FLAG = -std=c++11 -Wall -Werror -O2
+else
+	CC_FLAG = -g -std=c++11 -Wall -Werror
+endif
 
 SRC_DIR   = ./src \
 	    ./src/net \
@@ -14,7 +18,7 @@ EXT_DIR = /usr/local
 
 EXT_LIB = protobuf
 
-PCH	  = ./src/pre_compiled.h
+PCH	  = ./src/PreCompiled.h
 PROTO_DIR = ./src/proto
 TARGET	  = server
 
@@ -45,36 +49,49 @@ endif
 DEPS    = $(SRC:.cc=.d)
 DEPS    += $(PCH_OBJ:.gch=.d)
 
-.PHONY	: all show clean cleanall rtags proto
+.PHONY	: all show clean cleanall rtags proto release
 
-all : $(PCH_OBJ) $(PROTO_CC) $(TARGET)
+all : $(PROTO_CC) $(PCH_OBJ) $(TARGET)
+
+%.pb.cc : %.proto
+	protoc -I=$(PROTO_DIR) --cpp_out=$(PROTO_DIR) $<
 
 # for precompiled header
 $(PCH_OBJ) : $(PCH)
 	$(CC) $(CC_FLAG) $(INC) -x c++-header -o $@ $<
 
+# for precompiled header
+%.d : %.gch $(PROTO_CC)
+	@set -e; \
+	$(CC) -MM $(CC_FLAG) $(INC) $*.h | sed 's,\($(notdir $*)\)\.o[ :]*,$*.gch $*.d : ,g' > $@
+
 $(TARGET) : $(OBJS)
 	$(CC) $(CC_FLAG) $(INC) -o $(TARGET) $(OBJS) $(LIB_DIR) $(LIB)
 
-%.d : %.cc
-	@set -e; \
-	$(CC) -MM $(CC_FLAG) $(INC) $< > $@; \
-	sed -i 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' $@;
+MAKE_DEP_CMD = @set -e; \
+	$(CC) -MM $(CC_FLAG) $(INC) $< | sed 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' > $@
 
-%.o : %.cc
-	$(CC) $(CC_FLAG) $(INC) -o $@ -c $<
+%.d : %.cpp $(PROTO_CC) ; $(MAKE_DEP_CMD)
+%.d : %.cc  $(PROTO_CC) ; $(MAKE_DEP_CMD)
+%.d : %.c   $(PROTO_CC) ; $(MAKE_DEP_CMD)
 
-%.pb.cc : %.proto
-	protoc -I=$(PROTO_DIR) --cpp_out=$(PROTO_DIR) $<
+MAKE_OBJ_CMD = $(CC) $(CC_FLAG) $(INC) -o $@ -c $<
 
-sinclude $(DEPS)
+%.o : %.cpp ; $(MAKE_OBJ_CMD)
+%.o : %.cc  ; $(MAKE_OBJ_CMD)
+%.o : %.c   ; $(MAKE_OBJ_CMD)
 
-proto : $(PROTO_CC)
+# include src/proto/Makefile # 在最后执行
+sinclude $(DEPS) # 在最先执行
 
 rtags :
 	@make clean; \
 	bear make rtags=y; \
 	rc -J ./compile_commands.json
+
+release :
+	@make clean; \
+	make release=y;
 
 show :
 	@echo "TARGET	:" $(TARGET)
@@ -83,6 +100,7 @@ show :
 	@echo "EXT_DIR	:" $(EXT_DIR)
 	@echo "PROTO_PROTO :" $(PROTO_PROTO)
 	@echo "PCH_OBJ	:" $(PCH_OBJ)
+	@echo $(MAKE)
 
 cleanall : clean
 	-rm -f $(DEPS) $(PCH_OBJ) $(PROTO_CC) $(PROTO_H) compile_commands.json
