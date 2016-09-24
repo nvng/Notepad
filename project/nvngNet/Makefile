@@ -35,7 +35,6 @@ LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
 LIB	= $(foreach l, $(EXT_LIB), $(addsuffix $(l), -l))
 
 OBJS    = $(addsuffix .o, $(basename $(SRC)))
-
 PCH_OBJ	= $(addsuffix .gch, $(basename $(PCH)))
 
 ifneq ($(PROTO_DIR),)
@@ -44,12 +43,17 @@ ifneq ($(PROTO_DIR),)
 	PROTO_H  = $(PROTO_PROTO:.proto=.pb.h)
 	OBJS	+= $(PROTO_PROTO:.proto=.pb.o)
 	INC	+= $(addprefix -I, $(PROTO_DIR))
+	ADDED_DEP += $(PROTO_CC) # 需要先于 *.d 文件生成
 endif
 
-DEPS    = $(SRC:.cc=.d)
+DEPS    += $(SRC:.cc=.d)
+
+# 这里可以认为是生成.d时，需要*.gch，所以就会生成相应的文件
 DEPS    += $(PCH_OBJ:.gch=.d)
 
-.PHONY	: all show clean cleanall rtags proto release
+COMPILE_CMD = $(CC) $(CC_FLAG) $(INC)
+
+.PHONY	: all show clean cleanall rtags release
 
 all : $(PROTO_CC) $(PCH_OBJ) $(TARGET)
 
@@ -57,25 +61,25 @@ all : $(PROTO_CC) $(PCH_OBJ) $(TARGET)
 	protoc -I=$(PROTO_DIR) --cpp_out=$(PROTO_DIR) $<
 
 # for precompiled header
-$(PCH_OBJ) : $(PCH)
-	$(CC) $(CC_FLAG) $(INC) -x c++-header -o $@ $<
-
-# for precompiled header
-%.d : %.gch $(PROTO_CC)
-	@set -e; \
-	$(CC) -MM $(CC_FLAG) $(INC) $*.h | sed 's,\($(notdir $*)\)\.o[ :]*,$*.gch $*.d : ,g' > $@
+$(PCH_OBJ) : $(PCH) $(ADDED_DEP)
+	$(COMPILE_CMD) -x c++-header -o $@ $<
 
 $(TARGET) : $(OBJS)
-	$(CC) $(CC_FLAG) $(INC) -o $(TARGET) $(OBJS) $(LIB_DIR) $(LIB)
+	$(COMPILE_CMD) -o $(TARGET) $(OBJS) $(LIB_DIR) $(LIB)
 
 MAKE_DEP_CMD = @set -e; \
-	$(CC) -MM $(CC_FLAG) $(INC) $< | sed 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' > $@
+	$(COMPILE_CMD) -MM $< | sed 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' > $@
 
-%.d : %.cpp $(PROTO_CC) ; $(MAKE_DEP_CMD)
-%.d : %.cc  $(PROTO_CC) ; $(MAKE_DEP_CMD)
-%.d : %.c   $(PROTO_CC) ; $(MAKE_DEP_CMD)
+%.d : %.cpp $(ADDED_DEP) ; $(MAKE_DEP_CMD)
+%.d : %.cc  $(ADDED_DEP) ; $(MAKE_DEP_CMD)
+%.d : %.c   $(ADDED_DEP) ; $(MAKE_DEP_CMD)
 
-MAKE_OBJ_CMD = $(CC) $(CC_FLAG) $(INC) -o $@ -c $<
+# for precompiled header
+%.d : %.gch
+	@set -e; \
+	$(COMPILE_CMD) -MM $*.h | sed 's,\($(notdir $*)\)\.o[ :]*,$*.gch $*.d : ,g' > $@
+
+MAKE_OBJ_CMD = $(COMPILE_CMD) -o $@ -c $<
 
 %.o : %.cpp ; $(MAKE_OBJ_CMD)
 %.o : %.cc  ; $(MAKE_OBJ_CMD)
@@ -101,6 +105,7 @@ show :
 	@echo "PROTO_PROTO :" $(PROTO_PROTO)
 	@echo "PCH_OBJ	:" $(PCH_OBJ)
 	@echo $(MAKE)
+	@echo "DEPS	:" $(DEPS)
 
 cleanall : clean
 	-rm -f $(DEPS) $(PCH_OBJ) $(PROTO_CC) $(PROTO_H) compile_commands.json
