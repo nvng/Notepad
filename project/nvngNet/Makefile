@@ -1,8 +1,8 @@
-ifeq ($(rtags), y)
-	CC = g++
-else
-	CC = ccache g++
+ifneq ($(rtags), y)
+	CCACHE = ccache
 endif
+
+CC = $(CCACHE) g++
 
 ifeq ($(release), y)
 	CC_FLAG = -std=c++11 -Wall -Werror -O2
@@ -20,7 +20,7 @@ EXT_LIB = protobuf
 
 PCH	  = ./src/PreCompiled.h
 PROTO_DIR = ./src/proto
-TARGET	  = server
+TARGET	  = server.out
 
 SRC_EXTS = .c .C .cc .cpp .CPP .c++ .cxx .cp
 HDR_EXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
@@ -30,6 +30,7 @@ SRC	= $(foreach d, $(SRC_DIR), $(wildcard $(addprefix $(d)/*, $(SRC_EXTS))))
 
 INC	= $(foreach d, $(SRC_DIR), $(addprefix -I, $(d)))
 INC    += $(foreach d, $(EXT_DIR), $(addsuffix $(d)/include, -I))
+INC    += -include $(PCH)
 
 LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
 LIB	= $(foreach l, $(EXT_LIB), $(addsuffix $(l), -l))
@@ -49,7 +50,7 @@ endif
 DEPS    += $(SRC:.cc=.d)
 
 # 这里可以认为是生成.d时，需要*.gch，所以就会生成相应的文件
-DEPS    += $(PCH_OBJ:.gch=.d)
+# DEPS    += $(PCH_OBJ:.gch=.d)
 
 COMPILE_CMD = $(CC) $(CC_FLAG) $(INC)
 
@@ -90,6 +91,7 @@ sinclude $(DEPS) # 在最先执行
 
 rtags :
 	@make clean; \
+	echo $(INC) > .clang_complete; \
 	bear make rtags=y; \
 	rc -J ./compile_commands.json
 
