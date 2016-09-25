@@ -5,7 +5,7 @@ endif
 CC = $(CCACHE) g++
 
 ifeq ($(release), y)
-	CC_FLAG = -std=c++11 -Wall -Werror -O2
+	CC_FLAG = -DNDEBUG -std=c++11 -Wall -Werror -O2
 else
 	CC_FLAG = -g -std=c++11 -Wall -Werror
 endif
@@ -14,13 +14,11 @@ SRC_DIR   = ./src \
 	    ./src/net \
 	    ../../share
 
-EXT_DIR = /usr/local
+EXT_DIR =
 
 EXT_LIB = protobuf
 
-PCH	  = ./src/PreCompiled.h
-PROTO_DIR = ./src/proto
-TARGET	  = server.out
+TARGET	= server.out
 
 SRC_EXTS = .c .C .cc .cpp .CPP .c++ .cxx .cp
 HDR_EXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
@@ -30,61 +28,83 @@ SRC	= $(foreach d, $(SRC_DIR), $(wildcard $(addprefix $(d)/*, $(SRC_EXTS))))
 
 INC	= $(foreach d, $(SRC_DIR), $(addprefix -I, $(d)))
 INC    += $(foreach d, $(EXT_DIR), $(addsuffix $(d)/include, -I))
-INC    += -include $(PCH)
 
 LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
 LIB	= $(foreach l, $(EXT_LIB), $(addsuffix $(l), -l))
 
-OBJS    = $(addsuffix .o, $(basename $(SRC)))
-PCH_OBJ	= $(addsuffix .gch, $(basename $(PCH)))
+OBJS    += $(addsuffix .o, $(basename $(SRC)))
+DEPS    += $(SRC:.cc=.d)
 
+RM	+= $(OBJS) $(TARGET)
+
+PCH	  = ./src/PreCompiled.h
+ifneq ($(PCH),)
+	INC    += -include $(PCH)
+	PCH_OBJ = $(foreach f, $(PCH), $(addsuffix .gch, $(basename $(f))))
+
+	# 这里可以认为是生成.d时，需要*.gch，所以就会生成相应的文件
+	# DEPS    += $(PCH_OBJ:.gch=.d)
+	
+	RM_ALL += $(PCH_OBJ)
+endif
+
+PROTO_DIR = ./src/proto
 ifneq ($(PROTO_DIR),)
 	PROTO_PROTO = $(foreach d, $(PROTO_DIR), $(wildcard $(addprefix $(d)/*, .proto)))
 	PROTO_CC = $(PROTO_PROTO:.proto=.pb.cc)
 	PROTO_H  = $(PROTO_PROTO:.proto=.pb.h)
 	OBJS	+= $(PROTO_PROTO:.proto=.pb.o)
 	INC	+= $(addprefix -I, $(PROTO_DIR))
-	ADDED_DEP += $(PROTO_CC) # 需要先于 *.d 文件生成
+
+	RM_ALL += $(PROTO_CC) $(PROTO_H)
+
+	# 没有必要的，但其它头文件生成依赖的时候，需要 pb.cc 文件
+	# DEPS	+= $(PROTO_PROTO:.proto=.pb.d)
+	
+	ADDED_DEPS += $(PROTO_CC)
 endif
 
-DEPS    += $(SRC:.cc=.d)
-
-# 这里可以认为是生成.d时，需要*.gch，所以就会生成相应的文件
-# DEPS    += $(PCH_OBJ:.gch=.d)
+RM_ALL += $(DEPS)
 
 COMPILE_CMD = $(CC) $(CC_FLAG) $(INC)
 
 .PHONY	: all show clean cleanall rtags release
 
+# 虽然生成依赖的时候就生成了 PROTO_CC，而如果这里不写，删除之前生成的。
+# 然后根据 TARGET 的依赖 OBJS 生成 PROTO_CC
 all : $(PROTO_CC) $(PCH_OBJ) $(TARGET)
-
-%.pb.cc : %.proto
-	protoc -I=$(PROTO_DIR) --cpp_out=$(PROTO_DIR) $<
-
-# for precompiled header
-$(PCH_OBJ) : $(PCH) $(ADDED_DEP)
-	$(COMPILE_CMD) -x c++-header -o $@ $<
 
 $(TARGET) : $(OBJS)
 	$(COMPILE_CMD) -o $(TARGET) $(OBJS) $(LIB_DIR) $(LIB)
 
-MAKE_DEP_CMD = @set -e; \
-	$(COMPILE_CMD) -MM $< | sed 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' > $@
+MAKE_OBJ_CMD = $(COMPILE_CMD) -o $@ -c $<
+MAKE_DEP_CMD = @echo create dependency $@; \
+	       set -e; \
+	       $(COMPILE_CMD) -MM $< | sed 's,\($(notdir $*)\)\.o[ :]*,$*.o $*.d : ,g' > $@
 
-%.d : %.cpp $(ADDED_DEP) ; $(MAKE_DEP_CMD)
-%.d : %.cc  $(ADDED_DEP) ; $(MAKE_DEP_CMD)
-%.d : %.c   $(ADDED_DEP) ; $(MAKE_DEP_CMD)
+%.o : %.cpp $(ADDED_DEPS) ; $(MAKE_OBJ_CMD)
+%.o : %.cc  $(ADDED_DEPS) ; $(MAKE_OBJ_CMD)
+%.o : %.c   $(ADDED_DEPS) ; $(MAKE_OBJ_CMD)
+
+%.d : %.cpp $(ADDED_DEPS) ; $(MAKE_DEP_CMD)
+%.d : %.cc  $(ADDED_DEPS) ; $(MAKE_DEP_CMD)
+%.d : %.c   $(ADDED_DEPS) ; $(MAKE_DEP_CMD)
+
+# for protobuf
+%.pb.cc : %.proto
+	protoc -I=$(PROTO_DIR) --cpp_out=$(PROTO_DIR) $<
+
+%.pb.d : %.pb.cc
+	$(MAKE_DEP_CMD)
 
 # for precompiled header
+%.gch : %.h $(ADDED_DEPS)
+	$(COMPILE_CMD) -x c++-header -o $@ $<
+
 %.d : %.gch
-	@set -e; \
+	@echo create dependency $@; \
+	set -e; \
 	$(COMPILE_CMD) -MM $*.h | sed 's,\($(notdir $*)\)\.o[ :]*,$*.gch $*.d : ,g' > $@
-
-MAKE_OBJ_CMD = $(COMPILE_CMD) -o $@ -c $<
-
-%.o : %.cpp ; $(MAKE_OBJ_CMD)
-%.o : %.cc  ; $(MAKE_OBJ_CMD)
-%.o : %.c   ; $(MAKE_OBJ_CMD)
 
 # include src/proto/Makefile # 在最后执行
 sinclude $(DEPS) # 在最先执行
@@ -101,19 +121,19 @@ release :
 
 show :
 	@echo "TARGET	:" $(TARGET)
-	@echo "OBJS	:" $(OBJS)
 	@echo "SRC_DIR	:" $(SRC_DIR)
+	@echo "OBJS	:" $(OBJS)
 	@echo "EXT_DIR	:" $(EXT_DIR)
+	@echo "EXT_LIB	:" $(EXT_LIB)
 	@echo "PROTO_PROTO :" $(PROTO_PROTO)
 	@echo "PCH_OBJ	:" $(PCH_OBJ)
-	@echo $(MAKE)
 	@echo "DEPS	:" $(DEPS)
 
 cleanall : clean
-	-rm -f $(DEPS) $(PCH_OBJ) $(PROTO_CC) $(PROTO_H) compile_commands.json
+	-rm -f $(RM_ALL) compile_commands.json
 
 clean :
-	-rm -f $(OBJS) $(TARGET)
+	-rm -f $(RM)
 
 # .PHONY 定义伪目录
 #
