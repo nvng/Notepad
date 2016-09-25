@@ -5,6 +5,8 @@
 
 #include "pre_compiled.h"
 
+std::mutex g_mutex;
+
 int main(void)
 {
         srand(time(NULL));
@@ -16,21 +18,21 @@ int main(void)
                 umap.insert(std::make_pair(i, new int));
         printf("umap.size() = %lu\n", umap.size());
 
+        int* p = nullptr;
         {
                 CTimeCost t("unordered_map");
                 std::unordered_map<int, int*>::iterator it;
                 for (int32_t i=0; i<times; ++i)
                 {
                         // it = umap.find(i);
-                        it = umap.find(times-1);
-                        if (umap.end() != it)
-                        {
-                                int* p = it->second;
-                                *p = 1;
-                        }
+                        std::lock_guard<std::mutex> lock(g_mutex);
+                        it = umap.find(i);
+                        p = (umap.end() != it) ? it->second : nullptr;
                 }
         }
+        (void)p;
 
+        /*
         std::unordered_map<std::string, int*> strMap;
         char buff[1024] = { 0 };
         for (auto val : umap)
@@ -57,18 +59,16 @@ int main(void)
                         }
                 }
         }
+        */
 
         {
                 std::shared_ptr<int> spi(new int);
                 std::weak_ptr<int> wpi = spi;
+                std::shared_ptr<int> tmp;
                 CTimeCost t("weak_ptr lock");
                 for (int32_t i=0; i<times; ++i)
                 {
-                        std::shared_ptr<int> tmp = wpi.lock();
-                        if (tmp)
-                        {
-                                *tmp = 1;
-                        }
+                        tmp = wpi.lock();
                 }
         }
 

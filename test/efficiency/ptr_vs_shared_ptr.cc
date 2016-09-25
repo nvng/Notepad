@@ -7,8 +7,11 @@
 
 #define MAX_SIZE        (1000 * 1000 * 10)
 
-template <typename T>
-inline void callFunction(T obj)
+inline void callFunction(int32_t* obj)
+{
+}
+
+inline void callFunction(const std::shared_ptr<int32_t>& obj)
 {
 }
 
@@ -43,6 +46,7 @@ int main(void)
 
         printf("========== shared_ptr ==========\n");
         std::vector<std::shared_ptr<int32_t>> sharedPtrList;
+        sharedPtrList.reserve(MAX_SIZE);
         {
                 CTimeCost t("insert");
                 for (int32_t i=0; i<MAX_SIZE; ++i)
@@ -55,6 +59,7 @@ int main(void)
         }
         printf("==========        ptr ==========\n");
         std::vector<int32_t*> ptrList;
+        ptrList.reserve(MAX_SIZE);
         {
                 CTimeCost t("insert");
                 for (int32_t i=0; i<MAX_SIZE; ++i)
