@@ -20,20 +20,22 @@ EXT_LIB = protobuf
 
 TARGET	= server.out
 
-SRC_EXTS = .c .C .cc .cpp .CPP .c++ .cxx .cp
-HDR_EXTS = .h .H .hh .hpp .HPP .h++ .hxx .hp
+SRC_EXTS = .c .cc .cpp
+HDR_EXTS = .h .hpp
 
 SRC	= $(foreach d, $(SRC_DIR), $(wildcard $(addprefix $(d)/*, $(SRC_EXTS))))
 # HEADERS = $(foreach d, $(SRC_DIR), $(wildcard $(addprefix $(d)/*, $(HDR_EXTS))))
 
-INC	= $(foreach d, $(SRC_DIR), $(addprefix -I, $(d)))
-INC    += $(foreach d, $(EXT_DIR), $(addsuffix $(d)/include, -I))
+INC	+= $(addprefix -I, $(SRC_DIR)) # 等价于下面一行
+# INC	= $(foreach d, $(SRC_DIR), $(addsuffix $(d), -I))
+INC	+= $(foreach d, $(EXT_DIR), $(addprefix -I, $(d)/include))
 
 LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
-LIB	= $(foreach l, $(EXT_LIB), $(addsuffix $(l), -l))
+LIB	+= $(addprefix -l, $(EXT_LIB))
 
-OBJS    += $(addsuffix .o, $(basename $(SRC)))
-DEPS    += $(SRC:.cc=.d)
+# OBJS    += $(addprefix $(basename $(SRC)), .o) # 只给最后一个加，前面的都没加 why???
+OBJS	+= $(foreach s, $(SRC), $(addprefix $(basename $s), .o))
+DEPS	+= $(foreach s, $(SRC), $(addprefix $(basename $(s)), .d))
 
 RM	+= $(OBJS) $(TARGET)
 
@@ -54,7 +56,7 @@ ifneq ($(PROTO_DIR),)
 	PROTO_CC = $(PROTO_PROTO:.proto=.pb.cc)
 	PROTO_H  = $(PROTO_PROTO:.proto=.pb.h)
 	OBJS	+= $(PROTO_PROTO:.proto=.pb.o)
-	INC	+= $(addprefix -I, $(PROTO_DIR))
+	INC	+= $(addsuffix $(PROTO_DIR), -I)
 
 	RM_ALL += $(PROTO_CC) $(PROTO_H)
 
@@ -122,15 +124,11 @@ release :
 show :
 	@echo "TARGET	:" $(TARGET)
 	@echo "SRC_DIR	:" $(SRC_DIR)
-	@echo "OBJS	:" $(OBJS)
 	@echo "EXT_DIR	:" $(EXT_DIR)
-	@echo "EXT_LIB	:" $(EXT_LIB)
-	@echo "PROTO_PROTO :" $(PROTO_PROTO)
-	@echo "PCH_OBJ	:" $(PCH_OBJ)
-	@echo "DEPS	:" $(DEPS)
+	@echo "PROTO_DIR :" $(PROTO_DIR)
 
 cleanall : clean
-	-rm -f $(RM_ALL) compile_commands.json
+	-rm -f $(RM_ALL) compile_commands.json .clang_complete
 
 clean :
 	-rm -f $(RM)
