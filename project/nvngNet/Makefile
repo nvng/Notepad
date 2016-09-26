@@ -10,13 +10,10 @@ else
 	CC_FLAG = -g -std=c++11 -Wall -Werror
 endif
 
+# {{{ project info
 SRC_DIR   = ./src \
 	    ./src/net \
 	    ../../share
-
-EXT_DIR =
-
-EXT_LIB = protobuf
 
 TARGET	= server.out
 
@@ -28,17 +25,25 @@ SRC	= $(foreach d, $(SRC_DIR), $(wildcard $(addprefix $(d)/*, $(SRC_EXTS))))
 
 INC	+= $(addprefix -I, $(SRC_DIR)) # 等价于下面一行
 # INC	= $(foreach d, $(SRC_DIR), $(addsuffix $(d), -I))
-INC	+= $(foreach d, $(EXT_DIR), $(addprefix -I, $(d)/include))
-
-LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
-LIB	+= $(addprefix -l, $(EXT_LIB))
 
 # OBJS    += $(addprefix $(basename $(SRC)), .o) # 只给最后一个加，前面的都没加 why???
 OBJS	+= $(foreach s, $(SRC), $(addprefix $(basename $s), .o))
 DEPS	+= $(foreach s, $(SRC), $(addprefix $(basename $(s)), .d))
 
 RM	+= $(OBJS) $(TARGET)
+RM_ALL += $(DEPS)
+# }}}
 
+# {{{ dependency includes and libs
+EXT_DIR =
+EXT_LIB = protobuf
+
+LIB_DIR = $(foreach d, $(EXT_DIR), $(addsuffix $(d)/lib, -L))
+INC	+= $(foreach d, $(EXT_DIR), $(addprefix -I, $(d)/include))
+LIB	+= $(addprefix -l, $(EXT_LIB))
+# }}}
+
+#{{{ precompiled headers
 PCH	  = ./src/PreCompiled.h
 ifneq ($(PCH),)
 	INC    += -include $(PCH)
@@ -49,7 +54,9 @@ ifneq ($(PCH),)
 	
 	RM_ALL += $(PCH_OBJ)
 endif
+#}}}
 
+#{{{ protobuf
 PROTO_DIR = ./src/proto
 ifneq ($(PROTO_DIR),)
 	PROTO_PROTO = $(foreach d, $(PROTO_DIR), $(wildcard $(addprefix $(d)/*, .proto)))
@@ -59,15 +66,12 @@ ifneq ($(PROTO_DIR),)
 	INC	+= $(addsuffix $(PROTO_DIR), -I)
 
 	RM_ALL += $(PROTO_CC) $(PROTO_H)
-
-	# 没有必要的，但其它头文件生成依赖的时候，需要 pb.cc 文件
-	# DEPS	+= $(PROTO_PROTO:.proto=.pb.d)
 	
 	ADDED_DEPS += $(PROTO_CC)
 endif
+#}}}
 
-RM_ALL += $(DEPS)
-
+#{{{ compile rules
 COMPILE_CMD = $(CC) $(CC_FLAG) $(INC)
 
 .PHONY	: all show clean cleanall rtags release
@@ -133,6 +137,10 @@ cleanall : clean
 clean :
 	-rm -f $(RM)
 
+#}}}
+
+#{{{ help note
+
 # .PHONY 定义伪目录
 #
 # -rm	表示也许某些文件出现问题，继续做后面的事
@@ -147,3 +155,4 @@ clean :
 # $^	所有的依赖文件
 # $<	比给定的目标文件时间标记更新的依赖文件名
 # $*	去掉后缀的当前目标名。例如，若当前目标是pro.o，则$*表示pro
+# }}}
