@@ -1,7 +1,8 @@
 #include "pre_compiled.h"
 
-#define MAX_SIZE        (1000 * 1000)
-#define BUFFER_SIZE     (1024)
+#define PER_SIZE        (30000)
+#define MAX_SIZE        (60*10)
+#define BUFFER_SIZE     (1024 * 2)
 
 typedef char* BufferPtr;
 #define CREATE_BUFFER_PTR (new char[BUFFER_SIZE])
@@ -9,6 +10,16 @@ typedef char* BufferPtr;
 class BufferPool
 {
 public :
+        BufferPool()
+        {
+        }
+
+        ~BufferPool()
+        {
+                for (auto p : buffer_list_)
+                        delete[] p;
+        }
+
         bool init(size_t buffer_size, size_t count)
         {
                 buffer_list_.reserve(count);
@@ -23,22 +34,17 @@ public :
 
         inline BufferPtr malloc_buffer()
         {
-                BufferPtr ret = nullptr;
-                {
-                        std::lock_guard<std::mutex> lock(mutex_);
-                        if (cur_pos_ < max_pos_)
-                                ret = buffer_list_[cur_pos_++];
-                }
-                return ret;
+                if (cur_pos_ < max_pos_)
+                        return buffer_list_[cur_pos_++];
+                return nullptr;
         }
 
         inline void free_buffer(BufferPtr buff)
         {
-                {
-                        std::lock_guard<std::mutex> lock(mutex_);
-                        if (cur_pos_ >= 0)
-                                buffer_list_[cur_pos_--] = buff;
-                }
+                if (cur_pos_ >= 0)
+                        buffer_list_[cur_pos_--] = buff;
+                else
+                        assert(false);
         }
 
         void resize(size_t count)
@@ -55,37 +61,111 @@ private :
         std::mutex mutex_;
 };
 
+void testBufferPool()
+{
+        BufferPool bp;
+        bp.init(BUFFER_SIZE, PER_SIZE);
+        {
+                BufferPtr list[PER_SIZE];
+                CTimeCost t("BufferPool");
+                for (int i=0; i<MAX_SIZE; ++i)
+                {
+                        for (int j=0; j<PER_SIZE; ++j)
+                        {
+                                list[j] = bp.malloc_buffer();
+                                // assert(nullptr != list[j]);
+                        }
+
+                        for (int j=0; j<PER_SIZE; ++j)
+                                bp.free_buffer(list[j]);
+                }
+
+        }
+
+        {
+                BufferPtr list[PER_SIZE];
+                CTimeCost t("new free");
+                for (int i=0; i<MAX_SIZE; ++i)
+                {
+                        for (int j=0; j<PER_SIZE; ++j)
+                        {
+                                list[j] = CREATE_BUFFER_PTR;
+                                // assert(nullptr != list[j]);
+                        }
+                        for (int j=0; j<PER_SIZE; ++j)
+                                delete[] list[j];
+                }
+        }
+}
+
+class Test
+{
+public :
+        Test() { ++construct; }
+        /*
+        ~Test() { }
+        */
+
+        static int construct;
+        static int deconstruct;
+private :
+        char arr[10];
+};
+
+int Test::construct = 0;
+int Test::deconstruct = 0;
+
+void testObjectPool()
+{
+        BufferPool bp;
+        bp.init(sizeof(Test), PER_SIZE);
+        {
+                Test* list[PER_SIZE];
+                CTimeCost t("BufferPool");
+                for (int i=0; i<MAX_SIZE; ++i)
+                {
+                        for (int j=0; j<PER_SIZE; ++j)
+                        {
+                                char* p = bp.malloc_buffer();
+                                list[j] = new (p) Test();
+                                /*
+                                assert(nullptr != p);
+                                assert(nullptr != list[j]);
+                                */
+                                assert(p == (char*)(list[j]));
+                        }
+
+                        for (int j=0; j<PER_SIZE; ++j)
+                        {
+                                bp.free_buffer((char*)(list[j]));
+                                list[j]->~Test();
+                        }
+                }
+
+                printf("con[%d] decon[%d]\n", Test::construct, Test::deconstruct);
+        }
+
+        {
+                Test* list[PER_SIZE];
+                CTimeCost t("new free");
+                for (int i=0; i<MAX_SIZE; ++i)
+                {
+                        for (int j=0; j<PER_SIZE; ++j)
+                        {
+                                list[j] = new Test();
+                                assert(nullptr != list[j]);
+                        }
+                        for (int j=0; j<PER_SIZE; ++j)
+                                delete list[j];
+                }
+        }
+}
 
 int main(void)
 {
-        BufferPool bp;
-        bp.init(BUFFER_SIZE, MAX_SIZE);
-        BufferPtr p;
-        {
-                BufferPtr list[MAX_SIZE];
-                CTimeCost t("BufferPool");
-                for (int j=0; j<MAX_SIZE; ++j)
-                {
-                        list[j] = bp.malloc_buffer();
-                        // assert(nullptr != p);
-                }
-
-                for (int j=0; j<MAX_SIZE; ++j)
-                        bp.free_buffer(list[j]);
-        }
-
-        {
-                BufferPtr list[MAX_SIZE];
-                CTimeCost t("new free");
-                for (int j=0; j<MAX_SIZE; ++j)
-                {
-                        list[j] = CREATE_BUFFER_PTR;
-                        // assert(nullptr != p);
-                }
-                for (int j=0; j<MAX_SIZE; ++j)
-                        delete[] list[j];
-        }
-        (void)p;
+        // testBufferPool();
+        // printf("sizeof(Test) = %lu\n", sizeof(Test));
+        testObjectPool();
 
         return 0;
 }

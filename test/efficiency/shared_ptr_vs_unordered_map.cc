@@ -25,7 +25,7 @@ int main(void)
                 for (int32_t i=0; i<times; ++i)
                 {
                         // it = umap.find(i);
-                        std::lock_guard<std::mutex> lock(g_mutex);
+                        // std::lock_guard<std::mutex> lock(g_mutex);
                         it = umap.find(i);
                         p = (umap.end() != it) ? it->second : nullptr;
                 }

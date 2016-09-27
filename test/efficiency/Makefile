@@ -7,7 +7,7 @@ CC	= $(CCACHE) g++
 ifeq ($(release),y)
 	CC_FLAG	= -DNDEBUG -std=c++11 -Wall -Werror -O2
 else
-	CC_FLAG	= -g -std=c++11 -Wall -Werror
+	CC_FLAG	= -g -std=c++11 -Wall -Werror -O2
 endif
 
 INC	= -I../../share \
