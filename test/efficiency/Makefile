@@ -4,10 +4,10 @@ endif
 
 CC	= $(CCACHE) g++
 
-ifeq ($(release),y)
-	CC_FLAG	= -DNDEBUG -std=c++11 -Wall -Werror -O2
+ifeq ($(debug),y)
+	CC_FLAG	= -g -std=c++11 -Wall -Werror -O0
 else
-	CC_FLAG	= -g -std=c++11 -Wall -Werror -O2
+	CC_FLAG	= -DNDEBUG -std=c++11 -Wall -Werror -O2
 endif
 
 INC	= -I../../share \
@@ -33,14 +33,13 @@ all	: $(PCH_OBJ) $(TARGETS)
 %.gch : %.h $(ADDED_DEPS)
 	$(CC) $(CC_FLAG) $(INC) -x c++-header -o $@ $<
 
-release :
-	@make clean; \
-	make release=y;
+debug :
+	@make -j4 debug=y;
 
 rtags :
 	@make clean; \
 	echo $(INC) > .clang_complete; \
-	bear make rtags=y; \
+	bear make -j4 rtags=y; \
 	rc -J ./compile_commands.json
 
 clean	:

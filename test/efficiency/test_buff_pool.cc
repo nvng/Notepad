@@ -1,7 +1,7 @@
 #include "pre_compiled.h"
 
 #define PER_SIZE        (30000)
-#define MAX_SIZE        (60*10)
+#define MAX_SIZE        (60)
 #define BUFFER_SIZE     (1024 * 2)
 
 typedef char* BufferPtr;
@@ -163,9 +163,9 @@ void testObjectPool()
 
 int main(void)
 {
-        // testBufferPool();
+        testBufferPool();
         // printf("sizeof(Test) = %lu\n", sizeof(Test));
-        testObjectPool();
+        // testObjectPool();
 
         return 0;
 }
