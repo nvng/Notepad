@@ -148,15 +148,19 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
     int                        reuseport;
 #endif
 
+    // 取出 cycle->listening 数组中的数据地址
     ls = cycle->listening.elts;
-    for (i = 0; i < cycle->listening.nelts; i++) {
 
+    // 遍历数组，数组当中存放的是 ngx_listening_t 结构体
+    for (i = 0; i < cycle->listening.nelts; i++) {
+        // ls 的 fd 已经在之前赋值了
         ls[i].sockaddr = ngx_palloc(cycle->pool, sizeof(ngx_sockaddr_t));
         if (ls[i].sockaddr == NULL) {
             return NGX_ERROR;
         }
 
         ls[i].socklen = sizeof(ngx_sockaddr_t);
+        // 获取 socket 名字，要用于判断是否有效
         if (getsockname(ls[i].fd, ls[i].sockaddr, &ls[i].socklen) == -1) {
             ngx_log_error(NGX_LOG_CRIT, cycle->log, ngx_socket_errno,
                           "getsockname() of the inherited "
@@ -165,6 +169,7 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
             continue;
         }
 
+        // 查看 sockaddr 地址族类型，根据类型设置最大长度
         switch (ls[i].sockaddr->sa_family) {
 
 #if (NGX_HAVE_INET6)
@@ -199,6 +204,8 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
             return NGX_ERROR;
         }
 
+        // 之前的长度主要为了下面的转换做准备
+        // 将 socket 绑定的地址转换为文本格式( ipv4 和 ipv6 的不相同)
         len = ngx_sock_ntop(ls[i].sockaddr, ls[i].socklen,
                             ls[i].addr_text.data, len, 1);
         if (len == 0) {
@@ -223,6 +230,7 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
 
         olen = sizeof(int);
 
+        // 获取文件描述符的接受缓冲区大小，并用 rcvbuf 保存，并且指定 rcvbuf 大小 olen
         if (getsockopt(ls[i].fd, SOL_SOCKET, SO_RCVBUF, (void *) &ls[i].rcvbuf,
                        &olen)
             == -1)
@@ -236,6 +244,7 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
 
         olen = sizeof(int);
 
+        // 获取文件描述符发送缓冲区大小，并用 sndbuf 保存，并且指定 sndbuf 大小 olen
         if (getsockopt(ls[i].fd, SOL_SOCKET, SO_SNDBUF, (void *) &ls[i].sndbuf,
                        &olen)
             == -1)
@@ -312,6 +321,15 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
 
 #endif
 
+/*
+ 当支持accept filter时，通过SO_ACCEPTFILTER选项取得socket的accept_filter表
+ 保存在对应项的accept_filter中；
+ 下面是SO_ACCEPTFILTER的解释(因为我的书里没有所以上网找的)
+ 
+ SO_ACCEPTFILTER 是socket上的输入过滤，他在接手前
+ 将过滤掉传入流套接字的链接，功能是服务器不等待
+ 最后的ACK包而仅仅等待携带数据负载的包
+ */
 #if (NGX_HAVE_DEFERRED_ACCEPT && defined SO_ACCEPTFILTER)
 
         ngx_memzero(&af, sizeof(struct accept_filter_arg));
@@ -344,6 +362,13 @@ ngx_set_inherited_sockets(ngx_cycle_t *cycle)
         (void) ngx_cpystrn((u_char *) ls[i].accept_filter,
                            (u_char *) af.af_name, 16);
 #endif
+
+/*
+ 如果当前操作系统TCP层支持TCP_DEFER_ACCEPT，
+ 则试图获取TCP_DEFER_ACCEPT的timeout值。Timeout大于0时，
+ 则将socket对应deferred_accept标志设为1
+ 详细解释卸写在录里面了哦！！！
+ */
 
 #if (NGX_HAVE_DEFERRED_ACCEPT && defined TCP_DEFER_ACCEPT)
 

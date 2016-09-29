@@ -432,7 +432,7 @@ ngx_show_version_info(void)
     }
 }
 
-
+// 读取环境变量 "NGINX" 将其中各个用分隔符 ":" or ";" 的数值，保存在 ngx_cycel->listening 数组中
 static ngx_int_t
 ngx_add_inherited_sockets(ngx_cycle_t *cycle)
 {
@@ -449,6 +449,7 @@ ngx_add_inherited_sockets(ngx_cycle_t *cycle)
     ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0,
                   "using inherited sockets from \"%s\"", inherited);
 
+    //初始化 ngx_cycle.listening 数组，并且数组中包含10个元素
     if (ngx_array_init(&cycle->listening, cycle->pool, 10,
                        sizeof(ngx_listening_t))
         != NGX_OK)
@@ -456,7 +457,9 @@ ngx_add_inherited_sockets(ngx_cycle_t *cycle)
         return NGX_ERROR;
     }
 
+    // 遍历环境变量
     for (p = inherited, v = p; *p; p++) {
+        // 环境变量的值以 ':' or ';' 分开
         if (*p == ':' || *p == ';') {
             s = ngx_atoi(v, p - v);
             if (s == NGX_ERROR) {
@@ -469,13 +472,16 @@ ngx_add_inherited_sockets(ngx_cycle_t *cycle)
 
             v = p + 1;
 
+            // 返回新分配的数组指针地址(在参考的 blog 里面这里解释可能有点错误)
             ls = ngx_array_push(&cycle->listening);
             if (ls == NULL) {
                 return NGX_ERROR;
             }
 
+            // 初始化内存空间
             ngx_memzero(ls, sizeof(ngx_listening_t));
 
+            // 保存 socket 文件描述符到数组中
             ls->fd = (ngx_socket_t) s;
         }
     }
@@ -486,6 +492,7 @@ ngx_add_inherited_sockets(ngx_cycle_t *cycle)
                       " environment variable, ignoring", v);
     }
 
+    // 表示已经的得到要继承的 socket
     ngx_inherited = 1;
 
     return ngx_set_inherited_sockets(cycle);
