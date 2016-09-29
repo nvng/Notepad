@@ -10,19 +10,19 @@ struct STimedEventData
         typedef std::function<void()> TimedEventCallbackType;
         STimedEventData(double over_time,
                         double interval,
-                        TimedEventCallbackType cb,
-                        int32_t loop_count)
+                        int32_t loop_count,
+                        TimedEventCallbackType cb)
                 : over_time_(over_time)
-                  interval_(interval_)
-                  , cb_(cb)
+                  , interval_(interval)
                   , loop_count_(loop_count)
+                  , cb_(cb)
         {
         }
 
         double over_time_;
         double interval_;
-        TimedEventCallbackType cb_;
         int32_t loop_count_; // -1 forever
+        TimedEventCallbackType cb_;
 };
 
 class TimedEvent

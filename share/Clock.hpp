@@ -23,7 +23,7 @@ public :
         }
 
         static inline uint64_t GetTimeStamp()
-        { return sNanosecondsNow / (1000 * 1000); }
+        { return sNanosecondsNow / (1000 * 1000 * 1000); }
 
         static inline uint64_t GetMicroTimeStamp()
         { return sNanosecondsNow / 1000; }
