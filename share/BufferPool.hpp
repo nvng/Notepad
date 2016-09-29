@@ -6,9 +6,8 @@ class BufferPool
 {
 public :
         typedef T value_type;
-        typedef T* value_ptr;
 
-        bool init(size_t buffer_size, size_t count)
+        BufferPool(size_t buffer_size, size_t count)
         {
                 buffer_list_.reserve(count);
                 for (size_t i=0; i<count; ++i)
@@ -17,13 +16,11 @@ public :
                 max_pos_ = buffer_list_.size();
                 cur_pos_ = 0;
                 max_buffer_size_ = buffer_size;
-
-                return true;
         }
 
-        inline value_ptr malloc_buffer()
+        inline value_type malloc_buffer()
         {
-                value_ptr ret = nullptr;
+                value_type ret = nullptr;
                 {
                         std::lock_guard<std::mutex> lock(mutex_);
                         if (cur_pos_ < max_pos_)
@@ -32,12 +29,12 @@ public :
                 return ret;
         }
 
-        inline void free_buffer(value_ptr buff)
+        inline void free_buffer(value_type buff)
         {
                 {
                         std::lock_guard<std::mutex> lock(mutex_);
-                        if (cur_pos_ >= 0)
-                                buffer_list_[cur_pos_--] = buff;
+                        if (cur_pos_ > 0)
+                                buffer_list_[--cur_pos_] = buff;
                 }
         }
 
@@ -50,7 +47,7 @@ public :
         }
 
 private :
-        std::vector<value_ptr> buffer_list_;
+        std::vector<value_type> buffer_list_;
         size_t max_pos_;
         size_t cur_pos_;
         size_t max_buffer_size_;
