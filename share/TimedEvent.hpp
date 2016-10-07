@@ -47,6 +47,7 @@ uint64_t TimedEventData::s_id_ = 0;
 
 struct by_over_time {};
 struct by_id {};
+struct by_removed {};
 
 typedef boost::multi_index::multi_index_container <
         TimedEventData*,
@@ -62,12 +63,19 @@ typedef boost::multi_index::multi_index_container <
         boost::multi_index::hashed_unique <
         boost::multi_index::tag<by_id>,
         boost::multi_index::member<TimedEventData, uint64_t, &TimedEventData::id_>
+        >,
+
+        boost::multi_index::ordered_non_unique <
+        boost::multi_index::tag<by_removed>,
+        boost::multi_index::member<TimedEventData, bool, &TimedEventData::is_removed_>
         >
+
         >
 > TimedEventListType;
 typedef TimedEventListType::nth_index<0>::type            search_by_sequenced;
 typedef TimedEventListType::index<by_over_time>::type     search_by_over_time;
 typedef TimedEventListType::index<by_id>::type            search_by_id;
+typedef TimedEventListType::index<by_removed>::type       search_by_removed;
 
 class TimedEvent
 {
@@ -85,7 +93,7 @@ public :
                         TimedEventData* data = *it;
                         if (nullptr != data)
                         {
-                                if (data->is_stop_)
+                                if (data->is_stop_ && data->is_removed_)
                                 {
                                         ++it;
                                         continue;
@@ -105,6 +113,12 @@ public :
                         delete data;
                         it = seq.erase(it);
                 }
+
+                search_by_removed& seq_removed = mTimedEventList.get<by_removed>();
+                auto range = seq_removed.equal_range(true);
+                for (auto it=range.first; range.second!=it; ++it)
+                        delete *it;
+                seq_removed.erase(range.first, range.second);
         }
 
         inline uint64_t Add(double overTime, TimedEventCallbackType cb, float interval=.0f, int32_t loopCnt=1)
@@ -131,6 +145,7 @@ public :
                         if (nullptr != data)
                         {
                                 data->is_removed_ = true;
+                                seq.replace(it, data);
                                 return true;
                         }
                 }
