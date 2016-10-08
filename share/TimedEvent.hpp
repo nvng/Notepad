@@ -17,8 +17,6 @@ public :
                   , over_time_(over_time)
                   , interval_(interval)
                   , loop_count_(loop_count)
-                  , is_removed_(false)
-                  , is_stop_(false)
                   , cb_(cb)
         {
         }
@@ -27,8 +25,6 @@ public :
         double  over_time_;
         float   interval_;
         int32_t loop_count_; // -1 forever
-        bool    is_removed_;
-        bool    is_stop_;
         TimedEventCallbackType cb_;
 
 private :
@@ -47,7 +43,6 @@ uint64_t TimedEventData::s_id_ = 0;
 
 struct by_over_time {};
 struct by_id {};
-struct by_removed {};
 
 typedef boost::multi_index::multi_index_container <
         TimedEventData*,
@@ -63,27 +58,47 @@ typedef boost::multi_index::multi_index_container <
         boost::multi_index::hashed_unique <
         boost::multi_index::tag<by_id>,
         boost::multi_index::member<TimedEventData, uint64_t, &TimedEventData::id_>
-        >,
-
-        boost::multi_index::ordered_non_unique <
-        boost::multi_index::tag<by_removed>,
-        boost::multi_index::member<TimedEventData, bool, &TimedEventData::is_removed_>
         >
 
         >
 > TimedEventListType;
+
 typedef TimedEventListType::nth_index<0>::type            search_by_sequenced;
 typedef TimedEventListType::index<by_over_time>::type     search_by_over_time;
 typedef TimedEventListType::index<by_id>::type            search_by_id;
-typedef TimedEventListType::index<by_removed>::type       search_by_removed;
 
 class TimedEvent
 {
 public :
         typedef TimedEventData::TimedEventCallbackType TimedEventCallbackType;
 
+        TimedEvent()
+        {
+                mRemovedList.reserve(100);
+                mAddedList.reserve(100);
+        }
+
         void Update(double now)
         {
+                for (auto val : mAddedList)
+                {
+                        if (nullptr != val)
+                                mTimedEventList.push_back(val);
+                }
+                mAddedList.clear();
+
+                search_by_id& seq_id = mTimedEventList.get<by_id>();
+                for (auto id : mRemovedList)
+                {
+                        auto it = seq_id.find(id);
+                        if (seq_id.end() != it)
+                        {
+                                delete *it;
+                                seq_id.erase(it);
+                        }
+                }
+                mRemovedList.clear();
+
                 search_by_over_time& seq = mTimedEventList.get<by_over_time>();
 
                 auto ie = seq.upper_bound(now);
@@ -93,15 +108,9 @@ public :
                         TimedEventData* data = *it;
                         if (nullptr != data)
                         {
-                                if (data->is_stop_ && data->is_removed_)
-                                {
-                                        ++it;
-                                        continue;
-                                }
-
                                 data->cb_(data->id_);
 
-                                if (!data->is_removed_ && (-1 == data->loop_count_ || --(data->loop_count_) > 0))
+                                if (-1 == data->loop_count_ || --(data->loop_count_) > 0)
                                 {
                                         data->over_time_ = now + data->interval_;
                                         seq.replace(it, data);
@@ -113,12 +122,6 @@ public :
                         delete data;
                         it = seq.erase(it);
                 }
-
-                search_by_removed& seq_removed = mTimedEventList.get<by_removed>();
-                auto range = seq_removed.equal_range(true);
-                for (auto it=range.first; range.second!=it; ++it)
-                        delete *it;
-                seq_removed.erase(range.first, range.second);
         }
 
         inline uint64_t Add(double overTime, TimedEventCallbackType cb, float interval=.0f, int32_t loopCnt=1)
@@ -128,75 +131,22 @@ public :
                         TimedEventData* data = new TimedEventData(overTime, interval, loopCnt, cb);
                         if (nullptr != data)
                         {
-                                mTimedEventList.push_back(data);
+                                mAddedList.push_back(data);
                                 return data->id_;
                         }
                 }
                 return 0;
         }
 
-        inline bool Remove(uint64_t id)
-        {
-                search_by_id& seq = mTimedEventList.get<by_id>();
-                auto it = seq.find(id);
-                if (seq.end() != it)
-                {
-                        TimedEventData* data = *it;
-                        if (nullptr != data)
-                        {
-                                data->is_removed_ = true;
-                                seq.replace(it, data);
-                                return true;
-                        }
-                }
-                return false;
-        }
-
-        inline void Stop(uint64_t id)
-        {
-                search_by_id& seq = mTimedEventList.get<by_id>();
-                auto it = seq.find(id);
-                if (seq.end() != it)
-                {
-                        TimedEventData* data = *it;
-                        if (nullptr != data)
-                                data->is_stop_ = true;
-                }
-        }
-
-        inline bool Resume(uint64_t id, double now)
-        {
-                search_by_id& seq = mTimedEventList.get<by_id>();
-                auto it = seq.find(id);
-                if (seq.end() != it)
-                {
-                        TimedEventData* data = *it;
-                        if (nullptr != data)
-                        {
-                                data->is_stop_ = false;
-                                data->over_time_ = now + data->interval_;
-                                seq.replace(it, data);
-                                return true;
-                        }
-                }
-                return false;
-        }
-
-        /*
         inline void Remove(uint64_t id)
         {
-                search_by_id& seq = mTimedEventList.get<by_id>();
-                auto it = seq.find(id);
-                if (seq.end() != it)
-                {
-                        delete *it;
-                        seq.erase(it);
-                }
+                mRemovedList.push_back(id);
         }
-        */
 
 private :
         TimedEventListType mTimedEventList;
+        std::vector<uint64_t> mRemovedList;
+        std::vector<TimedEventData*> mAddedList;
 };
 
 #endif // __TIMED_EVENT_HPP__

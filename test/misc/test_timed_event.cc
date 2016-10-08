@@ -5,38 +5,39 @@ int main(void)
         TimedEvent te;
         CClock::UpdateTime();
 
-        double now = GET_NOW();
-        bool is_stop = false;
-        uint64_t id = te.Add(now+1, [&](uint64_t id)
+        std::function<void(uint64_t)> func1 = [&](uint64_t id)
         {
                 static int cnt = 0;
                 ++cnt;
                 printf("call back now = %lf\n", GET_NOW());
-                if (cnt == 5)
+                if (cnt >= 5)
                 {
-                        is_stop = true;
-                        te.Stop(id);
-                }
-        }, 1.0f, 10);
+                        cnt = 0;
+                        te.Remove(id);
+                        auto func2 = [&](uint64_t id)
+                        {
+                                ++cnt;
+                                printf("22222 call back now = %lf\n", GET_NOW());
+                                if (cnt >= 3)
+                                {
+                                        cnt = 0;
+                                        te.Remove(id);
+                                        te.Add(GET_NOW()+1, func1, 1.0, 10);
+                                }
+                        };
 
-        static int32_t cnt = 0;
+                        te.Add(GET_NOW()+2, func2, 2.0, 5);
+                }
+        };
+
+        te.Add(GET_NOW()+1, func1, 1.0, 10);
+
         while (true)
         {
                 CClock::UpdateTime();
 
                 te.Update(GET_NOW());
-                std::this_thread::sleep_for(std::chrono::microseconds(16667));
-
-                if (is_stop)
-                {
-                        ++cnt;
-                        if (cnt >= 180)
-                        {
-                                is_stop = false;
-                                bool ret = te.Resume(id, GET_NOW());
-                                printf("ret = %s\n", ret ? "true" : "false");
-                        }
-                }
+                std::this_thread::sleep_for(std::chrono::microseconds(15000));
         }
 
         return 0;
