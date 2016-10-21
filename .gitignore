@@ -1,6 +1,10 @@
-*.bak/*
+*.bak
 .*.swp
 *.out
+*.d
+*.o
+*.gch
+*.pb.*
 
 !main.out
 
