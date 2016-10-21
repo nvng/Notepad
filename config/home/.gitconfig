@@ -15,3 +15,6 @@
 # git config --global difftool.prompt false
 # git config --global alias.d difftool
 # 使用 git d 打开对比代码
+
+# 删除文件
+# 在本地删除后，执行 git add -A .
