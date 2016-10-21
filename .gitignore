@@ -4,6 +4,7 @@
 *.[od]
 *.gch
 *.pb.*
+*.json
 
 !main.out
 

@@ -84,6 +84,8 @@ public :
                 {
                         if (nullptr != val)
                                 mTimedEventList.push_back(val);
+                        else
+                                ; // printf("add nullptr == val\n");
                 }
                 mAddedList.clear();
 
@@ -103,24 +105,27 @@ public :
 
                 auto ie = seq.upper_bound(now);
                 auto it = seq.begin();
+                printf("count = %lu\n", std::distance(it, ie));
                 while (ie != it)
                 {
                         TimedEventData* data = *it;
                         if (nullptr != data)
                         {
+                                printf("nullptr != data\n");
                                 data->cb_(data->id_);
 
                                 if (-1 == data->loop_count_ || --(data->loop_count_) > 0)
                                 {
                                         data->over_time_ = now + data->interval_;
+                                        printf("before size = %lu\n", seq.size());
                                         seq.replace(it, data);
-                                        ++it;
-                                        continue;
+                                        printf("after  size = %lu\n", seq.size());
+                                        // ++it;
+                                        // continue;
                                 }
                         }
+                        ++it;
 
-                        delete data;
-                        it = seq.erase(it);
                 }
         }
 

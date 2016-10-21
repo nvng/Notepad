@@ -6,6 +6,14 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
+#include <algorithm>
+#include <bitset>
+#include <thread>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 #include <memory>
 
@@ -13,10 +21,12 @@
 #include <cstring>
 
 #include <unistd.h>
-#include <algorithm>
+#include <assert.h>
 
 #include "Clock.hpp"
 #include "NonCopyable.hpp"
 #include "DoubleQueue.hpp"
+#include "TimedEvent.hpp"
+#include "Util.hpp"
 
 #endif // __PRE_COMPILED_H__
