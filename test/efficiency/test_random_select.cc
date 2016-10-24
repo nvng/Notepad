@@ -1,4 +1,5 @@
-#define MAX_COUNT (1000 * 100)
+#define MAX_COUNT (1000 * 1000)
+#define LOOP_COUNT (1000 * 1000)
 
 int main()
 {
@@ -13,12 +14,15 @@ int main()
                 rs.Add(1+rand() % 999, key);
         }
 
-        const int64_t sum = rs.GetSum();
-        for (int64_t i=0; i<sum; ++i)
         {
-                void* key = rs.Get(i);
-                if (nullptr == key)
-                        printf("nullptr == key\n");
+                int64_t sum = rs.GetSum();
+                CTimeCost t("randomSelect");
+                for (int i=0; i<LOOP_COUNT; ++i)
+                {
+                        void* key = rs.Get(rand()%sum);
+                        if (nullptr == key)
+                                printf("nullptr == key\n");
+                }
         }
 
         for (auto key : newList)
