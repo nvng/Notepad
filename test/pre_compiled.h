@@ -28,5 +28,6 @@
 #include "DoubleQueue.hpp"
 #include "TimedEvent.hpp"
 #include "Util.hpp"
+#include "RandomSelect.hpp"
 
 #endif // __PRE_COMPILED_H__
