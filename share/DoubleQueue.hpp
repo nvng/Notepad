@@ -13,13 +13,13 @@ public :
         typedef T value_type;
         typedef std::vector<value_type> QueueType;
 
-        inline void PushItem(T item)
+        inline void PushItem(value_type item)
         {
                 std::lock_guard<std::mutex> lock(mMutex);
                 mQueue[1].push_back(item);
         }
 
-        inline std::vector<T>& GetQueue()
+        inline QueueType& GetQueue()
         {
                 {
                         std::lock_guard<std::mutex> lock(mMutex);

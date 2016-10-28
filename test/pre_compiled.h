@@ -26,6 +26,7 @@
 #include "Clock.hpp"
 #include "NonCopyable.hpp"
 #include "DoubleQueue.hpp"
+#include "DoubleQueue2.hpp"
 #include "TimedEvent.hpp"
 #include "Util.hpp"
 #include "RandomSelect.hpp"

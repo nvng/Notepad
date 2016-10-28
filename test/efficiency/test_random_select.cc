@@ -1,5 +1,5 @@
-#define MAX_COUNT (1000 * 1000)
-#define LOOP_COUNT (1000 * 1000)
+#define MAX_COUNT (1000 * 1)
+#define LOOP_COUNT (1000 * 1000 * 10)
 
 int main()
 {
