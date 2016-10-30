@@ -30,5 +30,6 @@
 #include "TimedEvent.hpp"
 #include "Util.hpp"
 #include "RandomSelect.hpp"
+#include "BufferPool2.hpp"
 
 #endif // __PRE_COMPILED_H__

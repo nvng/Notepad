@@ -103,6 +103,7 @@ public :
 
                 search_by_over_time& seq = mTimedEventList.get<by_over_time>();
 
+                // std::vector<TimedEventData*> remove
                 auto ie = seq.upper_bound(now);
                 auto it = seq.begin();
                 printf("count = %lu\n", std::distance(it, ie));
@@ -125,7 +126,6 @@ public :
                                 }
                         }
                         ++it;
-
                 }
         }
 
