@@ -5,6 +5,8 @@
 *.gch
 *.pb.*
 *.json
+project/nginx-1.11.4/Makefile
+project/nginx-1.11.4/objs/
 
 !main.out
 
