@@ -4,6 +4,12 @@ endif
 
 CC	= $(CCACHE) g++
 
+# ifeq ($(debug),y)
+# 	CC_FLAG	= -g -std=c++11 -Wall -Werror -finstrument-functions -O0
+# else
+# 	CC_FLAG	= -DNDEBUG -std=c++11 -Wall -Werror -finstrument-functions -O2
+# endif
+
 ifeq ($(debug),y)
 	CC_FLAG	= -g -std=c++11 -Wall -Werror -O0
 else
