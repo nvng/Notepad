@@ -306,6 +306,10 @@ ngx_init_signals(ngx_log_t *log)
 }
 
 
+/*
+ * 根据当前信号值对相应的旗标变量做设置
+ * 实际处理的逻辑必须放在主体代码中执行
+ */
 void
 ngx_signal_handler(int signo)
 {

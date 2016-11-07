@@ -133,6 +133,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
     // 产生子进程 worker_processes 指定子进程个数
     ngx_start_worker_processes(cycle, ccf->worker_processes,
                                NGX_PROCESS_RESPAWN);
+    // Cache 主要处理超时事件
     ngx_start_cache_manager_processes(cycle, 0);
 
     ngx_new_binary = 0;
@@ -164,6 +165,8 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
 
         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "sigsuspend");
 
+        // 挂起进程，直到收到信号为止。
+        // 执行信号处理函数（主要是设置旗标变量）
         sigsuspend(&set);
 
         ngx_time_update();
@@ -178,6 +181,8 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
             live = ngx_reap_children(cycle);
         }
 
+        // ngx_quit 会让监控进程做一些清理工作且等待子进程也完全清理并退出之后才终止
+        // ngx_terminate 比 ngx_quit 更为粗暴，通过使用 SIGKILL 信号能保证在一段时间后必定结束
         if (!live && (ngx_terminate || ngx_quit)) {
             ngx_master_process_exit(cycle);
         }
@@ -221,6 +226,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
             continue;
         }
 
+        // 重新加载配置
         if (ngx_reconfigure) {
             ngx_reconfigure = 0;
 
@@ -755,6 +761,7 @@ ngx_worker_process_cycle(ngx_cycle_t *cycle, void *data)
 
         ngx_log_debug0(NGX_LOG_DEBUG_EVENT, cycle->log, 0, "worker cycle");
 
+        // 调到对应的事件监控阻塞点，如 epoll_wait
         ngx_process_events_and_timers(cycle);
 
         if (ngx_terminate) {
@@ -1113,6 +1120,7 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
      */
     ngx_process = NGX_PROCESS_HELPER;
 
+    // Cache 进程不接收客户端请求
     ngx_close_listening_sockets(cycle);
 
     /* Set a moderate number of connections for a helper process. */
@@ -1124,6 +1132,9 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
     ev.handler = ctx->handler;
     ev.data = ident;
     ev.log = cycle->log;
+
+    // 并没有特别的设定功能，仅只是因为事件对象的 data 字段一般挂载的是 connect 对象，
+    // 此处设置为 -1 刚好把 connect 对象的 fd 字段设置为 -1，以避免在其它代码里走到异常逻辑。
     ident[3] = (void *) -1;
 
     ngx_use_accept_mutex = 0;
