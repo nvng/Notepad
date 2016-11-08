@@ -183,6 +183,10 @@ ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,
     ngx_process_slot = s;
 
 
+    // fork() 之后，channel[0] 给父进程，channel[1] 给子进程
+    // 这样分别错开地使用不同 socket 描述符，即可实现父子进程之间的双向通信
+    // 在后生成的子进程必须利用已知的在前生成子进程的 channel[0] 进行主动告知自己持有的 socketpair之一
+    // ngx_worker_process_init
     pid = fork();
 
     switch (pid) {

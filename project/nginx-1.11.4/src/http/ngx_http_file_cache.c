@@ -1896,7 +1896,10 @@ ngx_http_file_cache_delete(ngx_http_file_cache_t *cache, ngx_queue_t *q,
     }
 }
 
-
+/*
+ * 1，删除已过期的缓存文件
+ * 2，检查缓存文件总大小是否超限，如果超限由进行强制删除
+ */
 static time_t
 ngx_http_file_cache_manager(void *data)
 {
@@ -1940,7 +1943,10 @@ ngx_http_file_cache_manager(void *data)
     }
 }
 
-
+/*
+ * 给磁盘缓存管理对象对应路径下的缓存文件建立对应的红黑树
+ * 从而让 nginx 可以继续使用上次缓存的文件
+ */
 static void
 ngx_http_file_cache_loader(void *data)
 {

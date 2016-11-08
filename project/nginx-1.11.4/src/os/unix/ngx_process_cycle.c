@@ -373,6 +373,8 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
         ch.slot = ngx_process_slot;
         ch.fd = ngx_processes[ngx_process_slot].channel[0];
 
+        // 把这个子进程的相关信息告知组其前面生成的子进程
+        // 其中相关信息为 子进程持有的 socketpair
         ngx_pass_open_channel(cycle, &ch);
     }
 }
@@ -456,6 +458,9 @@ ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
 
         /* TODO: NGX_AGAIN */
 
+        // 通过继承的 channel[0] 描述符进行信息主动告知
+        // 收到信息的子进程将执行设置好的回调ngx_channel_handler
+        // 把接收到的新子进程A的相关信息存储在全局变量 ngx_processes 内
         ngx_write_channel(ngx_processes[i].channel[0],
                           ch, sizeof(ngx_channel_t), cycle->log);
     }
@@ -947,6 +952,7 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
     ngx_last_process = 0;
 #endif
 
+    // ngx_channel 也就是 channel[1] 加入到读事件监听集里
     if (ngx_add_channel_event(cycle, ngx_channel, NGX_READ_EVENT,
                               ngx_channel_handler)
         == NGX_ERROR)
@@ -1077,6 +1083,7 @@ ngx_channel_handler(ngx_event_t *ev)
             ngx_reopen = 1;
             break;
 
+        // 把接收到的新子进程A的相关信息存储在全局变量 ngx_processes 内
         case NGX_CMD_OPEN_CHANNEL:
 
             ngx_log_debug3(NGX_LOG_DEBUG_CORE, ev->log, 0,
@@ -1141,7 +1148,7 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
 
     ngx_setproctitle(ctx->name);
 
-    ngx_add_timer(&ev, ctx->delay);
+    ngx_add_timer(&ev, ctx->delay); // delay 为 0
 
     for ( ;; ) {
 
@@ -1160,7 +1167,12 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
     }
 }
 
-
+/*
+ * 调用每一个磁盘缓存管理对象的manager()函数，
+ * 然后重新设置事件对象的下一次超时时刻后返回。
+ * manager函数为ngx_http_file_cache_manager，
+ * 这是 nginx 调用 ngx_http_file_cache_set_solt 函数设置的回调。
+ */
 static void
 ngx_cache_manager_process_handler(ngx_event_t *ev)
 {
@@ -1189,7 +1201,11 @@ ngx_cache_manager_process_handler(ngx_event_t *ev)
     ngx_add_timer(ev, next * 1000);
 }
 
-
+/*
+ * 执行每一个磁盘缓存管理对象的loader回调函数
+ * 一次性加载
+ * 对应的 loader 函数被设置为 ngx_http_file_cache_loader
+ */
 static void
 ngx_cache_loader_process_handler(ngx_event_t *ev)
 {
