@@ -14,7 +14,7 @@ public :
         typedef T value_type;
         typedef DoubleQueue<value_type> DoubleQueueType;
 
-        DoubleQueue2() : queue_(mQueue.GetQueue()), idx_(0) {}
+        DoubleQueue2() : queue_(nullptr), idx_(0) {}
 
         inline void PushItem(value_type item)
         {
@@ -25,10 +25,10 @@ public :
         inline bool TryGet(value_type& val)
         {
                 std::lock_guard<std::mutex> lock(mMutex);
-                if (queue_.empty())
+                if (nullptr==queue_ || queue_->empty())
                         queue_ = mQueue.GetQueue();
 
-                if (queue_.empty())
+                if (queue_->empty())
                         return false;
                 else
                 {
@@ -40,11 +40,13 @@ public :
         inline value_type WaitGet()
         {
                 std::unique_lock<std::mutex> lock(mMutex);
-                while (queue_.empty())
+                while (nullptr==queue_ || queue_->empty())
                 {
                         queue_ = mQueue.GetQueue();
-                        if (queue_.empty())
+                        if (queue_->empty())
                                 cond.wait(lock);
+                        else
+                                printf("queue size = %lu\n", queue_->size());
                 }
 
                 return GetValue();
@@ -53,17 +55,17 @@ public :
 private :
         inline value_type& GetValue() // queue_ is not null
         {
-                value_type& ret = queue_[idx_++];
-                if (idx_ >= queue_.size())
+                value_type& ret = (*queue_)[idx_++];
+                if (idx_ >= queue_->size())
                 {
-                        queue_.clear();
+                        queue_->clear();
                         idx_ = 0;
                 }
                 return ret;
         }
 
         DoubleQueue<value_type> mQueue;
-        typename DoubleQueueType::QueueType& queue_;
+        typename DoubleQueueType::QueueType* queue_;
         std::mutex mMutex;
         std::condition_variable cond;
         std::size_t idx_;

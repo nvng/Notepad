@@ -13,7 +13,7 @@ void waitDeal(int32_t idx)
                         printf("nullptr == val\n");
                 // printf("thread[%d] val[%d]\n", idx, *val);
                 delete val;
-                std::this_thread::sleep_for(std::chrono::microseconds(1));
+                // std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
 }
 
@@ -49,9 +49,11 @@ int main(void)
         std::this_thread::sleep_for(std::chrono::seconds(1));
         while (true)
         {
-                std::this_thread::sleep_for(std::chrono::microseconds(15000));
+                // std::this_thread::sleep_for(std::chrono::microseconds(15000));
                 // std::this_thread::sleep_for(std::chrono::seconds(1));
-                for (int i=0; i<100; ++i)
+                // std::this_thread::sleep_for(std::chrono::microseconds(1));
+
+                // for (int i=0; i<100; ++i)
                         gDoubleQueue.PushItem(new int32_t(++cnt));
         }
 
