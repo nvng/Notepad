@@ -26,11 +26,20 @@ typedef struct ngx_shm_zone_s  ngx_shm_zone_t;
 
 typedef ngx_int_t (*ngx_shm_zone_init_pt) (ngx_shm_zone_t *zone, void *data);
 
+/*
+ * shm.name 字段与 tag 字段区别
+ * shm.name 字段主要作用是共享内存的唯一标识，它能让 Nginx 知道我想使用哪个共享内存，
+ *          但没法让 Nginx 区分我到底是想新创建一个共享内存，还是使用那个已经存在的旧的共享内存。
+ * tag 字段用于做上述问题的标识冲突，它一般指向当前模块的 ngx_module_t 变量即可。
+ *
+ * Nginx 根据配置创建共享内存时，只是创建了 ngx_shm_zone_t 变量，
+ *       具体实现在函数 ngx_shared_memory_add 内。
+ */
 struct ngx_shm_zone_s {
     void                     *data;
     ngx_shm_t                 shm;
-    ngx_shm_zone_init_pt      init;
-    void                     *tag;
+    ngx_shm_zone_init_pt      init; // 初始回调函数
+    void                     *tag; // 标签
     ngx_uint_t                noreuse;  /* unsigned  noreuse:1; */
 };
 
