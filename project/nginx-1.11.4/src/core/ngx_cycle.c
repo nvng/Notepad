@@ -402,6 +402,7 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
 
     /* create shared memory */
 
+    // 遍历链表并逐个进行实际创建，即分配内存、管理机制（如锁、slab）初始化等。
     part = &cycle->shared_memory.part;
     shm_zone = part->elts;
 
@@ -474,14 +475,19 @@ ngx_init_cycle(ngx_cycle_t *old_cycle)
             break;
         }
 
+        // 共享内存实际分配，针对当前系统可提供接口。
         if (ngx_shm_alloc(&shm_zone[i].shm) != NGX_OK) {
             goto failed;
         }
 
+        // 共享内存管理机制的初始化
+        // 共享内存所涉及的两个主题：互斥问题，性能问题（默认以slab的高效访问机制初始化）
         if (ngx_init_zone_pool(cycle, &shm_zone[i]) != NGX_OK) {
             goto failed;
         }
 
+        // 回调函数 init 是各个共享内存所特定的。
+        // 如：ngx_http_limit_req_module 模块的 init 函数 ngx_http_limit_req_init_zone
         if (shm_zone[i].init(&shm_zone[i], NULL) != NGX_OK) {
             goto failed;
         }

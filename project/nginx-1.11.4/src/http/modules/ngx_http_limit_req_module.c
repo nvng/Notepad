@@ -605,7 +605,7 @@ ngx_http_limit_req_expire(ngx_http_limit_req_ctx_t *ctx, ngx_uint_t n)
     }
 }
 
-
+// http 模块共享内存初始化函数
 static ngx_int_t
 ngx_http_limit_req_init_zone(ngx_shm_zone_t *shm_zone, void *data)
 {
@@ -644,6 +644,7 @@ ngx_http_limit_req_init_zone(ngx_shm_zone_t *shm_zone, void *data)
         return NGX_OK;
     }
 
+    // 根据自身模块逻辑对共享内存的使用做相关初始化。
     ctx->sh = ngx_slab_alloc(ctx->shpool, sizeof(ngx_http_limit_req_shctx_t));
     if (ctx->sh == NULL) {
         return NGX_ERROR;
