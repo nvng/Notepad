@@ -74,6 +74,8 @@ class TimedEvent
 {
 public :
         typedef TimedEventData::TimedEventCallbackType TimedEventCallbackType;
+        typedef std::function<double()> GetTimestampFuncType;
+        TimedEvent(GetTimestampFuncType func) : mGetCurTimestamp(func) {}
 
         ~TimedEvent()
         {
@@ -85,12 +87,11 @@ public :
                         delete val;
         }
 
-        void Update(double now)
+        inline void Update()
         {
                 for (auto val : mAddedList)
                 {
-                        if (nullptr != val)
-                                mTimedEventList.push_back(val);
+                        mTimedEventList.push_back(val);
                 }
                 mAddedList.clear();
 
@@ -106,6 +107,7 @@ public :
                 }
                 mRemovedList.clear();
 
+                const double now = mGetCurTimestamp();
                 search_by_over_time& seq_over_time = mTimedEventList.get<by_over_time>();
                 auto ie = seq_over_time.upper_bound(now);
                 for (auto it=seq_over_time.begin(); ie!=it; ++it)
@@ -155,8 +157,7 @@ public :
         }
 
 private :
-
-
+        const GetTimestampFuncType mGetCurTimestamp;
         TimedEventListType mTimedEventList;
         std::vector<uint64_t> mRemovedList;
         std::vector<TimedEventData*> mAddedList;
