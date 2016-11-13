@@ -55,13 +55,17 @@ private :
 
 int main(void)
 {
+        assert(false);
+
         TimedEventListType testList;
 
+        /*
         for (int i=0; i<MAX_LOOP_CNT; ++i)
         {
                 TimedEventData* data = new TimedEventData(1.0+i, i, i, [](uint64_t){});
                 testList.push_back(data);
         }
+        */
 
         /*
         search_by_over_time& seq = testList.get<by_over_time>();

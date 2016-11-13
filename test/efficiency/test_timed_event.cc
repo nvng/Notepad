@@ -1,6 +1,6 @@
 int main(void)
 {
-        TimedEvent t;
+        TimedEvent t(CClock::GetTimeStamp);
         srand(time(NULL));
         CClock::UpdateTime();
 
@@ -23,7 +23,6 @@ int main(void)
         while (1)
         {
                 CClock::UpdateTime();
-                uint64_t now = CClock::GetTimeStamp();
 
                 CTimeCost* t_cost = nullptr;
                 if (is_start)
@@ -31,7 +30,7 @@ int main(void)
                         printf("start\n");
                         t_cost = new CTimeCost("cost");
                 }
-                t.Update(now);
+                t.Update();
                 if (nullptr != t_cost)
                 {
                         delete t_cost;

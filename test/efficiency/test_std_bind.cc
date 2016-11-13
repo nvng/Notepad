@@ -23,7 +23,7 @@ int main(void)
                 Test test;
                 CTimeCost t("bind");
                 for (int i=0; i<MAX_SIZE; ++i)
-                        cbList.push_back(std::bind(&Test::TestBind, test, i));
+                        cbList[i] = std::bind(&Test::TestBind, test, i);
         }
         printf("cbList.size() = %lu\n", cbList.size());
 
