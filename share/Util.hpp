@@ -1,3 +1,6 @@
+#ifndef __UTIL_HPP__
+#define __UTIL_HPP__
+
 void PrintBit(const char* p, size_t size, int perLine=10)
 {
         assert(perLine >= 1);
@@ -37,7 +40,9 @@ inline int32_t Rand(int32_t Low, int32_t Up)
         return (int32_t)(double(rand()) / (RAND_MAX) * (Up - Low)) + Low;
 }
 
-#define FLAG_ADD(val, flag) ((int&)val) |= (flag)
-#define FLAG_SET(val, flag) ((int&)val) = (flag)
-#define FLAG_DEL(val, flag) ((int&)val) &= ~(flag)
+#define FLAG_ADD(val, flag) (((int&)val) |= (flag))
+#define FLAG_SET(val, flag) (((int&)val) = (flag))
+#define FLAG_DEL(val, flag) (((int&)val) &= ~(flag))
 #define FLAG_HAS(val, flag) ((((int&)val) & (flag)) != 0)
+
+#endif // __UTIL_HPP__
