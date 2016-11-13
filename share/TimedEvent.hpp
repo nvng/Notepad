@@ -42,6 +42,8 @@ uint64_t TimedEventData::s_guid_ = 0;
 
 #include <boost/multi_index/member.hpp>
 
+struct TimedEventData;
+
 struct by_over_time {};
 struct by_guid {};
 
@@ -106,7 +108,6 @@ public :
 
                 search_by_over_time& seq_over_time = mTimedEventList.get<by_over_time>();
                 auto ie = seq_over_time.upper_bound(now);
-                printf("count = %lu\n", std::distance(seq_over_time.begin(), ie));
                 for (auto it=seq_over_time.begin(); ie!=it; ++it)
                 {
                         TimedEventData* data = *it;
@@ -154,6 +155,8 @@ public :
         }
 
 private :
+
+
         TimedEventListType mTimedEventList;
         std::vector<uint64_t> mRemovedList;
         std::vector<TimedEventData*> mAddedList;
