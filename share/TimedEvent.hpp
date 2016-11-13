@@ -1,37 +1,38 @@
 #ifndef __TIMED_EVENT_HPP__
 #define __TIMED_EVENT_HPP__
 
-#include <map>
 #include <vector>
 #include <functional>
 
 class TimedEventData
 {
 public :
-        typedef std::function<void(uint64_t)> TimedEventCallbackType;
+        typedef std::function<void(void*, bool)> TimedEventCallbackType;
         TimedEventData(double over_time,
                         double interval,
                         int32_t loop_count,
                         TimedEventCallbackType cb)
-                : id_(++s_id_)
+                : guid_(++s_guid_)
                   , over_time_(over_time)
                   , interval_(interval)
                   , loop_count_(loop_count)
+                  , data_(nullptr)
                   , cb_(cb)
         {
         }
 
-        uint64_t id_;
-        double  over_time_;
-        float   interval_;
-        int32_t loop_count_; // -1 forever
+        uint64_t guid_;
+        double   over_time_;
+        double   interval_;
+        int32_t  loop_count_; // -1 forever
+        void*    data_;
         TimedEventCallbackType cb_;
 
 private :
-        static uint64_t s_id_;
+        static uint64_t s_guid_;
 };
 
-uint64_t TimedEventData::s_id_ = 0;
+uint64_t TimedEventData::s_guid_ = 0;
 
 #include <boost/multi_index_container.hpp>
 
@@ -42,7 +43,7 @@ uint64_t TimedEventData::s_id_ = 0;
 #include <boost/multi_index/member.hpp>
 
 struct by_over_time {};
-struct by_id {};
+struct by_guid {};
 
 typedef boost::multi_index::multi_index_container <
         TimedEventData*,
@@ -56,8 +57,8 @@ typedef boost::multi_index::multi_index_container <
         >,
 
         boost::multi_index::hashed_unique <
-        boost::multi_index::tag<by_id>,
-        boost::multi_index::member<TimedEventData, uint64_t, &TimedEventData::id_>
+        boost::multi_index::tag<by_guid>,
+        boost::multi_index::member<TimedEventData, uint64_t, &TimedEventData::guid_>
         >
 
         >
@@ -65,17 +66,21 @@ typedef boost::multi_index::multi_index_container <
 
 typedef TimedEventListType::nth_index<0>::type            search_by_sequenced;
 typedef TimedEventListType::index<by_over_time>::type     search_by_over_time;
-typedef TimedEventListType::index<by_id>::type            search_by_id;
+typedef TimedEventListType::index<by_guid>::type            search_by_guid;
 
 class TimedEvent
 {
 public :
         typedef TimedEventData::TimedEventCallbackType TimedEventCallbackType;
 
-        TimedEvent()
+        ~TimedEvent()
         {
-                mRemovedList.reserve(100);
-                mAddedList.reserve(100);
+                for (auto& val : mAddedList)
+                        delete val;
+
+                search_by_sequenced& seq = mTimedEventList.get<0>();
+                for (auto& val : seq)
+                        delete val;
         }
 
         void Update(double now)
@@ -84,12 +89,10 @@ public :
                 {
                         if (nullptr != val)
                                 mTimedEventList.push_back(val);
-                        else
-                                ; // printf("add nullptr == val\n");
                 }
                 mAddedList.clear();
 
-                search_by_id& seq_id = mTimedEventList.get<by_id>();
+                auto& seq_id = mTimedEventList.get<by_guid>();
                 for (auto id : mRemovedList)
                 {
                         auto it = seq_id.find(id);
@@ -101,43 +104,45 @@ public :
                 }
                 mRemovedList.clear();
 
-                search_by_over_time& seq = mTimedEventList.get<by_over_time>();
-
-                // std::vector<TimedEventData*> remove
-                auto ie = seq.upper_bound(now);
-                auto it = seq.begin();
-                printf("count = %lu\n", std::distance(it, ie));
-                while (ie != it)
+                search_by_over_time& seq_over_time = mTimedEventList.get<by_over_time>();
+                auto ie = seq_over_time.upper_bound(now);
+                printf("count = %lu\n", std::distance(seq_over_time.begin(), ie));
+                for (auto it=seq_over_time.begin(); ie!=it; ++it)
                 {
                         TimedEventData* data = *it;
                         if (nullptr != data)
                         {
-                                printf("nullptr != data\n");
-                                data->cb_(data->id_);
-
-                                if (-1 == data->loop_count_ || --(data->loop_count_) > 0)
+                                bool has_next = -1==data->loop_count_ || --(data->loop_count_)>0;
+                                data->cb_(data->data_, has_next);
+                                if (has_next)
                                 {
                                         data->over_time_ = now + data->interval_;
-                                        printf("before size = %lu\n", seq.size());
-                                        seq.replace(it, data);
-                                        printf("after  size = %lu\n", seq.size());
-                                        // ++it;
-                                        // continue;
+                                        mAddedList.push_back(data);
+                                }
+                                else
+                                {
+                                        delete data;
                                 }
                         }
-                        ++it;
                 }
+                seq_over_time.erase(seq_over_time.begin(), ie);
         }
 
-        inline uint64_t Add(double overTime, TimedEventCallbackType cb, float interval=.0f, int32_t loopCnt=1)
+        inline uint64_t
+        Add(double overTime
+           , TimedEventCallbackType cb
+           , void* data
+           , double interval
+           , int32_t loopCnt)
         {
                 if (cb && interval>=.0f && (loopCnt>0 || loopCnt==-1))
                 {
-                        TimedEventData* data = new TimedEventData(overTime, interval, loopCnt, cb);
-                        if (nullptr != data)
+                        TimedEventData* ted = new TimedEventData(overTime, interval, loopCnt, cb);
+                        if (nullptr != ted)
                         {
-                                mAddedList.push_back(data);
-                                return data->id_;
+                                ted->data_ = data;
+                                mAddedList.push_back(ted);
+                                return ted->guid_;
                         }
                 }
                 return 0;
