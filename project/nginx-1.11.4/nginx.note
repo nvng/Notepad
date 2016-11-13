@@ -1,0 +1,147 @@
+调试准备：
+绑定 nginx 到 gdb 有以下方法：
+1，将 objs/Makefile 文件中的 CFLAGS 中加上 -g -O0 选项。
+2，./configure --with-cc-opt='-g -O0'
+3，CFLAGS="-g -O0" ./configure
+4，make CFLAGS="-g -O0"
+5，通过刷新所有源文件的timestamp。find . -name "*.c" | xorgs touch
+
+xorgs 命令需要安装
+
+强制执行 make 使用选项 -B 或 --always-make
+
+gdb 附加进程
+gdb -p 3906
+(gdb) attach 3906
+
+修改配置：
+worker_processes 1; // nginx 只运行一个工作进程，这样好调试
+
+nginx默认以daemon形式运行。
+在gdb中启动 nginx 前，需要设定 set follow_fork_mode child，让 gdb 跟踪 fork()之后的子进程，
+而 gdb 默认跟踪 fork() 之后的父进程。
+直接 daemon off; 算了
+
+master_process off; // 将监控进程逻辑和工作进程逻辑全部合在一个进程里。
+
+在 shell 里指定配置文件路径：
+gdb --args ./objs/nginx -c /usr/local/nginx/conf/nginx.conf
+gdb ./objs/nginx
+
+或者进入到gdb后，执行：
+r -c /usr/local/nginx/conf/nginx.conf
+或先执行 set args -c /usr/local/nginx/conf/nginx.conf 再执行 r
+
+watchpoints
+watch
+rwatch // 读操作
+awatch // 读/写操作
+
+nginx debug_points
+
+gdb sbin/nginx core.5242 // 调试 core
+
+如果要调试宏 则将 -g 改为 -ggdb3
+
+gdb directory命令
+
+strace/pstack
+
+gcc -finstrument-functions
+
+systemtap 内核探测工具
+
+11.1 加入调试信息后编译通过，可以以单进程、非daemon方式运行，但no_instrument_function还没法使用
+11.2 解决了昨天的问题，__no_instrument_function__，__cyg_profile_func_enter写成了__syg_profile_func_enter
+
+__no_instrument_function__ 出来的是函数地址，可以使用 addr2line 将地址转换为函数名及行数
+如：addr2line 0x44b2e4 -e git/Notepad/project/nginx-1.11.4/objs/nginx -f
+
+扩展：
+gcc -Map选项，有空再研究一下
+dmesg命令
+gcc 深入理解一下
+
+加桩调试 在 nginx.c 文件中添加代码，现在保存在 test 目录中
+slab 内存管理
+
+特殊应用逻辑的调试
+请求超时，但nginx超时函数没有反应，等以后熟悉点了，再过来测试。
+
+分析 Nginx 多进程模型的入口为主进程的 ngx_master_process_cycle() 函数
+
+ngx_master_process_cycle()
+{
+        1, 信号处理
+        2, ngx_start_worker_processes()
+        {
+                fork出子进程
+                ngx_worker_process_cycle()
+                {
+                        for (;;)
+                        {
+                        }
+                }
+        }
+
+        3, ngx_start_cache_manager_processes()
+        {
+                ngx_cache_manager_process_cycle(ngx_cache_manager_ctx)
+                {
+                }
+
+                ngx_cache_manager_process_cycle(ngx_cache_loader_ctx)
+                {
+                }
+        }
+}
+
+ngx_start_cache_manager_processes()
+{
+        ngx_close_listening_sockets();
+
+        ngx_add_timer();
+        for (;;)
+        {
+                ngx_process_events_and_timers()
+                {
+                        ngx_event_expire_timers()
+                        {
+                                ngx_cache_manager_process_handler();
+                                或
+                                ngx_cache_loader_process_handler();
+                        }
+                }
+        }
+}
+
+sigsuspend()函数使得监控进程的大部分时间都处于挂起等待状态，直到监控进程接收到信号为上。
+sigsuspend函数与 pause 函数区别
+
+ngx_signal_handler      信号处理函数一般都要求足够简单
+
+3.3.1 Cache 管理进程
+有一部份 Cache 函数调用在上面
+Cache 管理进程的任务就是清理超时缓存文件，限制缓存文件总大小
+ps 带上 f 参数以树目录的形式打印各个进程信息
+
+3.4 进程间通信
+Nginx 进程间通信使用 socketpair
+
+3.5 共享内存
+共享内存结构体ngx_shm_zone_t
+ngx_http_limit_req_zone()
+{
+        ngx_shared_memory_add()
+        {
+                ngx_list_push()
+        }
+}
+
+3.6 slab 机制
+Nginx 的 slab 机制与 Linuix 的 slab 机制基本原理基本相同，但 Linux 的要复杂得多。
+该机制基于两点：缓存与对齐
+缓存意味着内存池，对齐意味着内存的申请与分配总是按2的幂次方进行。
+Nginx 的 slab 机制主要是和共享内存一起使用，即对初始化好的共享内存做进一步的内部划分与管理。ngx_slab_init
+
+p50
