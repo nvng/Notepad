@@ -1,6 +1,7 @@
 #include "pre_compiled.h"
 
 std::mutex g_mutex;
+std::mutex g_mutex_2;
 
 const int32_t max_count = 1000 * 1000 * 10;
 int32_t count_per_thread = 0;
@@ -29,6 +30,7 @@ void threadDeal(int idx)
                 CTimeCost t("weak_ptr lock");
                 for (int32_t i=0; i<count_per_thread; ++i)
                 {
+                        std::lock_guard<std::mutex> lock(g_mutex_2);
                         tmp = wpi.lock();
                 }
                 printf("%d ", idx);
