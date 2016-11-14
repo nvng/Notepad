@@ -123,8 +123,10 @@ ngx_slab_init(ngx_slab_pool_t *pool)
                   ngx_align_ptr((uintptr_t) p + pages * sizeof(ngx_slab_page_t),
                                  ngx_pagesize);
 
+    // 末尾可能因为不够一个page内存页而被浪费掉，
+    // 此代码段做一次最终可用内存页的准确调整。
     m = pages - (pool->end - pool->start) / ngx_pagesize;
-    if (m > 0) {
+    if (m > 0) { // 说明对齐等操作导致实际可用内存页数减少
         pages -= m;
         pool->pages->slab = pages;
     }
@@ -168,6 +170,7 @@ ngx_slab_alloc_locked(ngx_slab_pool_t *pool, size_t size)
         page = ngx_slab_alloc_pages(pool, (size >> ngx_pagesize_shift)
                                           + ((size % ngx_pagesize) ? 1 : 0));
         if (page) {
+                // 根据页管理结构page获得对应内存页的起始地址。
             p = (page - pool->pages) << ngx_pagesize_shift;
             p += (uintptr_t) pool->start;
 

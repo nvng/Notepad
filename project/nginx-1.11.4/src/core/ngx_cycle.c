@@ -880,7 +880,7 @@ ngx_destroy_cycle_pools(ngx_conf_t *conf)
     ngx_destroy_pool(conf->pool);
 }
 
-
+// 共享内存分配好后进行的初始化调用。
 static ngx_int_t
 ngx_init_zone_pool(ngx_cycle_t *cycle, ngx_shm_zone_t *zn)
 {
@@ -940,6 +940,7 @@ ngx_init_zone_pool(ngx_cycle_t *cycle, ngx_shm_zone_t *zn)
         return NGX_ERROR;
     }
 
+    // 初始化核心函数
     ngx_slab_init(sp);
 
     return NGX_OK;
