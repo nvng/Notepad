@@ -147,4 +147,13 @@ Nginx 的 slab 机制主要是和共享内存一起使用，即对初始化好�
 扩展：nginx slab 机制对性能的提升
 对齐能提高对内存页的访问速度。
 
+slab 机制对这部分内存进行两级管理，page以及page内的slab块。
+通过slot对相等大小的slab块进行管理，即slot块是在page页内存的再一次管理。
+
+linux 下查看内存页面大小：
+getconf PAGESIZE
+getconf PAGE_SIZE
+
+page 页的动态管理
+
 p50
