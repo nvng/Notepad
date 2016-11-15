@@ -154,6 +154,4 @@ linux 下查看内存页面大小：
 getconf PAGESIZE
 getconf PAGE_SIZE
 
-page 页的动态管理
-
-p50
+p54 page 页的动态管理
