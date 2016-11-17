@@ -154,4 +154,12 @@ linux 下查看内存页面大小：
 getconf PAGESIZE
 getconf PAGE_SIZE
 
-p54 page 页的动态管理
+p54 page 页的动态管理 因为比较难，暂时先不看了
+
+3.7 信号处理
+main()
+{
+        ngx_init_signals()
+}
+
+p62 3.7.3 处理实例

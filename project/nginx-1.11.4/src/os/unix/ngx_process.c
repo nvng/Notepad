@@ -12,10 +12,11 @@
 
 
 typedef struct {
-    int     signo;
-    char   *signame;
-    char   *name;
-    void  (*handler)(int signo);
+    int     signo; // 信号值 如：SIGHUP  SIGINT等。定义在文件 /usr/include/*/signal.h 中
+    char   *signame; // 信号名 如："SIGHUP"等
+    char   *name; // 表明该信号的自定义作用，Nginx根据自身对该信号的使用功能而设定的一个字符串
+                  // 如：SIGHUP 对应的字段名为 "reload"
+    void  (*handler)(int signo); // 回调，未直接忽略的信号，其处理函数全部为函数 ngx_signal_handler()
 } ngx_signal_t;
 
 
@@ -35,10 +36,11 @@ ngx_socket_t     ngx_channel;
 ngx_int_t        ngx_last_process;
 ngx_process_t    ngx_processes[NGX_MAX_PROCESSES];
 
-
+// 全局变量，把Nginx将要处理的信号全部罗列在其中。
+// signals[0] = {1, "SIGHUP", "reload", ngx_signal_handler}
 ngx_signal_t  signals[] = {
-    { ngx_signal_value(NGX_RECONFIGURE_SIGNAL),
-      "SIG" ngx_value(NGX_RECONFIGURE_SIGNAL),
+    { ngx_signal_value(NGX_RECONFIGURE_SIGNAL), // SIG##HUP
+      "SIG" ngx_value(NGX_RECONFIGURE_SIGNAL), // "SIGHUP"
       "reload",
       ngx_signal_handler },
 
@@ -75,11 +77,12 @@ ngx_signal_t  signals[] = {
 
     { SIGCHLD, "SIGCHLD", "", ngx_signal_handler },
 
-    { SIGSYS, "SIGSYS, SIG_IGN", "", SIG_IGN },
+    { SIGSYS, "SIGSYS, SIG_IGN", "", SIG_IGN }, // 回调函数为 SIG_IGN 表示忽略该信号
+                                                // 如果不做设置，将按系统默认处理，这里只是主动设置忽略。
 
     { SIGPIPE, "SIGPIPE, SIG_IGN", "", SIG_IGN },
 
-    { 0, NULL, "", NULL }
+    { 0, NULL, "", NULL } // 不定数组惯用结束手法
 };
 
 
@@ -283,7 +286,9 @@ ngx_execute_proc(ngx_cycle_t *cycle, void *data)
     exit(1);
 }
 
-
+// 信号初始化
+// 对信号进行设置并生效是在 fork 函数调用之前。
+// 一般，只会向监控进程发送信号，监控进程处理后，再根据情况看是否需要把信号再通知到其它所有子进程。
 ngx_int_t
 ngx_init_signals(ngx_log_t *log)
 {
