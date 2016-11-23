@@ -162,4 +162,24 @@ main()
         ngx_init_signals()
 }
 
-p62 3.7.3 处理实例
+3.7.3 处理实例
+Note: 信号处理需要再仔细看下
+
+4 数据结构
+4.1 内存池
+
+ngx_create_pool(size_t size, ngx_log_t* log)
+{
+}
+
+// 对外
+void* ngx_palloc()
+void* ngx_pnalloc()
+void* ngx_pmemalign()
+void* ngx_pcalloc()
+
+// 对内
+static void* ngx_palloc_block()
+static void* ngx_palloc_large()
+
+P65 4.1 内存池 
