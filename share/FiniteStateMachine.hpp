@@ -1,5 +1,5 @@
-#ifndef __FINITE_STATE_MACHINE_HPP__
-#define __FINITE_STATE_MACHINE_HPP__
+#ifndef __FSM_BASE_HPP__
+#define __FSM_BASE_HPP__
 
 enum E_EVENT_TYPE
 {
@@ -13,7 +13,8 @@ struct StateEvent
         E_EVENT_TYPE event_type_;
 };
 
-class StateBase
+template <typename T>
+class StateBase : public NonCopyable
 {
 public :
         StateBase(int32_t stateType) : state_type_(stateType) {}
@@ -21,72 +22,56 @@ public :
 
         inline int32_t GetStateType() { return state_type_; }
 
-        virtual bool Enter(StateEvent& evt) = 0;
-        virtual bool Exit(StateEvent& evt) = 0;
-        virtual void Update(float deltaTime) = 0;
-        virtual bool OnEvent(StateEvent& evt) = 0;
+        virtual bool Enter(T owner, StateEvent& evt) = 0;
+        virtual bool Exit(T owner, StateEvent& evt) = 0;
+        virtual void Update(T owner, float deltaTime) = 0;
+        virtual bool OnEvent(T owner, StateEvent& evt) = 0;
 private :
         int32_t state_type_;
 };
 
-class FiniteStateMachine
+class FSMBase : public NonCopyable
 {
 public :
-        FiniteStateMachine()
-                : mPreStateType(sStateInvalid)
-                  , mCurStateType(sStateInvalid)
-        {
-        }
-
-        virtual ~FiniteStateMachine() {}
+        FSMBase() : mPreState(nullptr), mCurState(nullptr) { }
+        virtual ~FSMBase() {}
 
         bool Init();
-        void Update(float deltaTime)
+        inline void Update(float deltaTime)
         {
-                StateBase* state = GetStateByType(mCurStateType);
-                assert(nullptr != state);
-                if (nullptr != state)
-                {
-                        state->Update(deltaTime);
-                }
+                if (nullptr != mCurState)
+                        mCurState->Update(deltaTime);
         }
 
-        void ChangeState(int32_t stateType, StateEvent& evt)
+        inline void ChangeState(int32_t stateType, StateEvent& evt)
         {
                 StateBase* nextState = GetStateByType(stateType);
-                assert(nullptr != nextState);
                 if (nullptr == nextState)
                         return;
 
-                StateBase* curState = GetStateByType(mCurStateType);
-                assert(nullptr != curState);
-                if (nullptr != curState)
+                if (nullptr != mCurState)
                 {
-                        curState->Exit(evt);
-                        mPreStateType = mCurStateType;
+                        mCurState->Exit(evt);
+                        mPreState = mCurState;
                 }
 
                 nextState->Enter(evt);
-                mCurStateType = stateType;
+                mCurState = nextState;
         }
 
-        inline StateBase* GetCurState() { return GetStateByType(mCurStateType); }
-        // inline StateBase* GetPreState() { return GetStateByType(mPreStateType); }
-
-        inline char* GetPreStateTypeString() { return GetStateTypeString(mPreStateType); }
-        // inline char* GetCurStateTypeString() { return GetStateTypeString(mCurStateType); }
-
 private :
-        virtual char* GetStateTypeString(int32_t stateType) = 0;
+        virtual const char* GetStateTypeString(int32_t stateType) = 0;
         bool SetCurState(int32_t stateType, StateEvent& evt, bool isEnter)
         {
                 StateBase* state = GetStateByType(stateType);
-                assert(nullptr != state);
                 if (nullptr != state)
                 {
                         if (isEnter)
                                 state->Enter(evt);
-                        mCurStateType = stateType;
+
+                        mPreState = mCurState;
+                        mCurState = state;
+
                         return true;
                 }
                 else
@@ -95,10 +80,12 @@ private :
                 }
         }
 
+public :
+        inline StateBase* GetCurState() { return mCurState; }
+
 private :
-        static const int32_t sStateInvalid = -1;
-        int32_t mPreStateType;
-        int32_t mCurStateType;
+        StateBase* mPreState;
+        StateBase* mCurState;
 };
 
 #ifdef TEST_EXAMPLE
@@ -140,11 +127,11 @@ static const E_FIGHTER_STATE gFighterStateList[] =
         E_FS_Use,
 };
 
-class FighterState : public StateBase
+class FighterState : public StateBase<FighterState>
 {
 };
 
-class FighterFSM : public FiniteStateMachine
+class FighterFSM : public FSMBase
 {
 public :
         FighterFSM()
@@ -192,4 +179,4 @@ private :
 
 #endif
 
-#endif // __FINITE_STATE_MACHINE_HPP__
+#endif // __FSM_BASE_HPP__
