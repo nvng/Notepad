@@ -182,7 +182,7 @@ if has("persistent_undo")
 endif
 
 " ctrlp.vim
-" :CtrlPDir dir         本次搜索指定目录 dir 下的内容 
+" :CtrlPDir dir         本次搜索指定目录 dir 下的内容
 let g:ctrlp_custom_ignore = {
                         \ 'dir':  '\v[\/]\.(git|hg|svn)$',
                         \ 'file': '\v\.(exe|so|dll|out|o|d|gch)$',
@@ -239,5 +239,19 @@ endfunction
 " 生成连续数字
 "       ctrl-a          自己录宏，使用该命令递增
 "       :let i=0 | g/zcc/s//\=i/ | let i=i+1  插入这样递增数列的地方插入一个全文不会重复出现的字母序列zcc，然后输入该命令
+
+" :%s/^\n\+/\r/         压缩多行空行为一行
+" :%s/^\n\{3}//         delete blocks of 3 empty lines 
+" /^\n\{3}              find 3 empty lines
+" :buffdo /searchstr    multiple file search
+" :argdo /searchstr     multiple file search
+" :%s/\r//g             删除 DOS 回车符 ^M
+" :%s/\r/\r/g           转换 DOS 回车符 ^M 为真正的回车符
+" :%s= *$==             delete end of line blanks
+" :%s= \+$==            delete end of line blanks
+
+" Vu                    lowercase line
+" VU                    uppercase line
+" g~~                   行翻转
 
 " vim: set enc=utf8
