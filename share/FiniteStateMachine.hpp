@@ -60,6 +60,7 @@ public :
         }
 
 private :
+        virtual StateBase* GetStateByType(int32_t stateType) = 0;
         virtual const char* GetStateTypeString(int32_t stateType) = 0;
         bool SetCurState(int32_t stateType, StateEvent& evt, bool isEnter)
         {
@@ -147,7 +148,7 @@ public :
                         delete s;
         }
 
-        virtual const char* GetStateTypeString(int32_t stateType)
+        const char* GetStateTypeString(int32_t stateType) override
         {
                 switch (stateType)
                 {
@@ -157,7 +158,7 @@ public :
         }
 
 private :
-        virtual StateBase* GetStateByType(int32_t stateType)
+        StateBase* GetStateByType(int32_t stateType) override
         {
                 if (stateType>=0 && stateType<E_FS_COUNT)
                         return mFighterStateList[stateType];
@@ -165,7 +166,7 @@ private :
                         return nullptr;
         }
 
-        virtual FighterState* CreateState(int32_t stateType)
+        FighterState* CreateState(int32_t stateType)
         {
                 switch (stateType)
                 {

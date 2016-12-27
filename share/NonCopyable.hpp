@@ -5,7 +5,7 @@ class NonCopyable
 {
 protected :
         NonCopyable() {}
-        virtual ~NonCopyable() {}
+        ~NonCopyable() {}
 
 private :
         NonCopyable(const NonCopyable&) = delete;

@@ -1,6 +1,7 @@
 #ifndef __RANDOM_SELECT_HPP__
 #define __RANDOM_SELECT_HPP__
 
+// uint64_t g_count = 0;
 class RandomSelect : public NonCopyable
 {
 public :
@@ -21,7 +22,8 @@ public :
 
         inline void* Get(int64_t ratio)
         {
-                SRandomKey key(ratio);
+                static SRandomKey key(ratio);
+                key.key_ = ratio;
                 auto it = mRandomList.find(key);
 #ifdef NDEBUG
                 return (mRandomList.end()!=it) ? it->second : nullptr;
@@ -65,21 +67,16 @@ private :
 
 inline bool operator<(const RandomSelect::SRandomKey& lhs, const RandomSelect::SRandomKey& rhs)
 {
-        bool ret = false;
+        // ++g_count;
         if (0==lhs.key_ && 0==rhs.key_)
-                ret = lhs.low_ < rhs.low_;
+                return lhs.low_ < rhs.low_;
         else
         {
                 if (0 != lhs.key_)
-                {
-                        ret = rhs.key_ < lhs.low_;
-                }
+                        return rhs.key_ < lhs.low_;
                 else
-                {
-                        ret = rhs.key_ >= lhs.hight_;
-                }
+                        return rhs.key_ >= lhs.hight_;
         }
-        return ret;
 }
 
 #endif // __RANDOM_SELECT_HPP__

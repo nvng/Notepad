@@ -7,68 +7,51 @@
 
 #include "DoubleQueue.hpp"
 
-template <typename T>
 class DoubleQueue2 : public NonCopyable
 {
 public :
-        typedef T value_type;
-        typedef DoubleQueue<value_type> DoubleQueueType;
+        DoubleQueue2() : queue_(mQueue.GetQueue()) {}
 
-        DoubleQueue2() : queue_(nullptr), idx_(0) {}
-
-        inline void PushItem(value_type item)
+        inline void PushItem(void* item)
         {
                 mQueue.PushItem(item);
                 cond.notify_all();
         }
 
-        inline bool TryGet(value_type& val)
+        inline void* TryGet()
         {
                 std::lock_guard<std::mutex> lock(mMutex);
-                if (nullptr==queue_ || queue_->empty())
-                        queue_ = mQueue.GetQueue();
-
-                if (queue_->empty())
-                        return false;
-                else
+                if (queue_->Empty())
                 {
-                        val = GetValue();
-                        return true;
+#ifdef USE_VECTOR
+                        queue_->Clear();
+#endif
+                        queue_ = mQueue.GetQueue();
                 }
+                return queue_->GetItem();
         }
 
-        inline value_type WaitGet()
+        inline void* WaitGet()
         {
                 std::unique_lock<std::mutex> lock(mMutex);
-                while (nullptr==queue_ || queue_->empty())
+                while (queue_->Empty())
                 {
+#ifdef USE_VECTOR
+                        queue_->Clear();
+#endif
                         queue_ = mQueue.GetQueue();
-                        if (queue_->empty())
+                        if (queue_->Empty())
                                 cond.wait(lock);
-                        else
-                                printf("queue size = %lu\n", queue_->size());
                 }
 
-                return GetValue();
+                return queue_->GetItem();
         }
 
 private :
-        inline value_type& GetValue() // queue_ is not null
-        {
-                value_type& ret = (*queue_)[idx_++];
-                if (idx_ >= queue_->size())
-                {
-                        queue_->clear();
-                        idx_ = 0;
-                }
-                return ret;
-        }
-
-        DoubleQueue<value_type> mQueue;
-        typename DoubleQueueType::QueueType* queue_;
+        DoubleQueue mQueue;
+        DoubleQueueData* queue_;
         std::mutex mMutex;
         std::condition_variable cond;
-        std::size_t idx_;
 };
 
 #endif // __DOUBLE_QUEUE_2_HPP__
