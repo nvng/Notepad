@@ -10,7 +10,6 @@ using namespace std::chrono;
 
 #define GET_TIME_BY_TYPE(type) duration_cast<type>(sNow.time_since_epoch()).count()
 
-class CTimeCost;
 class CClock
 {
 private :
@@ -36,9 +35,7 @@ public :
         static inline const std::string GetTimeToString(uint64_t t)
         { return std::ctime((time_t*)&t); }
 
-// private :
-        friend class CTimeCost;
-
+private :
         static inline uint64_t GetTimeStampNow()
         { return duration_cast<seconds>(system_clock::now().time_since_epoch()).count(); }
 

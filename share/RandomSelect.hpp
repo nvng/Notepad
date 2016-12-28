@@ -1,7 +1,6 @@
 #ifndef __RANDOM_SELECT_HPP__
 #define __RANDOM_SELECT_HPP__
 
-// uint64_t g_count = 0;
 class RandomSelect : public NonCopyable
 {
 public :
@@ -67,7 +66,6 @@ private :
 
 inline bool operator<(const RandomSelect::SRandomKey& lhs, const RandomSelect::SRandomKey& rhs)
 {
-        // ++g_count;
         if (0==lhs.key_ && 0==rhs.key_)
                 return lhs.low_ < rhs.low_;
         else
