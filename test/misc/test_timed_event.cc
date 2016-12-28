@@ -1,47 +1,78 @@
-#define GET_NOW() ((double)CClock::GetMicroTimeStamp() / (1000.0 * 1000.0))
-
-int main(void)
+double GetNow()
 {
-        TimedEvent te;
+        return (double)CClock::GetMicroTimeStamp() / (1000.0 * 1000.0);
+}
+
+void testTimedEvent()
+{
+        TimedEventLoop te(GetNow);
         CClock::UpdateTime();
 
-        std::function<void(uint64_t)> func1 = [](uint64_t id)
+        auto func1 = [](TimedEventLoop::EventItemType* eventData)
         {
                 static int cnt = 0;
-                ++cnt;
-                // printf("call back now = %lf\n", GET_NOW());
+                printf("event triggered guid[%lu] cnt[%d] now[%f]\n", eventData->GetGuid(), ++cnt, GetNow());
                 if (cnt >= 5)
                 {
                         cnt = 0;
-                        /*
-                        te.Remove(id);
-                        auto func2 = [&](uint64_t id)
-                        {
-                                ++cnt;
-                                // printf("22222 call back now = %lf\n", GET_NOW());
-                                if (cnt >= 3)
-                                {
-                                        cnt = 0;
-                                        te.Remove(id);
-                                        te.Add(GET_NOW()+1, func1, 1.0, 10);
-                                }
-                        };
-
-                        te.Add(GET_NOW()+2, func2, 2.0, 5);
-                        */
+                        eventData->Stop();
                 }
         };
 
-        for (int i=0; i<10; ++i)
-                te.Add(GET_NOW()+1, func1, 1.0, 10);
+        // for (int i=0; i<10; ++i)
+        te.Start(GetNow()+1, 1.0, 10, func1);
+        te.Start(GetNow()+10, 1.0, 3, func1);
 
         while (true)
         {
                 CClock::UpdateTime();
 
-                te.Update(GET_NOW());
-                std::this_thread::sleep_for(std::chrono::microseconds(15000));
+                te.Update();
+                // std::this_thread::sleep_for(std::chrono::microseconds(15000));
         }
+}
+
+uint64_t gFrameCnt = 0;
+
+uint64_t GetFrameCnt() { return gFrameCnt; }
+
+void testFrameEvent()
+{
+        FrameEventLoop fel(GetFrameCnt);
+        auto func1 = [](FrameEventLoop::EventItemType* eventData)
+        {
+                static int cnt = 0;
+                printf("event triggered guid[%lu] cnt[%d] now[%lu]\n", eventData->GetGuid(), ++cnt, GetFrameCnt());
+                if (cnt >= 5)
+                {
+                        eventData->Stop();
+                        cnt = 0;
+                }
+        };
+        printf("func1 size = %lu\n", sizeof(func1));
+        auto func2 = std::function<double()>();
+        printf("func2 size = %lu\n", sizeof(func2));
+        printf("function size = %lu\n", sizeof(std::function<double()>));
+
+        fel.Start(GetFrameCnt()+100, 1000*1000*100, 10, func1);
+
+        while (true)
+        {
+                ++gFrameCnt;
+                fel.Update();
+        }
+}
+
+int main(void)
+{
+        printf("size = %lu\n", sizeof(FrameEventLoop::EventItemType));
+        printf("function size = %lu\n", sizeof(FrameEventLoop::GetTickFuncType));
+
+        printf("size = %lu\n", sizeof(TimedEventLoop::EventItemType));
+        printf("function size = %lu\n", sizeof(TimedEventLoop::GetTickFuncType));
+
+        // testTimedEvent();
+        testFrameEvent();
 
         return 0;
 }

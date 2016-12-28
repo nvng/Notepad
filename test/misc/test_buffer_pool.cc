@@ -11,12 +11,15 @@ int main(void)
                 {
                         for (int i=1; i<30000; ++i)
                         {
-                                char* tmp = bp.malloc_buffer(1000);
-                                testList[i] = tmp;
+                                bp.free_buffer(bp.malloc_buffer(1000));
+                                // char* tmp = bp.malloc_buffer(1000);
+                                // testList[i] = tmp;
                         }
 
+                        /*
                         for (int i=1; i<30000; ++i)
                                 bp.free_buffer((char*)testList[i]);
+                                */
                 }
         }
 
@@ -27,11 +30,14 @@ int main(void)
                 {
                         for (int i=1; i<30000; ++i)
                         {
-                                char* tmp = new char[1000];
-                                testList[i] = tmp;
+                                delete[] (new char[1000]);
+                                // char* tmp = new char[1000];
+                                // testList[i] = tmp;
                         }
+                        /*
                         for (int i=1; i<30000; ++i)
                                 delete[] testList[i];
+                                */
                 }
         }
 
