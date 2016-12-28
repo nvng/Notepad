@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __SINGLETON_HPP__
+#define __SINGLETON_HPP__
 
 #include <mutex>
 #include "NonCopyable.hpp"
@@ -42,3 +43,5 @@ T* Singleton<T>::mInstance = nullptr;
 
 template <typename T>
 std::mutex Singleton<T>::mMutex;
+
+#endif // __SINGLETON_HPP__

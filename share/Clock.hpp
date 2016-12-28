@@ -16,6 +16,8 @@ private :
         CClock() = delete;
         ~CClock() = delete;
 public :
+        typedef uint64_t ValueType;
+
         static inline void UpdateTime()
         {
                 sNow = system_clock::now();
@@ -23,26 +25,27 @@ public :
                 sTimeStampString = ctime(&now);
         }
 
-        static inline uint64_t GetTimeStamp() { return GET_TIME_BY_TYPE(seconds); }
-        static inline uint64_t GetMicroTimeStamp() { return GET_TIME_BY_TYPE(microseconds); }
-        static inline uint64_t GetMilliseconds() { return GET_TIME_BY_TYPE(milliseconds); }
-        // static inline uint64_t GetDay() { return GET_TIME_BY_TYPE(milliseconds); }
-        static inline uint64_t GetNanoseconds() { return GET_TIME_BY_TYPE(nanoseconds); }
+        static inline ValueType GetTimeStamp() { return GET_TIME_BY_TYPE(seconds); }
+        static inline ValueType GetMicroTimeStamp() { return GET_TIME_BY_TYPE(microseconds); }
+        static inline ValueType GetMilliseconds() { return GET_TIME_BY_TYPE(milliseconds); }
+        // static inline ValueType GetDay() { return GET_TIME_BY_TYPE(milliseconds); }
+        static inline ValueType GetNanoseconds() { return GET_TIME_BY_TYPE(nanoseconds); }
 
         static inline const std::string& GetTimeToString()
         { return sTimeStampString; }
 
-        static inline const std::string GetTimeToString(uint64_t t)
+        static inline const std::string GetTimeToString(ValueType t)
         { return std::ctime((time_t*)&t); }
 
-private :
-        static inline uint64_t GetTimeStampNow()
+
+
+        static inline ValueType GetTimeStampNow()
         { return duration_cast<seconds>(system_clock::now().time_since_epoch()).count(); }
 
-        static inline uint64_t GetMicroTimeStampNow()
+        static inline ValueType GetMicroTimeStampNow()
         { return duration_cast<microseconds>(system_clock::now().time_since_epoch()).count(); }
 
-        static inline uint64_t GetNanosecondsNow()
+        static inline ValueType GetNanosecondsNow()
         { return duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count(); }
 
         static inline const std::string GetTimeToStringNow()

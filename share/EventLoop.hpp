@@ -83,7 +83,7 @@ public :
                                         if (!data->is_set_over_tick_)
                                         {
                                                 if (-1==data->loop_cnt_ || --(data->loop_cnt_)>0)
-                                                        data->SetOverTime(now + data->interval_);
+                                                        data->SetOverTick(now + data->interval_);
                                         }
 
                                         if (data->is_set_over_tick_)
