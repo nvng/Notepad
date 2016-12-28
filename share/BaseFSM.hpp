@@ -24,7 +24,7 @@ public :
 
         virtual bool Enter(T owner, StateEvent& evt) = 0;
         virtual bool Exit(T owner, StateEvent& evt) = 0;
-        virtual void Update(T owner, float deltaTime) = 0;
+        virtual void Update(T owner) = 0;
         virtual bool OnEvent(T owner, StateEvent& evt) = 0;
 private :
         int32_t state_type_;
@@ -65,20 +65,19 @@ private :
         bool SetCurState(int32_t stateType, StateEvent& evt, bool isEnter)
         {
                 StateBase* state = GetStateByType(stateType);
-                if (nullptr != state)
-                {
-                        if (isEnter)
-                                state->Enter(evt);
-
-                        mPreState = mCurState;
-                        mCurState = state;
-
-                        return true;
-                }
-                else
-                {
+                if (nullptr == state)
                         return false;
-                }
+
+                if (nullptr != mCurState)
+                        mCurState->Exit(evt);
+
+                if (isEnter)
+                        state->Enter(evt);
+
+                mPreState = mCurState;
+                mCurState = state;
+
+                return true;
         }
 
 public :
