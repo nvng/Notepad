@@ -11,10 +11,10 @@ public :
 	typedef T value_type;
 	typedef value_type* value_pointer;
 
-	explicit ObjectPool(size_t size=1000)
-                : mIndex(0), mMaxSize(0)
+	explicit ObjectPool(size_t initSize=10, size_t incSize=10)
+                : mIndex(0), mMaxSize(0), mIncSize(incSize)
 	{
-		Resize(size);
+		Resize(initSize);
 	}
 
 	~ObjectPool()
@@ -26,7 +26,7 @@ public :
 	inline value_pointer Malloc()
 	{
 		if (mIndex >= mMaxSize)
-			Resize(10);
+			Resize(mIncSize);
 		return mObjectList[mIndex++];
 	}
 
@@ -36,15 +36,9 @@ public :
 			mObjectList[--mIndex] = p;
 	}
 
-	inline size_t GetSize() { return mObjectList.size(); }
-	inline size_t GetIndex() { return mIndex; }
-
 private :
 	void Resize(size_t size)
 	{
-		if (size <= 0)
-			return;
-
 		mObjectList.reserve(mObjectList.size() + size);
 		for (size_t i=0; i<size; ++i)
 			mObjectList.push_back(new value_type());
@@ -54,6 +48,7 @@ private :
 	std::vector<value_pointer> mObjectList;
 	size_t mIndex;
 	size_t mMaxSize;
+        size_t mIncSize;
 };
 
 #endif // __OBJECT_POOL_HPP__
