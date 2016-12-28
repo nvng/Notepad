@@ -45,9 +45,9 @@ class EventLoop
 {
 public :
         typedef EventItem<T> EventItemType;
-        typedef std::function<T()> GetTickFunc;
+        typedef std::function<T()> GetTickFuncType;
 
-        EventLoop(GetTickFunc func) : mGetTickFunc(func)
+        EventLoop(GetTickFuncType func) : mGetTickFunc(func)
         {
         }
 
@@ -141,7 +141,7 @@ private :
 
         std::vector<EventItemType*> mAddedList;
 
-        GetTickFunc mGetTickFunc;
+        GetTickFuncType mGetTickFunc;
         ObjectPool<EventItemType> mEventItemObjectLoop;
 };
 

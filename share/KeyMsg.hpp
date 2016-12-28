@@ -1,29 +1,27 @@
 #ifndef __KEY_MSG_HPP__
 #define __KEY_MSG_HPP__
 
-#include "TimedEvent.hpp"
+#include "EventLoop.hpp"
 
 class KeyMsg
 {
 public :
         typedef std::function<bool(int32_t, void*)> SendFuncType;
-        KeyMsg(SendFuncType func, TimedEvent::GetTimestampFuncType time_func)
+        KeyMsg(SendFuncType func, TimedEventLoop::GetTickFuncType time_func)
                 : send_func_(func), te_(time_func) {}
 
         inline uint64_t
-        Add(void* msg,
+        Add(std::shared_ptr<void> msg,
                 int32_t msgType,
                 double over_time,
                 double interval,
                 uint64_t max_cnt)
         {
-                auto cb = [msg, msgType](void* data, bool has_next)
+                auto cb = [msg, msgType](TimedEventLoop::EventItemType* eventData)
                 {
-                        send_func_(msgType, msg);
-                        if (!has_next)
-                                delete data;
+                        send_func_(msgType, msg.get());
                 };
-                te_.Add(over_time, cb, nullptr, interval, max_cnt);
+                te_.Start(over_time, interval, max_cnt, cb);
         }
 
         inline void Remove(uint64_t guid) { te_.Remove(guid); }
@@ -34,7 +32,7 @@ public :
         }
 
 private :
-        TimedEvent te_;
+        TimedEventLoop te_;
         const SendFuncType send_func_;
 };
 

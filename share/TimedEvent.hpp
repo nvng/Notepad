@@ -1,210 +1,116 @@
-#ifndef __TIMED_EVENT_HPP__
-#define __TIMED_EVENT_HPP__
+#ifndef __TIMED_EVENT_MAP_HPP__
+#define __TIMED_EVENT_MAP_HPP__
 
-#include <vector>
-#include <functional>
-
+static const int32_t LOOP_CNT_FOREVER = -1;
+class TimedEvent;
 class TimedEventData
 {
 public :
-        // typedef std::function<void(void*, bool)> TimedEventCallbackType;
-        typedef void(* TimedEventCallbackType)(void*, bool);
-        inline TimedEventData(double over_time,
-                        double interval,
-                        int32_t loop_count,
-                        TimedEventCallbackType cb)
-                : guid_(++s_guid_)
-                  , over_time_(over_time)
-                  , interval_(interval)
-                  , loop_count_(loop_count)
-                  , data_(nullptr)
-                  , cb_(cb)
+        typedef std::function<void(TimedEventData*)> TimedEventCallbackType;
+        void Init(uint64_t guid, double over_time, double interval, int64_t loop_cnt, TimedEventCallbackType cb)
         {
+                guid_ = guid;
+                over_time_ = over_time;
+                interval_ = interval;
+                loop_cnt_ = loop_cnt;
+                cb_ = cb;
+                is_removed_ = false;
+                is_set_overtime_ = false;
         }
 
-        uint64_t guid_;
-        double   over_time_;
-        double   interval_;
-        int32_t  loop_count_; // -1 forever
-        void*    data_;
+        inline uint64_t GetGuid() { return guid_; }
+        inline void SetOverTime(double over_time) { is_set_overtime_ = true; over_time_ = over_time; }
+        inline void SetInterval(double interval) { interval_ = interval; }
+        inline void Stop() { is_removed_ = true; }
+
+private :
+        friend class TimedEvent;
+        double over_time_;
+        double interval_;
+        int64_t loop_cnt_;
+        bool is_removed_;
+        bool is_set_overtime_;
         TimedEventCallbackType cb_;
 
-private :
-        static uint64_t s_guid_;
+        uint64_t guid_;
 };
-
-uint64_t TimedEventData::s_guid_ = 0;
-
-struct SModifyOvertime
-{
-        inline SModifyOvertime(double over_time) : over_time_(over_time) {}
-        inline void operator() (TimedEventData*& data)
-        {
-                data->over_time_ = over_time_;
-        }
-
-private :
-        double over_time_;
-};
-
-#include <boost/multi_index_container.hpp>
-
-#include <boost/multi_index/sequenced_index.hpp>
-#include <boost/multi_index/ordered_index.hpp>
-#include <boost/multi_index/hashed_index.hpp>
-
-#include <boost/multi_index/member.hpp>
-
-struct TimedEventData;
-
-struct by_over_time {};
-struct by_guid {};
-
-typedef boost::multi_index::multi_index_container <
-        TimedEventData*,
-        boost::multi_index::indexed_by <
-
-        boost::multi_index::sequenced<>,
-
-        boost::multi_index::ordered_non_unique<
-        boost::multi_index::tag<by_over_time>,
-        boost::multi_index::member<TimedEventData, double, &TimedEventData::over_time_>
-        >,
-
-        boost::multi_index::hashed_unique <
-        boost::multi_index::tag<by_guid>,
-        boost::multi_index::member<TimedEventData, uint64_t, &TimedEventData::guid_>
-        >
-
-        >
-> TimedEventListType;
-
-typedef TimedEventListType::nth_index<0>::type            search_by_sequenced;
-typedef TimedEventListType::index<by_over_time>::type     search_by_over_time;
-typedef TimedEventListType::index<by_guid>::type            search_by_guid;
 
 class TimedEvent
 {
 public :
-        typedef TimedEventData::TimedEventCallbackType TimedEventCallbackType;
-        typedef std::function<double()> GetTimestampFuncType;
-        TimedEvent(GetTimestampFuncType func) : mGetCurTimestamp(func) {}
-
-        TimedEvent()
+        typedef std::function<double()> GetTimeFuncType;
+        TimedEvent(GetTimeFuncType func) : mGetTimeFunc(func)
         {
                 mAddedList.reserve(100);
-                mRemovedList.reserve(100);
         }
 
         ~TimedEvent()
         {
-                for (auto& val : mAddedList)
-                        delete val;
+                for (auto p : mAddedList)
+                        delete p;
 
-                search_by_sequenced& seq = mTimedEventList.get<0>();
-                for (auto& val : seq)
-                        delete val;
+                for (auto& val : mTimedEventListByOverTime)
+                        delete val.second;
         }
 
-        inline void Update()
+        void Update()
         {
                 if (!mAddedList.empty())
                 {
-                        for (auto val : mAddedList)
-                        {
-                                mTimedEventList.push_back(val);
-                        }
+                        for (TimedEventData* data : mAddedList)
+                                mTimedEventListByOverTime.insert(std::make_pair(data->over_time_, data));
                         mAddedList.clear();
                 }
 
-                if (!mRemovedList.empty())
+                const double now = mGetTimeFunc();
+                auto ie = mTimedEventListByOverTime.upper_bound(now);
+                auto it = mTimedEventListByOverTime.begin();
+                for (; ie!=it; ++it)
                 {
-                        auto& seq_id = mTimedEventList.get<by_guid>();
-                        for (auto id : mRemovedList)
+                        TimedEventData* data = it->second;
+                        if (!data->is_removed_)
                         {
-                                auto it = seq_id.find(id);
-                                if (seq_id.end() != it)
+                                data->cb_(data);
+                                if (!data->is_removed_)
                                 {
-                                        delete *it;
-                                        seq_id.erase(it);
-                                }
-                        }
-                        mRemovedList.clear();
-                }
+                                        if (!data->is_set_overtime_)
+                                        {
+                                                if (LOOP_CNT_FOREVER==data->loop_cnt_ || --(data->loop_cnt_)>0)
+                                                        data->SetOverTime(now + data->interval_);
+                                        }
 
-                if (!mTmpAddedList.empty())
-                {
-                        auto& seq_id = mTimedEventList.get<by_guid>();
-                        for (auto id : mTmpAddedList)
-                        {
-                                auto it = seq_id.find(id);
-                                if (seq_id.end() != it)
-                                {
-                                        // bool ret = seq_id.modify_key(it, boost::lambda::_1 = (*it)->over_time_);
-#ifdef NDEBUG
-                                        // seq_id.modify(it, SModifyOvertime((*it)->over_time_));
-                                        seq_id.replace(it, *it);
-#else
-                                        bool ret = seq_id.modify(it, SModifyOvertime((*it)->over_time_));
-                                        assert(true == ret);
-#endif
+                                        if (data->is_set_overtime_)
+                                        {
+                                                mAddedList.push_back(data);
+                                                data->is_set_overtime_ = false;
+                                                continue;
+                                        }
+                                        else
+                                        {
+                                                Stop(data->guid_);
+                                        }
                                 }
                         }
-                        mTmpAddedList.clear();
-                }
 
-                const double now = mGetCurTimestamp();
-                search_by_over_time& seq_over_time = mTimedEventList.get<by_over_time>();
-                auto ie = seq_over_time.upper_bound(now);
-                auto it = seq_over_time.begin();
-                while (ie != it)
-                {
-                        TimedEventData* data = *it;
-                        if (nullptr != data)
-                        {
-                                bool has_next = -1==data->loop_count_ || --(data->loop_count_)>0;
-                                data->cb_(data->data_, has_next);
-                                if (has_next)
-                                {
-#if 0
-                                        data->over_time_ = now + data->interval_;
-                                        bool ret = seq_over_time.replace(it, data);
-                                        if (!ret)
-                                                printf("replace false\n");
-#else
-                                        data->over_time_ = now + data->interval_;
-                                        // data->over_time_ += data->interval_;
-                                        /*
-                                        if (!seq_over_time.replace(it, data))
-                                                assert(false);
-                                                */
-                                       mTmpAddedList.push_back(data->guid_);
-#endif
-                                }
-                                else
-                                {
-                                        delete data;
-                                        it = seq_over_time.erase(it);
-                                        continue;
-                                }
-                        }
-                        ++it;
+                        if (data->is_removed_)
+                                delete data;
                 }
+                mTimedEventListByOverTime.erase(mTimedEventListByOverTime.begin(), ie);
         }
 
-        inline uint64_t
-        Add(double overTime
-           , TimedEventCallbackType cb
-           , void* data
-           , double interval
-           , int32_t loopCnt)
+        uint64_t Start(double overTime,
+                        double interval,
+                        int64_t loopCnt,
+                        TimedEventData::TimedEventCallbackType cb)
         {
-                if (cb && interval>=.0f && (loopCnt>0 || loopCnt==-1))
+                static uint64_t sGuid = 0;
+                if (cb && interval>=.0 && (loopCnt>0 || LOOP_CNT_FOREVER==loopCnt))
                 {
-                        TimedEventData* ted = new TimedEventData(overTime, interval, loopCnt, cb);
+                        TimedEventData* ted = new TimedEventData();
                         if (nullptr != ted)
                         {
-                                ted->data_ = data;
+                                ted->Init(++sGuid, overTime, interval, loopCnt, cb);
+                                mTimedEventListByGuid.insert(std::make_pair(ted->guid_, ted));
                                 mAddedList.push_back(ted);
                                 return ted->guid_;
                         }
@@ -212,19 +118,24 @@ public :
                 return 0;
         }
 
-        inline void Remove(uint64_t id)
+        void Stop(uint64_t id)
         {
-                mRemovedList.push_back(id);
+                auto it = mTimedEventListByGuid.find(id);
+                if (mTimedEventListByGuid.end() != it)
+                {
+                        it->second->is_removed_ = true;
+                        mTimedEventListByGuid.erase(it);
+                }
         }
 
-        size_t GetSize() { return mTimedEventList.size(); }
+        inline size_t GetSize() { return mTimedEventListByOverTime.size(); }
 
 private :
-        const GetTimestampFuncType mGetCurTimestamp;
-        TimedEventListType mTimedEventList;
-        std::vector<uint64_t> mRemovedList;
+        std::multimap<double, TimedEventData*> mTimedEventListByOverTime;
+        std::unordered_map<uint64_t, TimedEventData*> mTimedEventListByGuid;
         std::vector<TimedEventData*> mAddedList;
-        std::vector<uint64_t> mTmpAddedList;
+
+        GetTimeFuncType mGetTimeFunc;
 };
 
-#endif // __TIMED_EVENT_HPP__
+#endif // __TIMED_EVENT_MAP_HPP__

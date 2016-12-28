@@ -13,7 +13,7 @@
 class DoubleQueueData
 {
 public :
-        DoubleQueueData() : add_pos_(0), get_pos_(0), max_size_(100)
+        DoubleQueueData() : add_pos_(0), get_pos_(0), max_size_(1000*1000*10)
         {
                 list_.resize(max_size_);
         }
