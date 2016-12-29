@@ -559,6 +559,9 @@ event_base_new_with_config(const struct event_config *cfg)
 	event_debug_mode_too_late = 1;
 #endif
 
+        /* 之所以不用mm_malloc是因为mm_malloc并不会清零该内存区域。
+         * 而这个函数是会清零申请到的内存区域，这相当于被base初始化
+         */
 	if ((base = mm_calloc(1, sizeof(struct event_base))) == NULL) {
 		event_warn("%s: calloc", __func__);
 		return NULL;
@@ -588,6 +591,7 @@ event_base_new_with_config(const struct event_config *cfg)
 	should_check_environment =
 	    !(cfg && (cfg->flags & EVENT_BASE_FLAG_IGNORE_ENV));
 
+        /* 选择IO复用结构体 */
 	for (i = 0; eventops[i] && !base->evbase; i++) {
 		if (cfg != NULL) {
 			/* determine if this backend should be avoided */
@@ -604,8 +608,10 @@ event_base_new_with_config(const struct event_config *cfg)
 		    event_is_method_disabled(eventops[i]->name))
 			continue;
 
+                /* 找到一个满足条件的多路IO复用函数 */
 		base->evsel = eventops[i];
 
+                /* 初始化ev_base。并且会对信号监听的处理也进行初始化 */
 		base->evbase = base->evsel->init(base);
 	}
 
@@ -629,6 +635,11 @@ event_base_new_with_config(const struct event_config *cfg)
 	/* prepare for threading */
 
 #ifndef _EVENT_DISABLE_THREAD_SUPPORT
+        /* 测试evthread_lock_callbacks结构中的lock指针函数是否为NULL  
+         * 即测试Libevent是否已经初始化为支持多线程模式。  
+         * 由于一开始是用mm_calloc申请内存的，所以该内存区域的值为0  
+         * 对于th_base_lock变量，目前的值为NULL.
+         */
 	if (EVTHREAD_LOCKING_ENABLED() &&
 	    (!cfg || !(cfg->flags & EVENT_BASE_FLAG_NOLOCK))) {
 		int r;

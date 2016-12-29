@@ -85,18 +85,29 @@ struct name {					\
 
 struct event_base;
 struct event {
-	TAILQ_ENTRY(event) ev_active_next;
-	TAILQ_ENTRY(event) ev_next;
+	TAILQ_ENTRY(event) ev_active_next; /* 激活队列 */
+	TAILQ_ENTRY(event) ev_next;        /* 注册事件队列 */
 	/* for managing timeouts */
 	union {
 		TAILQ_ENTRY(event) ev_next_with_common_timeout;
-		int min_heap_idx;
-	} ev_timeout_pos;
+		int min_heap_idx; /* 指明该 event 结构体在堆中的位置 */
+	} ev_timeout_pos; /* 仅用于定时事件处理器(event).EV_TIMEOUT类型 */
+
+        /* 对于I/O事件，是文件描述符；对于signal事件，是信号值 */
 	evutil_socket_t ev_fd;
 
-	struct event_base *ev_base;
+	struct event_base *ev_base; /* 所属的 event_base */
 
+        /* 因为信号和I/O是不能同时设置的。所以可以使用共用体以省内存
+         * 在低版本的Libevent，两者是分开的，不在共用体内。
+         */
 	union {
+                /* 无论是信号还是IO，都有一个TAILQ_ENTRY的队列。它用于这样的情景:  
+                 * 用户对同一个fd调用event_new多次，并且都使用了不同的回调函数。  
+                 * 每次调用event_new都会产生一个event*。这个xxx_next成员就是把这些  
+                 * event连接起来的。  
+                 */
+
 		/* used for io events */
 		struct {
 			TAILQ_ENTRY(event) ev_io_next;
@@ -106,22 +117,24 @@ struct event {
 		/* used by signal events */
 		struct {
 			TAILQ_ENTRY(event) ev_signal_next;
-			short ev_ncalls;
+			short ev_ncalls; /* 事件就绪执行时，调用ev_callback的次数 */
 			/* Allows deletes in callback */
-			short *ev_pncalls;
+			short *ev_pncalls; /* 指针，指向次数 */
 		} ev_signal;
 	} _ev;
 
-	short ev_events;
-	short ev_res;		/* result passed to event callback */
-	short ev_flags;
+	short ev_events;        /* 记录监听的事件类型 EV_READ EVTIMEOUT之类 */
+	short ev_res;		/* result passed to event callback */ /* 记录了当前激活事件的类型 */
+	short ev_flags;         /* libevent用于标记event信息的字段，表明其当前的状态，可能值为前面的EVLIST_XXX */
+
+        /* 本event的优先级。调用event_priority_set设置 */
 	ev_uint8_t ev_pri;	/* smaller numbers are higher priority */
 	ev_uint8_t ev_closure;
-	struct timeval ev_timeout;
+	struct timeval ev_timeout; /* 用于定时器,指定定时器的超时值 */
 
 	/* allows us to adopt for different types of events */
-	void (*ev_callback)(evutil_socket_t, short, void *arg);
-	void *ev_arg;
+	void (*ev_callback)(evutil_socket_t, short, void *arg); /* 回调 */
+	void *ev_arg; /* 回调函数参数 */
 };
 
 TAILQ_HEAD (event_list, event);
