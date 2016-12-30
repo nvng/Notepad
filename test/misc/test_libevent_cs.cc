@@ -1,17 +1,44 @@
 #include <event.h>
+#include <event2/listener.h>
+#include <event2/bufferevent.h>
 
 #define LISTEN_PORT (8888)
 #define LISTEN_BACKLOG (128)
 
 uint64_t gCnt = 0;
+uint64_t gFrameCnt = 0;
 
 double GetNow()
 {
-        return (double)CClock::GetMicroTimeStampNow() / (1000.0 * 1000.0);
+        // return (double)CClock::GetMicroTimeStampNow() / (1000.0 * 1000.0);
+        return 0.0;
 }
 
+#if 0
 static void
 timeout_cb(int fd, short event, void* arg)
+{
+        ++gFrameCnt;
+        struct timeval tv;
+        struct event* timeout = (struct event*)arg;
+
+        /*
+        static uint64_t oldCnt = 0;
+        printf("recv %lu per second\n", gCnt - oldCnt);
+        oldCnt = gCnt;
+        */
+
+        std::this_thread::sleep_for(milliseconds(15));
+
+        evutil_timerclear(&tv);
+        tv.tv_sec = 0;
+        tv.tv_usec = 15000;
+        event_add(timeout, &tv);
+}
+#endif
+
+static void
+timeout_ps_cb(int fd, short event, void* arg)
 {
         struct timeval tv;
         struct event* timeout = (struct event*)arg;
@@ -19,6 +46,10 @@ timeout_cb(int fd, short event, void* arg)
         static uint64_t oldCnt = 0;
         printf("recv %lu per second\n", gCnt - oldCnt);
         oldCnt = gCnt;
+        /*
+        printf("frame cnt %lu per second\n", gFrameCnt - oldCnt);
+        oldCnt = gFrameCnt;
+        */
 
         evutil_timerclear(&tv);
         tv.tv_sec = 1;
@@ -32,16 +63,6 @@ void read_cb(struct bufferevent* bev, void* arg)
         // evutil_socket_t fd = bufferevent_getfd(bev);
 
         ++gCnt;
-        /*
-        if (gCnt >= 1000 * 100)
-        {
-                static double oldTime = 0.0;
-                double now = GetNow();
-                printf("recv %lu times cost %lfs\n", gCnt, now-oldTime);
-                gCnt = 0;
-                oldTime = now;
-        }
-        */
         int n;
         while ((n = bufferevent_read(bev, line, MAX_LINE)) > 0)
         {
@@ -49,9 +70,6 @@ void read_cb(struct bufferevent* bev, void* arg)
                 // printf("fd = %u, read line : %s\n", fd, line);
                 bufferevent_write(bev, line, n);
         }
-
-        bufferevent_setcb(bev, read_cb, NULL, NULL, arg);
-        bufferevent_enable(bev, EV_READ|EV_WRITE|EV_PERSIST);
 }
 
 void write_cb(struct bufferevent* bev, void* arg)
@@ -75,6 +93,11 @@ void error_cb(struct bufferevent* bev, short event, void* arg)
         {
                 printf("some other error\n");
         }
+        else
+        {
+                printf("unknow error\n");
+        }
+
         bufferevent_free(bev);
 }
 
@@ -105,8 +128,40 @@ void do_accept_cb(evutil_socket_t listener, short event, void* arg)
         bufferevent_enable(bev, EV_READ|EV_WRITE|EV_PERSIST);
 }
 
+void accept_cb(evconnlistener* listener, evutil_socket_t fd, struct sockaddr* sock, int socklen, void* arg)
+{
+        event_base* base = (event_base*)arg;
+        bufferevent* bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
+        bufferevent_setcb(bev, read_cb, NULL, error_cb, arg);
+        bufferevent_enable(bev, EV_READ|EV_WRITE|EV_PERSIST);
+}
+
 void StartServer()
 {
+        struct sockaddr_in server_addr;
+        bzero(&server_addr, sizeof(server_addr));
+        server_addr.sin_family = AF_INET;
+        server_addr.sin_port = htons(LISTEN_PORT);
+        inet_aton("127.0.0.1", &server_addr.sin_addr);
+
+        struct event_base* base = event_base_new();
+        struct evconnlistener* listener = evconnlistener_new_bind(base, accept_cb, base,
+                        LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE,
+                        10, (struct sockaddr*)&server_addr, sizeof(server_addr));
+
+        struct event timeout_ps;
+        evtimer_set(&timeout_ps, timeout_ps_cb, &timeout_ps);
+        event_base_set(base, &timeout_ps);
+        struct timeval tv;
+        evutil_timerclear(&tv);
+        tv.tv_sec = 1;
+        event_add(&timeout_ps, &tv);
+
+        event_base_dispatch(base);
+        evconnlistener_free(listener);
+        event_base_free(base);
+
+#if 0
         evutil_socket_t listener = socket(AF_INET, SOCK_STREAM, 0);
         assert(-1 != listener);
 
@@ -133,24 +188,36 @@ void StartServer()
         struct event* listen_event = event_new(base, listener, EV_READ|EV_PERSIST, do_accept_cb, (void*)base);
         event_add(listen_event, NULL);
 
-        struct event timeout;
-        evtimer_set(&timeout, timeout_cb, &timeout);
-        event_base_set(base, &timeout);
-        struct timeval tv;
-        evutil_timerclear(&tv);
-        tv.tv_sec = 1;
-        event_add(&timeout, &tv);
+                struct timeval tv;
+        /*
+                struct event timeout;
+                evtimer_set(&timeout, timeout_cb, &timeout);
+                event_base_set(base, &timeout);
+                evutil_timerclear(&tv);
+                tv.tv_sec = 0;
+                tv.tv_usec = 15000;
+                event_add(&timeout, &tv);
+                */
+
+                struct event timeout_ps;
+                evtimer_set(&timeout_ps, timeout_ps_cb, &timeout_ps);
+                event_base_set(base, &timeout_ps);
+                evutil_timerclear(&tv);
+                tv.tv_sec = 1;
+                event_add(&timeout_ps, &tv);
 
         event_base_dispatch(base);
 
         return;
+#endif
 }
 
 void StartClient()
 {
+#if 0
         struct event_base* base = event_base_new();
         assert(NULL != base);
-        for (int i=0; i<1000; ++i)
+        for (int i=0; i<10; ++i)
         {
                 evutil_socket_t connect_fd = socket(AF_INET, SOCK_STREAM, 0);
                 assert(-1 != listener);
@@ -163,7 +230,6 @@ void StartClient()
 
                 evutil_make_socket_nonblocking(connect_fd); // 设置为非阻塞模式
 
-
                 struct bufferevent* conn = bufferevent_socket_new(base, connect_fd, BEV_OPT_CLOSE_ON_FREE);
                 bufferevent_socket_connect(conn, (struct sockaddr*)&sin, sizeof(sin));
 
@@ -173,7 +239,7 @@ void StartClient()
                 bufferevent_write(conn, msg, 10240);
 
                 bufferevent_setcb(conn, read_cb, NULL, error_cb, base);
-                bufferevent_enable(conn, EV_READ|EV_WRITE|EV_PERSIST);
+                bufferevent_enable(conn, EV_READ|EV_WRITE);
 
                 // event_add(conn, NULL);
 
@@ -204,7 +270,28 @@ void StartClient()
         event_add(listen_event, NULL);
         event_base_dispatch(base);
         */
+#endif
 
+        struct sockaddr_in conn_addr;
+        bzero(&conn_addr, sizeof(conn_addr));
+        conn_addr.sin_family = AF_INET;
+        conn_addr.sin_port = htons(LISTEN_PORT);
+        inet_aton("127.0.0.1", &conn_addr.sin_addr);
+
+        struct event_base* base = event_base_new();
+        for (int i=0; i<10000; ++i)
+        {
+                struct bufferevent* bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
+                bufferevent_socket_connect(bev, (struct sockaddr*)&conn_addr, sizeof(conn_addr));
+
+                const char* buff = "aaaaa";
+                bufferevent_write(bev, buff, sizeof("aaaaa"));
+
+                bufferevent_setcb(bev, read_cb, NULL, NULL, bev);
+                bufferevent_enable(bev, EV_READ | EV_PERSIST);
+        }
+
+        event_base_dispatch(base);
 
         return;
 }
