@@ -45,10 +45,13 @@ class EventLoop
 {
 public :
         typedef EventItem<T> EventItemType;
+        typedef typename EventItemType::EventCallbackType EventCallbackType;
         typedef std::function<T()> GetTickFuncType;
 
-        EventLoop(GetTickFuncType func) : mGetTickFunc(func)
+        EventLoop(GetTickFuncType func)
+                : mGetTickFunc(func)
         {
+                assert(mGetTickFunc);
         }
 
         ~EventLoop()
@@ -100,7 +103,7 @@ public :
                         }
 
                         if (data->is_removed_)
-                                mEventItemObjectLoop.Free(data);
+                                delete data;
                 }
                 mEventListByOverTick.erase(mEventListByOverTick.begin(), ie);
         }
@@ -111,9 +114,9 @@ public :
                         typename EventItemType::EventCallbackType cb)
         {
                 static uint64_t sGuid = 0;
-                if (cb && interval>=.0 && (loopCnt>0 || LOOP_CNT_FOREVER==loopCnt))
+                if (cb && interval>=.0 && (loopCnt>0 || -1==loopCnt))
                 {
-                        EventItemType* ted = mEventItemObjectLoop.Malloc();
+                        EventItemType* ted = new EventItemType();
                         if (nullptr != ted)
                         {
                                 ted->Init(++sGuid, overTick, interval, loopCnt, cb);
@@ -135,14 +138,14 @@ public :
                 }
         }
 
+        inline T GetOverTick(T tick) { return mGetTickFunc() + tick; }
+
 private :
         std::multimap<T, EventItemType*> mEventListByOverTick;
         std::unordered_map<uint64_t, EventItemType*> mEventListByGuid;
-
         std::vector<EventItemType*> mAddedList;
 
-        GetTickFuncType mGetTickFunc;
-        ObjectPool<EventItemType> mEventItemObjectLoop;
+        const GetTickFuncType mGetTickFunc;
 };
 
 typedef EventLoop<double> TimedEventLoop;

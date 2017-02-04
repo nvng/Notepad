@@ -8,36 +8,32 @@
 class FrameControl : public NonCopyable
 {
 public :
-        typedef CClock::ValueType time_type;
-        FrameControl(double diff)
-                : mFrameDiffMicroTime(diff*1000.0*1000.0)
-                  , mPreFrameBeginTime(0)
+        FrameControl(Clock& clock, double diff)
+                : mClock(clock), mFrameDiffTime(diff), mPreFrameBeginTime(0.0)
         {
         }
 
         inline void StartOneFrame()
         {
                 ++mFrameCnt;
-                CClock::UpdateTime();
-                time_type now = CClock::GetMicroTimeStamp();
+                mClock.UpdateTime();
+                double now = mClock.GetTime();
 
-                time_type diff = now - mPreFrameBeginTime;
+                double diff = now - mPreFrameBeginTime;
                 mPreFrameBeginTime = now;
-                if (diff < mFrameDiffMicroTime)
+                if (diff < mFrameDiffTime)
                 {
-                        std::this_thread::sleep_for(microseconds(mFrameDiffMicroTime - diff));
-                        CClock::UpdateTime();
-                        mPreFrameBeginTime = CClock::GetMicroTimeStamp();
+                        std::this_thread::sleep_for(std::chrono::microseconds((int64_t)((mFrameDiffTime - diff)*1000*1000)));
+                        mClock.UpdateTime();
+                        mPreFrameBeginTime = mClock.GetTime();
                 }
         }
 
         inline uint64_t GetFrameCnt() { return mFrameCnt; }
-
-        inline double GetCurrentFrameTime() { return (double)CClock::GetMilliseconds() / 1000.0; }
-
 private :
-        const time_type mFrameDiffMicroTime;
-        time_type mPreFrameBeginTime;
+        Clock& mClock;
+        const double mFrameDiffTime;
+        double mPreFrameBeginTime;
         uint64_t mFrameCnt;
 };
 
