@@ -30,7 +30,7 @@ struct SReSendInfo
         bool               mIsRemoved;
 };
 
-#define MAX_LOOP_CNT    (1000 * 1000 * 10)
+#define MAX_LOOP_CNT    (1000 * 1000 * 100)
 ObjectPool<SReSendInfo> gObjectPool;
 
 int main(void)
@@ -47,9 +47,18 @@ int main(void)
         {
                 // CTimeCost t("new");
                 clock_t begin = clock();
-                for (int i=0; i<MAX_LOOP_CNT; ++i)
+                for (int i=0; i<MAX_LOOP_CNT/100; ++i)
                         delete (new SReSendInfo());
                 printf("new delete cost %fs\n", (float)(clock()-begin)/CLOCKS_PER_SEC);
+        }
+
+        auto func = []() { return new SReSendInfo(); };
+        {
+                // CTimeCost t("new");
+                clock_t begin = clock();
+                for (int i=0; i<MAX_LOOP_CNT/100; ++i)
+                        delete func();
+                printf("function cost %fs\n", (float)(clock()-begin)/CLOCKS_PER_SEC);
         }
 
         return 0;

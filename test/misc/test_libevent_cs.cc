@@ -130,6 +130,7 @@ void do_accept_cb(evutil_socket_t listener, short event, void* arg)
 
 void accept_cb(evconnlistener* listener, evutil_socket_t fd, struct sockaddr* sock, int socklen, void* arg)
 {
+        printf("accept_cb fd = %d\n", fd);
         event_base* base = (event_base*)arg;
         bufferevent* bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
         bufferevent_setcb(bev, read_cb, NULL, error_cb, arg);
@@ -147,7 +148,7 @@ void StartServer()
         struct event_base* base = event_base_new();
         struct evconnlistener* listener = evconnlistener_new_bind(base, accept_cb, base,
                         LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE,
-                        10, (struct sockaddr*)&server_addr, sizeof(server_addr));
+                        LISTEN_BACKLOG, (struct sockaddr*)&server_addr, sizeof(server_addr));
 
         struct event timeout_ps;
         evtimer_set(&timeout_ps, timeout_ps_cb, &timeout_ps);
@@ -279,13 +280,15 @@ void StartClient()
         inet_aton("127.0.0.1", &conn_addr.sin_addr);
 
         struct event_base* base = event_base_new();
-        for (int i=0; i<10000; ++i)
+        for (int i=0; i<30000; ++i)
         {
                 struct bufferevent* bev = bufferevent_socket_new(base, -1, BEV_OPT_CLOSE_ON_FREE);
                 bufferevent_socket_connect(bev, (struct sockaddr*)&conn_addr, sizeof(conn_addr));
+                evutil_socket_t fd = bufferevent_getfd(bev);
+                printf("connect fd = %d\n", fd);
 
-                const char* buff = "aaaaa";
-                bufferevent_write(bev, buff, sizeof("aaaaa"));
+                const char* buff = "a";
+                bufferevent_write(bev, buff, sizeof("a"));
 
                 bufferevent_setcb(bev, read_cb, NULL, NULL, bev);
                 bufferevent_enable(bev, EV_READ | EV_PERSIST);

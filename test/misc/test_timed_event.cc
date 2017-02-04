@@ -1,12 +1,14 @@
+Clock gClock;
+
 double GetNow()
 {
-        return (double)CClock::GetMicroTimeStamp() / (1000.0 * 1000.0);
+        return gClock.GetTime();
 }
 
 void testTimedEvent()
 {
         TimedEventLoop te(GetNow);
-        CClock::UpdateTime();
+        gClock.UpdateTime();
 
         auto func1 = [](TimedEventLoop::EventItemType* eventData)
         {
@@ -25,7 +27,7 @@ void testTimedEvent()
 
         while (true)
         {
-                CClock::UpdateTime();
+                gClock.UpdateTime();
 
                 te.Update();
                 // std::this_thread::sleep_for(std::chrono::microseconds(15000));

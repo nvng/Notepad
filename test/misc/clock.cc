@@ -27,7 +27,7 @@ int main(void)
         {
                 CTimeCost t("chrono");
                 for (int i=0; i<MAX_SIZE; ++i)
-                        duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count();
+                        std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
         }
 
         /*
