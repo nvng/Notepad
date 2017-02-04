@@ -28,6 +28,8 @@ int main(void)
                         // std::lock_guard<std::mutex> lock(g_mutex);
                         it = umap.find(i);
                         p = (umap.end() != it) ? it->second : nullptr;
+                        if (nullptr == p)
+                                printf("abc\n");
                 }
         }
         (void)p;
@@ -69,8 +71,12 @@ int main(void)
                 for (int32_t i=0; i<times; ++i)
                 {
                         tmp = wpi.lock();
+                        if (!tmp)
+                                printf("abc\n");
                 }
         }
+
+        std::make_shared<int>();
 
         return 0;
 }

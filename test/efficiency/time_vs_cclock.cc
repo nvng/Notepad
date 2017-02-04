@@ -6,6 +6,7 @@
 
 int main(void)
 {
+        Clock cl;
         printf("========== time =========\n");
         uint64_t now = 0;
         {
@@ -16,20 +17,11 @@ int main(void)
         (void)now;
 
         printf("========== CClock second =========\n");
-        CClock::UpdateTime();
+        cl.UpdateTime();
         {
                 CTimeCost t("cclock_second");
                 for (int32_t i=0; i<MAX_SIZE; ++i)
-                        now = CClock::GetTimeStamp();
-        }
-        (void)now;
-
-        printf("========== CClock nanosecond =========\n");
-        CClock::UpdateTime();
-        {
-                CTimeCost t("CClock_nanosecond");
-                for (int32_t i=0; i<MAX_SIZE; ++i)
-                        now = CClock::GetNanoseconds();
+                        now = cl.GetTimeStamp();
         }
         (void)now;
 
@@ -45,12 +37,12 @@ int main(void)
         */
 
         printf("========== CClock string =========\n");
-        CClock::UpdateTime();
+        cl.UpdateTime();
         {
                 CTimeCost t("CClock_string");
                 for (int32_t i=0; i<MAX_SIZE; ++i)
                 {
-                        std::string nowStr = CClock::GetTimeToString();
+                        std::string nowStr = Clock::GetTimeString_Slow(cl.GetTimeStamp());
                         (void)nowStr;
                 }
         }

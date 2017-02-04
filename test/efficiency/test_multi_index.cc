@@ -6,6 +6,8 @@
 
 #define MAX_LOOP_CNT (1000 * 1000)
 
+#if 0
+
 /*
 #include <boost/multi_index_container.hpp>
 
@@ -52,9 +54,11 @@ struct SChangeOvertime
 private :
         double over_time_;
 };
+#endif
 
 int main(void)
 {
+#if 0
         assert(false);
 
         TimedEventListType testList;
@@ -135,6 +139,7 @@ int main(void)
                 printf("guid[%lu] over_time[%lf]\n", val->guid_, val->over_time_);
         }
         */
+#endif
 
         return 0;
 }

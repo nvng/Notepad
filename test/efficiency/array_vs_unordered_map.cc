@@ -11,10 +11,12 @@ void arrayOperation(std::vector<int32_t>& randList)
 {
         int32_t* array = nullptr;
         {
-                CTimeCost t("create");
+                // CTimeCost t("create");
+                clock_t begin = clock();
                 array = new int32_t[MAX_SIZE];
                 for (int32_t i=0; i<MAX_SIZE; ++i)
                         array[randList[i]] = i;
+                printf("create clock cost = %ld\n", clock()-begin);
         }
 
         int32_t tmp = 0;

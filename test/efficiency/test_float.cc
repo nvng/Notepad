@@ -11,9 +11,11 @@ int main(void)
 
         {
                 double d = 1.0;
+                (void)d;
                 CTimeCost t("double");
                 for (int i=0; i<MAC_CNT; ++i)
-                        d = d / dList[i];
+                        // d = d / dList[i] / dList[i];
+                        d = (dList[i] * (1 + dList[i]) + dList[i] + dList[0]) / 10000.0;
         }
 
         std::vector<int> sList;
@@ -25,7 +27,7 @@ int main(void)
                 int s = 1;
                 CTimeCost t("int");
                 for (int i=0; i<MAC_CNT; ++i)
-                        s = s / sList[i];
+                        s = s / sList[i] / sList[i];
         }
 
         return 0;

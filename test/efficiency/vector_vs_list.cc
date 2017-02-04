@@ -1,4 +1,5 @@
 #define MAX_COUNT       (1000 * 1000)
+#include <list>
 
 int main(void)
 {
