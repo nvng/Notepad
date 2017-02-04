@@ -2,7 +2,7 @@
 
 double GetNow()
 {
-        return (double)CClock::GetMicroTimeStampNow() / (1000.0*1000.0);
+        return Clock::GetTimeNow_Slow();
 }
 
 double lasttime = 0.0;
