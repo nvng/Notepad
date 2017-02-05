@@ -19,12 +19,18 @@ int main(void)
         int64_t now = cl.GetTimeStamp();
         printf("now = %s\n", Clock::GetTimeString_Slow(now).c_str());
 
-        printf("added = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd(now, 2, 3, DAY(3)+HOUR(3)+MIN(3)+3)).c_str());
-        printf("added = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd(now, 2, 3, DAY(3)+MIN(3)+3)).c_str());
+        printf("added = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd_Slow(now, 2, 3, DAY(3)+HOUR(3)+MIN(3)+3)).c_str());
+        printf("added = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd_Slow(now, -2, -3, DAY(-3)+HOUR(-3)+MIN(3)+3)).c_str());
         // int64_t diff = Clock::TimeAdd(0, 0, 0, DAY(3)+MIN(3)+3);
         // printf("added = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd(now, 0, 0, diff)).c_str());
-        // printf("set time = %s\n", Clock::GetTimeString_Slow(Clock::TimeSet(2001, 7, DAY(8)+HOUR(16)+MIN(52)+3)).c_str());
-        // printf("set time = %s\n", Clock::GetTimeString_Slow(Clock::TimeSet(2001, 7, 8, 8, 8, 8)).c_str());
+        printf("set time = %s\n", Clock::GetTimeString_Slow(Clock::TimeSet_Slow(2001, 7, 8, HOUR(16)+MIN(52)+3)).c_str());
+
+        int64_t setTime = Clock::TimeSet_Slow(1900, 1, 1, 0);
+        printf("set time = %s   %ld\n", Clock::GetTimeString_Slow(setTime).c_str(), setTime);
+        setTime = Clock::TimeSet_Slow(1000, 1, 1, 0);
+        printf("set time = %s   %ld\n", Clock::GetTimeString_Slow(setTime).c_str(), setTime);
+        setTime = Clock::TimeSet_Slow(300000000, 1, 0, 0);
+        printf("set time = %s   %ld\n", Clock::GetTimeString_Slow(setTime).c_str(), setTime);
 
         /*
         int64_t baseTime = Clock::TimeSet(2000, 1, DAY(1)+HOUR(5));
@@ -33,34 +39,34 @@ int main(void)
                 printf("time = %s\n", Clock::GetTimeString_Slow(Clock::TimeAdd(baseTime, 0, i, 0)).c_str());
                 */
 
-        bool arr[][6] =
+        bool arr[][5] =
         {
-                {false, false, false, false, false, true},
-                {false, false, false, false, true, true},
-                {false, false, false, true, true, true},
-                {false, false, true, true, true, true},
-                {false, true, true, true, true, true},
-                {true, true, true, true, true, true},
+                {false, false, false, false, true},
+                {false, false, false, true, true},
+                {false, false, true, true, true},
+                {false, true, true, true, true},
+                {true, true, true, true, true},
+                {true, true, true, true, true},
         };
 
         const int arrSize = sizeof(arr)/sizeof(arr[0]);
         // printf("arrSize = %d\n", arrSize);
         for (int i=0; i<arrSize; ++i)
         {
-                int64_t cleardTime = Clock::TimeClear(now, arr[i][0], arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5]);
-                printf("cleardTime = %s\n", Clock::GetTimeString_Slow(cleardTime).c_str());
+                int64_t cleardTime = Clock::TimeClear_Slow(now, arr[i][0], arr[i][1], arr[i][2], arr[i][3], arr[i][4]);
+                printf("cleardTime = %s    %ld\n", Clock::GetTimeString_Slow(cleardTime).c_str(), cleardTime);
         }
 
         {
                 CTimeCost t("TimeAdd");
                 for (int i=0; i<1000*1000; ++i)
-                        Clock::TimeAdd(now, 0, 3, DAY(3)+HOUR(3)+MIN(3)+3);
+                        Clock::TimeAdd_Slow(now, 0, 3, DAY(3)+HOUR(3)+MIN(3)+3);
         }
 
         {
                 CTimeCost t("TimeAdd2");
                 for (int i=0; i<1000*1000; ++i)
-                        Clock::TimeAdd(now, 0, 0, DAY(3)+HOUR(3)+MIN(3)+3);
+                        Clock::TimeAdd_Slow(now, 0, 0, DAY(3)+HOUR(3)+MIN(3)+3);
         }
 
         return 0;

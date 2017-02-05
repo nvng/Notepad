@@ -39,7 +39,7 @@ public :
         }
 
         // 除年和月外，其它时间均可直接换算成秒
-        static int64_t TimeAdd(int64_t now, int year, int mon, int sec)
+        static int64_t TimeAdd_Slow(int64_t now, int year, int mon, int sec)
         {
                 if (0==year && 0==mon)
                         return now + sec;
@@ -53,11 +53,11 @@ public :
                 return mktime(&lt);
         }
 
-        static int64_t TimeClear(int64_t now, bool year, bool mon, bool day, bool hour, bool min, bool sec)
+        // 消除 year 后没有意义。
+        static int64_t TimeClear_Slow(int64_t now, bool mon, bool day, bool hour, bool min, bool sec)
         {
                 struct tm lt;
                 localtime_r(&now, &lt);
-                if (year) lt.tm_year = 0;
                 if (mon)  lt.tm_mon  = 0;
                 if (day)  lt.tm_mday = 1;
                 if (hour) lt.tm_hour = 0;
@@ -66,14 +66,13 @@ public :
                 return mktime(&lt);
         }
 
-        static int64_t TimeSet(int year, int mon, int sec)
+        // day 不能为0
+        static int64_t TimeSet_Slow(int year, int mon, int day, int sec)
         {
-                if (0==year && 0==mon)
-                        return sec;
-
                 struct tm lt = { 0 };
                 lt.tm_year = year - 1900;
                 lt.tm_mon  = mon - 1;
+                lt.tm_mday = std::max(day, 1);
                 lt.tm_sec  = sec;
                 return mktime(&lt);
         }
