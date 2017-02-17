@@ -19,7 +19,8 @@ endif
 INC	= -I../../share \
 	  -I../
 
-LINK	= -lpthread
+LINK	= -lpthread \
+	  -levent
 
 SRC_CC	= $(wildcard ./*.cc)
 
