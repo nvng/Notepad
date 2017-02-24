@@ -515,3 +515,8 @@ ssh相关：
 
 unknown terminal type:
 export TERM=linux
+
+https://commondatastorage.googleapis.com/chromium-browser-official/chromium-53.0.2785.143.tar.xz
+https://codeload.github.com/ninja-build/ninja/tar.gz/v1.7.2
+https://www.slackbuilds.org/slackbuilds/14.2/network/chromium.tar.gz
+https://www.slackbuilds.org/slackbuilds/14.2/development/ninja.tar.gz
