@@ -31,6 +31,7 @@ Plugin 'vimwiki/vimwiki'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'gerw/vim-latex-suite'
 Plugin 'moskytw/nginx-contrib-vim' " 增加 nginx 配置可读性，觉得不新，就直接从 nginx 最新版本的 contrib/vim/ 拷贝过去
+Plugin 'airblade/vim-gitgutter'
 call vundle#end()
 
 syntax enable
